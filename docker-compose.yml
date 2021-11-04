@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  reactApp:
+    container_name: reactApp
+    image: node:14-alpine
+    build:
+      context: . 
+    volumes:
+      - ./reactApp/my-app:/var/app  
+    working_dir: /var/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_YEEEEEEE=React
+    ports: 
+      - 3000:3000
+      - 9229:9229
+    command: npm start
