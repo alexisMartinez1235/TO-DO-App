@@ -4,15 +4,13 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
-            "name": "Docker: Attach to Node",
             "type": "node",
             "request": "attach",
-            "port": 9229,
-            "address": "localhost",
-            "localRoot": "${workspaceFolder}/src",
-            "remoteRoot": "/app",
-            "protocol": "inspector",
-        }    
+            "name": "Docker: Attach to Node",
+            "remoteRoot": "${workspaceFolder}",
+            "localRoot": "${workspaceFolder}"
+        }
     ]
 }

@@ -1,17 +1,9 @@
 .App {
   text-align: center;
 }
-.Sidebar{
-  width: 980px;
-  height: 100%;
-}
-
-.Body{
+.LItemAgregado{
   display: flex;
-}
-
-.Information > *{
-  display: block;
+  justify-content: center;
 }
 
 .App-logo {
