@@ -19,6 +19,7 @@ class LInput extends React.Component{
     onClickbtnAgregar(e) { 
       // alert('A name was submitted: ' + this.state.txtTarea);
       this.props.addItem(this.state.txtTarea);
+      this.setState({txtTarea: ""});
       // LTask.agregarItem()
       // this.setState({temperature: e.target.value}); 
     }

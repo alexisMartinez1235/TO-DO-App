@@ -4,6 +4,16 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        {   
+            "name": "Launch via npm",
+            "type": "node",
+            "request": "launch",
+            "remoteRoot": "${workspaceFolder}",
+            "localRoot": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run-script", "debug"]
+        },
         
         {
             "type": "node",
