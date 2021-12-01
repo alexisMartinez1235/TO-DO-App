@@ -8,8 +8,8 @@ class ButtonBar extends React.Component{
     render(){
       return (
         <div class="ButtonBar">
-            <input type="button" value="X"/>
-            <input type="button" value="Modificar" />
+            {/* <input type="button" value="X"/> */}
+            {/* <input type="button" value="Modificar" /> */}
         </div>
        
       ); 

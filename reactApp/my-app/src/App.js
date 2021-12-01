@@ -3,8 +3,7 @@ import './App.css';
 import React from 'react';
 import LInput from './Components/LInput'
 import LTask from './Components/LTask'
-import ButtonBar from './Components/ButtonBar'
-import LItem from './Components/LItem';
+// import ButtonBar from './Components/ButtonBar'
 // import { Button } from 'reactstrap';
 class App extends React.Component{
   constructor(props){
@@ -16,7 +15,6 @@ class App extends React.Component{
     return (
       <div class="App">
         <LTask/>
-        <ButtonBar/>
       </div>
     ); 
   }

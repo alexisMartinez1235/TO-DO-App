@@ -1,8 +1,14 @@
 .App {
+  display:block;
   text-align: center;
 }
-.LItemAgregado{
+.LInput{
   display: flex;
+  align-content:center
+  
+}
+.LItemAgregado{
+  /* display:block; */
   justify-content: center;
 }
 

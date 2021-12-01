@@ -1,6 +1,7 @@
 import React from 'react';
 import LInput from './LInput';
 import LItem from './LItem'
+import ListItemButton from '@mui/material/ListItemButton'
 
 class LTask extends React.Component{
     constructor(props){
@@ -26,10 +27,10 @@ class LTask extends React.Component{
         children.push(<LItem key={i} number={i} tarea={this.state.items[i]} />);
       }
       return (
-        <div>
-          <div class="LTask">
+        <div class="LTask">
+          <ListItemButton component="a" href="#simple-list">
             {children}
-          </div>
+          </ListItemButton>
           <LInput addItem={this.addItem}/>
         </div>
       ); 
