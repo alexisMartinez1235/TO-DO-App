@@ -1,19 +1,29 @@
 version: "3.7"
 services:
-  reactApp:
-    container_name: reactApp
-    image: node:14-alpine
+  # nodeWithApps:
+    # container_name: nodeWithApps
+    # build: 
+    #   context: . 
+    # image: node:14-alpine
+    # ports:
+    #   - 3000:3000
+    # command: npm install
+  reactappserver:
+    container_name: reactappserver
     build:
-      context: . 
+      context: .
+      args:
+        node_version: ${NODE_VERSION}
     volumes:
-      - ./reactApp/my-app:/var/app  
+      - ./my-app:/var/app
+      - node_modules:/var/app/node_modules
     working_dir: /var/app
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_YEEEEEEE=React
+      - REACT_APP_FOR=dEVELOP
     ports: 
       - 3000:3000
       - 9229:9229
-      # - 8080:8080
-    # command: npm start
-    # command: npm run debug
+    command: npm start
+volumes:
+  node_modules:

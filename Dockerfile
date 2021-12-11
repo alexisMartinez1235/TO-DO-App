@@ -1,8 +1,14 @@
-FROM node:14-alpine
-WORKDIR /var/app/
-# COPY package.json .
-RUN npm install
+ARG node_version
 
-# COPY . . 
-# EXPOSE 3000
-CMD [ "npm", "start" ]    
+FROM node:$node_version
+COPY ./my-app/ /var/app/ 
+WORKDIR /var/app/
+EXPOSE 3000
+
+# 525s
+RUN npm install
+# RUN (ls | grep node_modules ) && echo 'fdajfkdaflkadjfa'
+
+# CMD ["npm", "start"]
+
+# CMD npm start
