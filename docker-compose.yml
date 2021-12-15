@@ -1,14 +1,6 @@
 version: "3.7"
 services:
-  # nodeWithApps:
-    # container_name: nodeWithApps
-    # build: 
-    #   context: . 
-    # image: node:14-alpine
-    # ports:
-    #   - 3000:3000
-    # command: npm install
-  reactappserver:
+   reactappserver:
     container_name: reactappserver
     build:
       context: .

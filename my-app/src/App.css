@@ -1,29 +1,31 @@
-.App {
-  display:block;
-  text-align: center;
-  position: sticky;
-  height: max-content;
-  width: max-content;
-}
-.mainToDo{
+
+/* .mainToDo{
   width: 300%;
-}
-.LInput{
+} */
+/* .LInput{
   display: flex;
   align-content:center;
   justify-content: center;
   position: fixed;
   bottom: 0;
   width: 100%;
-} 
+}  */
 
-.LItemAgregado{
+/* .LItemAgregado{
   display:flex;
   justify-content: left;
-}
+} */
 
 .LTask > * {
   display: flex;
+}
+
+.App {
+  display:block;
+  text-align: center;
+  position: sticky;
+  height: max-content;
+  width: max-content;
 }
 
 .App-logo {

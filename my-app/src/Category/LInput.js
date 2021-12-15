@@ -1,79 +1,90 @@
 //componentes
 import React from 'react';
-import LTask from './LTask'
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+// import LTask from './LTask'
+import { 
+  Button,
+  TextField 
+}  from '@mui/material';
 
-//horax
-import DateFnsUtils from '@date-io/dayjs';
+//hora
+import {  
+  LocalizationProvider,
+  DatePicker,
+  StaticDatePicker
+}from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import Box from '@mui/material/Box';
 
 class LInput extends React.Component{
+  
     constructor(props){
       super(props);
       this.props=props
       this.state = {
-        txtTarea: '',
-        disabledBtnAgregar:false,
-        calendar:'', 
+        txtTask: '',
+        disabledBtnAdd:false,
+        selectedDate: ''
       };
 
-      this.onClickbtnAgregar = this.onClickbtnAgregar.bind(this);
-      this.onTxtTareaChange = this.onTxtTareaChange.bind(this);
-      this.onClickBtnCalendario = this.onClickBtnCalendario.bind(this);
-
+      this.onClickbtnAdd = this.onClickbtnAdd.bind(this);
+      this.onTxtTaskChange = this.onTxtTaskChange.bind(this);
+      this.onChangeBtnExpiration = this.onChangeBtnExpiration.bind(this);
     } 
-    onTxtTareaChange(e){
-     this.setState({txtTarea: e.target.value});
+    onTxtTaskChange(e){
+     this.setState({txtTask: e.target.value});
     }
 
-    onClickbtnAgregar(e) { 
-      // alert('A name was submitted: ' + this.state.txtTarea);
-      if(this.state.txtTarea !== ''){
-        this.props.addItem(this.state.txtTarea);
-        this.setState({txtTarea: ''});
+    onClickbtnAdd(e) { 
+      // alert('A name was submitted: ' + this.state.txtTask);
+      if(this.state.txtTask !== ''){
+        this.props.addItem(
+            this.state.txtTask,
+            this.state.selectedDate.toLocaleDateString()+'');
+        this.setState({txtTask: '',selectedDate: null});
       }
-      // LTask.agregarItem()
-      // this.setState({temperature: e.target.value}); 
     }
-    onClickBtnCalendario(e){
-      if(true){
-        this.setState({
-          calendar: 'aaa',
-          disabledBtnAgregar: this.state.txtTarea === ''
-        });
-      }
+    onChangeBtnExpiration(date){
+      this.setState({
+        selectedDate: date
+      });
     }
     render(){
-      return (
-        <div class="LInput">
-          <TextField variant="outlined" name="Nombre tarea"
-                  id="txtTarea" value={this.state.txtTarea} 
-                  onChange={this.onTxtTareaChange} />
-                  {/* onEnter={this.onClickbtnAgregar}  */}
-          
-          {/* <Button variant="contained" id="btnCalendario" onClick={this.onClickBtnCalendario}> */}
-            {/* <TextField
-              id="date"
-              label="Fecha entrega"
-              type="date"
-              defaultValue="2017-05-24"
-              sx={{ width: 220 }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            /> */}
-          {/* </Button> */}
-          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>hola</LocalizationProvider> */}
 
-          <Button variant="contained" id="btnAgregar" onClick={this.onClickbtnAgregar}
-                disabled={this.state.disabledBtnAgregar}>
+      return (
+        <Box sx={{
+          display: 'flex',
+          alignContent:'center',
+          justifyContent: 'center',
+          position: 'fixed',
+          bottom: '0',
+          width: '100%'
+        }}>
+        {/* <div class="LInput"> */}
+          {/* taskname */}
+          <TextField variant="outlined" name="Task name"
+                  id="txtTask" value={this.state.txtTask} 
+                  onChange={this.onTxtTaskChange} 
+                  maxlength='30' />
+  
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label='Expiration'
+              value={this.state.selectedDate}
+              onChange={this.onChangeBtnExpiration}
+              mask='__/__/____'
+              renderInput={(params) => 
+                    <TextField {...params} />
+                  }
+            />
+          </LocalizationProvider>
+          <Button variant="contained" id="btnAdd" color="success" onClick={this.onClickbtnAdd}
+                disabled={this.state.disabledBtnAdd}>
                   +
           </Button>
   
-        </div>
-      ); 
+    </Box>
+        ); 
     }
-  }
-  export default LInput;
+}
+
+export default LInput;

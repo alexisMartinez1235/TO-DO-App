@@ -1,9 +1,7 @@
 import React from 'react';
-import './../App.css';
-import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-
+import Box from '@mui/material/Box';
 
 class TItem extends React.Component{
   constructor(props){
@@ -13,7 +11,6 @@ class TItem extends React.Component{
           awake:true
         }
         this.removeItem = this.removeItem.bind(this);
-
     }
     removeItem(){
       this.setState({
@@ -24,18 +21,31 @@ class TItem extends React.Component{
     render(){
       if(this.state.awake){
           return (
-            <div class="LItemAgregado">
+            <Box sx={{
+                display:'flex', 
+                justifyContent: 'left', 
+              }} 
+            >
+            {/* <div class="LItemAgregado"> */}
               <Checkbox
                 checked={!this.state.awake}
                 onChange={this.removeItem} />
                 {/* name="" id="chSelector" /> */}
-              <Typography variant="h4" component="h2">
+
+              <Typography variant="h4"
+                component="h4" 
+                maxRows='30' >
                 {this.props.tarea}
+                
               </Typography>
               
+              <Typography 
+                  variant="h4" component="h2" ml="auto">
+                {this.props.expirationDate}
+              </Typography>
               {/* <input type="checkbox" name="" id="chSelector" onClick={this.removeItem} /> */}
               {/* <h1>{this.props.tarea}</h1> */}
-            </div>
+            </Box >
           );    
       }
       return false
