@@ -32,13 +32,13 @@ class TItem extends React.Component{
                 onChange={this.removeItem} />
                 {/* name="" id="chSelector" /> */}
 
-              <Typography variant="h4"
+                <Typography variant="h4"
                 component="h4" 
                 maxRows='30' >
                 {this.props.tarea}
                 
               </Typography>
-              
+
               <Typography 
                   variant="h4" component="h2" ml="auto">
                 {this.props.expirationDate}

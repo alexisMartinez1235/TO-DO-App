@@ -64,7 +64,9 @@ class LInput extends React.Component{
           <TextField variant="outlined" name="Task name"
                   id="txtTask" value={this.state.txtTask} 
                   onChange={this.onTxtTaskChange} 
-                  maxlength='30' />
+                  maxlength='30'
+                  label='Description'
+                  />
   
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker

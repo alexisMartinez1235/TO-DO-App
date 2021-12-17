@@ -1,6 +1,23 @@
 version: "3.7"
 services:
-   reactappserver:
+
+  mysqlServer:
+    container_name: mysqlServer
+    image: mysql:${MYSQL_VERSION}    
+    # restart: always 
+    working_dir: /var/lib/mysql/db_todo
+    volumes:
+      - ./.mysqlFolder:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+    environment:
+      MYSQL_USER: ${MYSQL_USER} # insecure
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # insecure
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # insecure
+      MYSQL_DATABASE: ${MYSQL_DATABASE} # insecure
+
+  reactappserver:
     container_name: reactappserver
     build:
       context: .
@@ -9,13 +26,17 @@ services:
     volumes:
       - ./my-app:/var/app
       - node_modules:/var/app/node_modules
+      
     working_dir: /var/app
     environment:
-      - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_FOR=dEVELOP
+      CHOKIDAR_USEPOLLING: true
+      REACT_APP_FOR: dEVELOP
+      REACT_MYSQL_USER: ${MYSQL_USER} # insecure
+      REACT_MYSQL_PASSWORD: ${MYSQL_PASSWORD} # insecure
     ports: 
       - 3000:3000
       - 9229:9229
     command: npm start
+
 volumes:
   node_modules:
