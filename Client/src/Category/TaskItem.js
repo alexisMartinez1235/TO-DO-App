@@ -2,6 +2,7 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import axios from 'axios';
 
 class TItem extends React.Component{
   constructor(props){
@@ -16,7 +17,7 @@ class TItem extends React.Component{
       this.setState({
         awake:false
       });
-
+      // axios.
     }
     render(){
       if(this.state.awake){
@@ -30,9 +31,8 @@ class TItem extends React.Component{
               <Checkbox
                 checked={!this.state.awake}
                 onChange={this.removeItem} />
-                {/* name="" id="chSelector" /> */}
 
-                <Typography variant="h4"
+              <Typography variant="h4"
                 component="h4" 
                 maxRows='30' >
                 {this.props.tarea}
@@ -43,12 +43,11 @@ class TItem extends React.Component{
                   variant="h4" component="h2" ml="auto">
                 {this.props.expirationDate}
               </Typography>
-              {/* <input type="checkbox" name="" id="chSelector" onClick={this.removeItem} /> */}
-              {/* <h1>{this.props.tarea}</h1> */}
             </Box >
           );    
       }
       return false
     }
   }
+  
   export default TItem;

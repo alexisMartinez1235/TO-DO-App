@@ -1,26 +1,31 @@
 {
-    // Use IntelliSense para saber los atributos posibles.
-    // Mantenga el puntero para ver las descripciones de los existentes atributos.
-    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-
-        {   
-            "name": "Launch via npm",
-            "type": "node",
-            "request": "launch",
-            "remoteRoot": "${workspaceFolder}",
-            "localRoot": "${workspaceFolder}",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": ["run-script", "debug"]
-        },
-        
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Docker: Attach to Node",
-            "remoteRoot": "${workspaceFolder}",
-            "localRoot": "${workspaceFolder}"
-        }
-    ]
+  // Use IntelliSense para saber los atributos posibles.
+  // Mantenga el puntero para ver las descripciones de los existentes atributos.
+  // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    // TODO 
+    // {
+    //   "type": "node",
+    //   "request": "attach",
+    //   "name": "Docker: Attach to Node",
+    //   "remoteRoot": "/var/app/server/src",
+    //   "port": 9228,
+    //   "address": "localhost",
+    //   "localRoot": "${workspaceFolder}/Server/src/",
+    //   "protocol": "inspector",
+    //   "restart": true
+    // },
+    // {
+    //   "type": "node",
+    //   "request": "attach",
+    //   "name": "Docker: Attach to Node server",
+    //   "remoteRoot": "/var/app/server",
+    //   "port": 9228,
+    //   "address": "localhost",
+    //   "localRoot": "${workspaceFolder}",
+    //   "protocol": "inspector",
+    //   "restart": true
+    // },
+  ]
 }

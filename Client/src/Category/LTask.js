@@ -7,7 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import LTaskModel from '../Model/LTaskModel';
+// import LTaskModel from 'server/Model/LTaskModel';
 
 class LTask extends React.Component{
   constructor(props){ 
@@ -16,11 +16,8 @@ class LTask extends React.Component{
     this.state={
       items: [],
       children: [],
-      orderBy:'expiration date',
-      lTaskModel: new LTaskModel(  
-        $MYSQL_USER,
-        $MYSQL_PASSWORD 
-      )  // insecure
+      orderBy:'expiration date'
+      // lTaskModel: new LTaskModel() 
     }
     this.addItem = this.addItem.bind(this);
     this.onChangeSelect = this.onChangeSelect.bind(this);
@@ -29,7 +26,7 @@ class LTask extends React.Component{
     this.setState({
       items : this.state.items.concat([[nombre,expirationDate]])
     });
-
+    // this.state.lTaskModel.addTask(this);
   }
   onChangeSelect(e){
     this.setState({

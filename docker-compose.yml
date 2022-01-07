@@ -1,42 +1,121 @@
-version: "3.7"
+version: "3.9"
+
 services:
+  mysql_server:
+    networks:
+      test:
+        aliases: 
+          - mysqlDB
+        # ipv4_address: "192.168.0.2"
 
-  mysqlServer:
-    container_name: mysqlServer
-    image: mysql:${MYSQL_VERSION}    
-    # restart: always 
-    working_dir: /var/lib/mysql/db_todo
-    volumes:
-      - ./.mysqlFolder:/var/lib/mysql
-    ports:
-      - 3306:3306
-
-    environment:
-      MYSQL_USER: ${MYSQL_USER} # insecure
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # insecure
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # insecure
-      MYSQL_DATABASE: ${MYSQL_DATABASE} # insecure
-
-  reactappserver:
-    container_name: reactappserver
+    container_name: mysql_server
+    secrets:
+      - mysql_root_pw
+      - mysql_db_pw
     build:
       context: .
+      dockerfile: mysql.Dockerfile
+      args:
+        mysqlVersion: ${MYSQL_VERSION}
+    working_dir: /usr/src/TodoApp
+    volumes:
+      - ./Mysql/Installation:/var/lib/mysql
+      - ./Mysql/Database:/docker-entrypoint-initdb.d
+      - ./Mysql/Scripts:/usr/src/TodoApp/Scripts
+      # - ./Mysql/Database:/usr/src/TodoApp/DatabaÌse
+    ports:
+      - "3306:3306"
+      # - "3306"
+     
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_pw
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_db_pw
+    entrypoint:
+      - bash
+      - /usr/src/TodoApp/Scripts/initDB.sh
+    command: --default-authentication-plugin=mysql_native_password
+
+  reactapp_client:
+    networks:
+      test:
+        aliases:
+          - ReactApp
+        # ipv4_address: "192.168.0.3"
+
+    container_name: reactappserver
+    restart: always
+
+    build:
+      target: debug
+      context: .
+      dockerfile: react.Dockerfile
       args:
         node_version: ${NODE_VERSION}
     volumes:
-      - ./my-app:/var/app
-      - node_modules:/var/app/node_modules
+      - ./Client:/var/app/client
+      - node_modules_c:/var/app/client/node_modules
+      - ./Server:/var/app/server
       
-    working_dir: /var/app
+    working_dir: /var/app/client
     environment:
-      CHOKIDAR_USEPOLLING: true
+      CHOKIDAR_USEPOLLING: "true"
       REACT_APP_FOR: dEVELOP
-      REACT_MYSQL_USER: ${MYSQL_USER} # insecure
-      REACT_MYSQL_PASSWORD: ${MYSQL_PASSWORD} # insecure
-    ports: 
+
+    ports:
       - 3000:3000
       - 9229:9229
-    command: npm start
+    # command: npm start
+ 
+  api_server:
+    networks:
+      test:
+        aliases:
+          - api_server
+        # ipv4_address: "192.168.0.4"
+    
+    container_name: api_server
+    secrets:
+        - mysql_db_pw
+    build:
+      target: debug
+      context: .
+      dockerfile: api_server.Dockerfile
+      args:
+        node_version: ${NODE_VERSION}
+    volumes:
+      - ./Server:/var/app/server
+      - node_modules_s:/var/app/server/node_modules
+      - ./Mysql/Database:/var/app/db
+
+    working_dir: /var/app/server
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      REACT_APP_FOR: dEVELOP
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DB: ${MYSQL_DATABASE}
+      MYSQL_PW: /run/secrets/mysql_db_pw
+    ports:
+      - 5000:5000
+      - 9228:9229 
+    # command: npm start
+  
+secrets:
+  mysql_root_pw:
+    file: ./Mysql/Passwords/${MYSQL_PW_ROOT_FILE}
+  mysql_db_pw:
+    file: ./Mysql/Passwords/${MYSQL_PW_FILE}
+
+networks:
+  test:
+    name: test
+    driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: "192.168.0.3/24"
 
 volumes:
-  node_modules:
+  node_modules_s:
+  node_modules_c:
+  # Server:

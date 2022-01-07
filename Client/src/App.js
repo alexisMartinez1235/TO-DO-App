@@ -12,7 +12,6 @@ class App extends React.Component{
     super(props);
     this.props=props;
     // this.theme = this.theme.bind(this);
-
   }
   // todo : add dark mode to app
   // theme(){
@@ -28,6 +27,7 @@ class App extends React.Component{
         <FormControl class="App">
           {/* <ThemeProvider theme={this.theme}> */}
             <LTask/>
+            
           {/* </ThemeProvider> */}
         </FormControl>
     ); 
