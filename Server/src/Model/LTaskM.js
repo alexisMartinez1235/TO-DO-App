@@ -6,43 +6,58 @@ class LTaskM extends MysqlCon {
 
     this.getTasks = this.getTasks.bind(this);
     this.insertTask = this.insertTask.bind(this);
-    this.removeTask = this.removeTask.bind(this);
+    this.logicalDeleteTask = this.logicalDeleteTask.bind(this);
     this.modifyTask = this.modifyTask.bind(this);
+    this.physicalDeleteTask = this.physicalDeleteTask.bind(this);
   }
-  getTasks(){
+  getTasks(variable, order, res) {
     this.connect();
-    let rows = this.getConnection().query(
-      "SELECT * FROM TASK",
-      this.getRows
-    ); 
-    this.getConnection().end();
-    return rows;
+    this.getConnection().query(
+      "SELECT * FROM TASK ORDER BY ? ?",
+      [variable,order],
+      (err, result, fields) => {
+        if (err) throw err;
+        res.send(JSON.stringify(result));
+      }
+    );
   }
-  insertTask(taskName, expiration) {
+  insertTask(taskName, expiration, res) {
     this.connect();
-    let results = this.getConnection().query(
+    this.getConnection().query(
       "CALL INSERT_TASK(?,?)",
       [taskName, expiration],
-      this.errorFunction 
+      (err, results, fields) => {
+        if (err) throw err;
+        res.send(`Rows affected ${results.affectedRows}`);
+      }    
     ); 
-    this.getConnection().end();
-    return results;
   }
   modifyTask(){
     return 1;
-
   }
-  removeTask(id){
+  logicalDeleteTask(id, res){
     this.connect();
-    let results = this.getConnection().query(
-      "CALL DELETE_TASK(?)", 
+    this.getConnection().query(
+      "CALL LOGICAL_DELETE_TASK(?)", 
       [id],
-      this.errorFunction 
+      (err, results, fields) => {
+        if (err) throw err;
+        res.send(`Rows affected ${results.affectedRows}`);
+      }
+    );
+  } 
+  physicalDeleteTask(id, res){
+    this.connect();
+    this.getConnection().query(
+      "CALL PHYSICAL_DELETE_TASK(?)", 
+      [id],
+      (err, results, fields) => {
+        if (err) throw err;
+        res.send(`Rows affected ${results.affectedRows}`);
+      }
+
     ); 
-    this.getConnection().end();
-    return results;
-  }
- 
+  } 
 }
 
 

@@ -28,7 +28,7 @@ init(){
   local PidEntrypoint=""
 
   # rm $PATH_MYSQLOUTPUT
-  /entrypoint.sh mysqld > $PATH_MYSQLOUTPUT 2>&1 &
+  /entrypoint.sh mysqld &
   PidEntrypoint=$(echo "$!")
 
   # ! deprecated
@@ -42,19 +42,22 @@ init(){
   # configMysqlDev "loginfordev" "localhost" "${MYSQL_USER}" "${MYSQL_PASSWORD_FILE}"
   # configMysqlDev "loginroot" "localhost" "root" "${MYSQL_ROOT_PASSWORD_FILE}"
   #endregion
-
+  # TODO : improve algorithm
   while [[ "$codeSuccess" != "28000" && "$hasSlepped" == "false" ]]; do
     codeSuccess=$( mysql 2>&1 | cut -d" " -f 3 | cut -c 2-6 )
     hasSlepped=$( ( ps -a $PidEntrypoint | head -2 | grep $PidEntrypoint | grep Sl )  && echo true || echo false )
-    echo "Waiting..." 
+    # echo "Waiting..." 
     sleep 5
 
   done
-  cat $PATH_MYSQLOUTPUT  
-  echo "Entrypoint finished."
+  # cat $PATH_MYSQLOUTPUT  
+  echo "Start Mysql finished."
   
   # mysql --login-path=loginfordev
+  
   while [[ "true" ]]; do 
+  # while [[ "$hasSlepped" = "false" ]]; do 
+  #   hasSlepped=$( ( ps -a $PidEntrypoint | head -2 | grep $PidEntrypoint | grep Sl )  && echo true || echo false )
     sleep 10  
   done
 }

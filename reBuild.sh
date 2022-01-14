@@ -1,36 +1,54 @@
 #!/bin/bash
+# ---------------Parameters------------------
+# $1 : re-create password
+# $2 : force delete mysql installation folder 
+
+
 DOCKER_BUILDKIT=1
+source ./.env
 
 reCreatePassword(){
-  source ./.env
+  if [[ $pwCreated == 0 ]]; then
+    local folderRoot="./Mysql/Passwords/$MYSQL_PW_ROOT_FILE"
+    local folderUser="./Mysql/Passwords/$MYSQL_PW_FILE"
+    
+    openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderRoot"
+    openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderUser"
+    
+    printf "Recreating password..."
 
-  local folderRoot="./Mysql/Passwords/$MYSQL_PW_ROOT_FILE"
-  local folderUser="./Mysql/Passwords/$MYSQL_PW_FILE"
-  
-  openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderRoot"
-  openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderUser"
-  # printf "activating docker swarn."
-  # docker swarm init
-  
-  # if [ $( docker secret ls | grep -c mysql_root_pw ) < 1 ]; then
-  #   openssl rand -base64 14 | awk '{print tolower($0)}' | docker secret create mysql_root_pw -
-  # fi
-  # if [ $( docker secret ls | grep -c mysql_db_pw ) < 1 ]; then
-  #   openssl rand -base64 14 | awk '{print tolower($0)}' | docker secret create mysql_db_pw -
-  # fi 
+    pwCreated=1
+  fi
 }
 init(){
+  # ---------------Parameters------------------
+  # $1 : re-create password
+  # $2 : force delete mysql installation folder 
+
+  local ReCreatePw=$1
+  local ReCreateInstallation=$1
   local idMysqlContainer=""
-  local forceReBuild=$1
+  local pwCreated=0
+  local folderDeleted=0
 
   # TODO : check if it is necessary to delete installation when creating the password
+  # TODO : improve algorithm logic
 
-  if [[ ! ( -f "./Mysql/Passwords/$MYSQL_PW_ROOT_FILE" && -f "./Mysql/Passwords/$MYSQL_PW_FILE" ) || "$forceReBuild" == "true" ]]; then
+  if [[ ! ( -f "./Mysql/Passwords/$MYSQL_PW_ROOT_FILE" && -f "./Mysql/Passwords/$MYSQL_PW_FILE" ) || "$ReCreatePw" == "true" ]]
+  then
     rm -rf ./Mysql/Installation
-    # rm -rf ./Mysql/ConfigFolder
     reCreatePassword
+    pwCreated=1
+    folderDeleted=1
   fi
-  
+  if [[ $forceReCreatePw == "true" && "$pwCreated" == "0" ]]; then
+    reCreatePassword
+    rm -rf ./Mysql/Installation
+  fi
+  if [[ $forceReCreateInstallation == "true" && "$folderDeleted" == "0" ]]; then
+    rm -rf ./Mysql/Installation
+  fi
+
   docker-compose -f "docker-compose.yml" down
   docker-compose -f "docker-compose.yml" up -d --build 
 
@@ -42,4 +60,12 @@ init(){
   # docker exec -ti mysql_server sh /usr/src/TodoApp/Scripts/configMysql.sh
   # docker exec -i mysql_server sh -c 'sh /usr/src/database/initDB.sh' 
 }
-init false
+if [[ "$1" && "$2" ]]; then
+  init $1 $2
+fi
+
+# recommended for debug mysql
+# sh reBuild.sh false true
+
+# for daily use in development
+# sh reBuild.sh false false

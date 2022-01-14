@@ -12,7 +12,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "npx nodemon src/index.js",
+    "start": "node ./src/index.js",
     "test": "npx nodemon --inspect=0.0.0.0:9229 ./src/index.js"
   },
   "author": "Alexis Martinez",

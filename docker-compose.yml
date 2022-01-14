@@ -6,7 +6,6 @@ services:
       test:
         aliases: 
           - mysqlDB
-        # ipv4_address: "192.168.0.2"
 
     container_name: mysql_server
     secrets:
@@ -20,7 +19,7 @@ services:
     working_dir: /usr/src/TodoApp
     volumes:
       - ./Mysql/Installation:/var/lib/mysql
-      - ./Mysql/Database:/docker-entrypoint-initdb.d
+      - ./Mysql/Database:/docker-entrypoint-initdb.d/
       - ./Mysql/Scripts:/usr/src/TodoApp/Scripts
       # - ./Mysql/Database:/usr/src/TodoApp/DatabaÌse
     ports:
@@ -42,20 +41,19 @@ services:
       test:
         aliases:
           - ReactApp
-        # ipv4_address: "192.168.0.3"
 
     container_name: reactappserver
-    restart: always
+    # restart: always
 
     build:
-      target: debug
+      target: $MODE_REACT_CLIENT
       context: .
       dockerfile: react.Dockerfile
       args:
         node_version: ${NODE_VERSION}
     volumes:
       - ./Client:/var/app/client
-      - node_modules_c:/var/app/client/node_modules
+      - node_modules_cli:/var/app/client/node_modules
       - ./Server:/var/app/server
       
     working_dir: /var/app/client
@@ -73,20 +71,19 @@ services:
       test:
         aliases:
           - api_server
-        # ipv4_address: "192.168.0.4"
     
     container_name: api_server
     secrets:
         - mysql_db_pw
     build:
-      target: debug
+      target: $MODE_NODE_SERVER
       context: .
       dockerfile: api_server.Dockerfile
       args:
         node_version: ${NODE_VERSION}
     volumes:
       - ./Server:/var/app/server
-      - node_modules_s:/var/app/server/node_modules
+      - node_modules_api:/var/app/server/node_modules
       - ./Mysql/Database:/var/app/db
 
     working_dir: /var/app/server
@@ -111,11 +108,8 @@ networks:
   test:
     name: test
     driver: bridge
-    # ipam:
-    #   config:
-    #     - subnet: "192.168.0.3/24"
 
 volumes:
-  node_modules_s:
-  node_modules_c:
+  node_modules_api:
+  node_modules_cli:
   # Server:

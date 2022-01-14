@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import LInput from './LInput';
 import TaskItem from './TaskItem';
@@ -7,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+
 // import LTaskModel from 'server/Model/LTaskModel';
 
 class LTask extends React.Component{
@@ -14,14 +16,46 @@ class LTask extends React.Component{
     super(props);
     this.props=props
     this.state={
+      error: null,  
       items: [],
       children: [],
-      orderBy:'expiration date'
-      // lTaskModel: new LTaskModel() 
+      isLoaded: false,
+      paramsGetTask:{
+        variable: "ID",
+        order: "ASC"
+      }
     }
     this.addItem = this.addItem.bind(this);
     this.onChangeSelect = this.onChangeSelect.bind(this);
+    this.resultF = this.resultF.bind(this);
+    this.errorF = this.errorF.bind(this);
   }
+  resultF(result) {
+    this.setState({
+      isLoaded: true,
+      items: result
+    });
+  }
+  errorF(error){
+    this.setState({
+      isLoaded: true,
+      error
+    });
+    console.log(":"+error);
+  }
+  componentDidMount(){
+    // axios.get("http://api_server:5000/getTasks",{
+    //   variable: "ID",
+    //   order: "ASC",
+    //   withCredentials: true
+    // })
+    //   .then(res => {
+    //     const items = res.data;
+    //     this.setState({ items });
+    //     console.log(items);
+    //   })
+  }
+
   addItem(nombre,expirationDate){
     this.setState({
       items : this.state.items.concat([[nombre,expirationDate]])

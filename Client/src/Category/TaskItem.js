@@ -2,7 +2,6 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import axios from 'axios';
 
 class TItem extends React.Component{
   constructor(props){
@@ -17,7 +16,6 @@ class TItem extends React.Component{
       this.setState({
         awake:false
       });
-      // axios.
     }
     render(){
       if(this.state.awake){

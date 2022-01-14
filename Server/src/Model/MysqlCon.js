@@ -17,37 +17,22 @@ class MysqlCon {
   constructor(props) {
     this.props = props;
     this.connection= connectionVar;
+    
     this.getConnection=this.getConnection.bind(this);
     this.connect=this.connect.bind(this);
-    this.getRows = this.getRows.bind(this);
-    this.errorFunction = this.errorFunction.bind(this);
+    // this.getRows = this.getRows.bind(this);
+    // this.errorFunction = this.errorFunction.bind(this);
   }
   connect() {
     this.getConnection().connect(function(err) {
       if (err) {
         return console.error('error: ' + err.message);
       }
-      console.log('Connected to MySQL server.');
+      // console.log('Connected to MySQL server.');
     });
   }
-  // getPassword() {
-  //   return fs.readFileSync("/run/secrets/mysql_db_pw", 'utf8').replace('\n', "");
-  // }
   getConnection(){
     return this.connection;
-  }
-  getRows(err, rows, fields){
-    if (err) {
-      return rows;
-    }
-    console.log("results:", results);
-    return false
-  }
-  errorFunction(err, results, fields){
-    if (err) {
-      console.log("err:", err);
-    }
-    console.log("results:", results);
   }
 }
 

@@ -1,5 +1,4 @@
 import express from 'express';
-import MysqlCon from './Model/MysqlCon.js';
 import LTaskM from './Model/LTaskM.js';
 
 const app = express();
@@ -13,22 +12,39 @@ let ltaskM = new LTaskM();
 
 
 app.get('/', (req, res) => {
+  res.setHeader('Content-type', 'text/html');
   res.send('Successfully connected');
 });
+
 app.post('/createTask', (req, res) => {
-  // req.body.descr="Ejemplo"
-  // req.body.date="2020-03-07"
-  let err = ltaskM.insertTask(req.body.descr, req.body.date);
-  res.send(err);
+  const descr = req.body.descr // "Ejemplo"
+  const date = req.body.date // "2020-03-07"
+
+  res.setHeader('Content-type', 'text/html');
+  ltaskM.insertTask(descr, date, res);
 });
+
+app.post('/logicalDeleteTask', (req, res) => {
+  const id = req.body.id;
+  
+  res.setHeader('Content-type', 'text/html');
+  ltaskM.logicalDeleteTask(id, res);
+});
+
+app.post('/physicalDeleteTask', (req, res) => {
+  const id = req.body.id;
+
+  res.setHeader('Content-type', 'text/html');
+  ltaskM.physicalDeleteTask(id, res);
+});
+
 app.get('/getTasks', (req, res) => {
-  let rows= ltaskM.getTasks();
-  res.send(`Total rows getted: ${rows}`);
+  const variable = req.body.variable; // ID
+  const order = req.body.order // ASC | DESC
+
+  res.setHeader('Content-type', 'application/json');
+  ltaskM.getTasks(variable, order, res);
 });
-// app.get('/getdata', (req, res) => {
-//   res.send("dfasjkfdhajfañ");
-//   console.log("executed")
-// });
 
 app.listen(port, () => {
   console.log(`Server open at http://localhost:${port}/`)
