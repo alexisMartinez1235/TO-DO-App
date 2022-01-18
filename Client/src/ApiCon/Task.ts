@@ -1,4 +1,9 @@
+import axios from 'axios';
 
+interface User {
+  user : string,
+  password : string
+};
 
 class LTask{
   constructor(){
@@ -14,23 +19,35 @@ class LTask{
     return nombre == "" && (expirationDate);
   }
 
-  // async function getTasks(){
-  //   let headersList = {
-  //     "Accept": "*/*",
-  //     "Content-Type": "application/json" 
-  //   }
+  async getTasks(){
+    let user : User;
+    try {
+      const { data } = await axios.get('/getTasks');
+      user = data.userDetails;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+      } else {
+        console.log(error);
+      }
+    }
+
+    // let headersList = {
+    //   Accept: "*/*",
+    //   ContentType: "application/json" 
+    // }
   
-  //   let reqOptions = {
-  //     url: "http://api_server:5000/getTasks",
-  //     method: "GET",
-  //     headers: headersList,
-  //     data: "{\n    \"variable\":\"ID\",\n    \"order\":\"ASC\"\n}",
-  //   }
+    // let reqOptions = {
+    //   url: "http://api_server:5000/getTasks",
+    //   method: "GET",
+    //   headers: headersList,
+    //   data: "{\n    \"variable\":\"ID\",\n    \"order\":\"ASC\"\n}",
+    // }
   
-  //   axios.request(reqOptions).then(function (response) {
-  //     console.log(response.data);
-  //   })
-  // }
+    // axios.request(reqOptions).then(function (response : any) {
+    //   console.log(response.data);
+    // })
+  }
   
   removeItem(){
      return 1;

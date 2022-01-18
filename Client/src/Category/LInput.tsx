@@ -45,9 +45,9 @@ class LInput extends React.Component <IProps , IState>{
       this.setState({txtTask: e.target.value});
     }
 
-    onClickbtnAdd(e : React.MouseEvent<HTMLElement>) { 
-      // alert('A name was submitted: ' + this.state.txtTask);
-      console.log(typeof e);
+    // onClickbtnAdd(e : React.MouseEvent<HTMLElement>) { 
+    onClickbtnAdd() { 
+        // alert('A name was submitted: ' + this.state.txtTask);
       // TODO see type
       if (this.state.txtTask !== ''){
         this.props.lItem.addItem(
