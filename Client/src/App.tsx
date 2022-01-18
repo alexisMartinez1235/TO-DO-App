@@ -5,15 +5,14 @@ import './App.css';
 // import ButtonBar from './Category/ButtonBar'
 import LTask from './Category/LTask'
 import FormControl from '@mui/material/FormControl';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 class App extends React.Component{
-  constructor(props){
-    super(props);
-    this.props=props;
-    // this.theme = this.theme.bind(this);
-
-  }
+  // constructor(props : any){
+  //   super(props);
+  //   // this.props=props;
+  //   // this.theme = this.theme.bind(this);
+  // }
   // todo : add dark mode to app
   // theme(){
   //   return 
@@ -25,9 +24,10 @@ class App extends React.Component{
   // }
   render(){
     return (
-        <FormControl class="App">
+        <FormControl className="App">
           {/* <ThemeProvider theme={this.theme}> */}
             <LTask/>
+            
           {/* </ThemeProvider> */}
         </FormControl>
     ); 

@@ -1,5 +1,6 @@
 //componentes
 import React from 'react';
+
 // import LTask from './LTask'
 import { 
   Button,
@@ -10,40 +11,55 @@ import {
 import {  
   LocalizationProvider,
   DatePicker,
-  StaticDatePicker
+  // StaticDatePicker
 }from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Box from '@mui/material/Box';
+import LTask from './LTask';
 
-class LInput extends React.Component{
-  
-    constructor(props){
+interface IProps {
+  lItem : LTask
+};
+
+interface IState {
+  txtTask : string,
+  disabledBtnAdd : boolean,
+  selectedDate : Date | null
+};
+
+class LInput extends React.Component <IProps , IState>{  
+    constructor(props: IProps){
       super(props);
-      this.props=props
       this.state = {
         txtTask: '',
         disabledBtnAdd:false,
-        selectedDate: ''
+        selectedDate: null
       };
 
       this.onClickbtnAdd = this.onClickbtnAdd.bind(this);
       this.onTxtTaskChange = this.onTxtTaskChange.bind(this);
       this.onChangeBtnExpiration = this.onChangeBtnExpiration.bind(this);
     } 
-    onTxtTaskChange(e){
-     this.setState({txtTask: e.target.value});
+    onTxtTaskChange(e : React.ChangeEvent<HTMLInputElement>) {
+     // TODO see type 
+      this.setState({txtTask: e.target.value});
     }
 
-    onClickbtnAdd(e) { 
+    onClickbtnAdd(e : React.MouseEvent<HTMLElement>) { 
       // alert('A name was submitted: ' + this.state.txtTask);
-      if(this.state.txtTask !== ''){
-        this.props.addItem(
-            this.state.txtTask,
-            this.state.selectedDate.toLocaleDateString()+'');
+      console.log(typeof e);
+      // TODO see type
+      if (this.state.txtTask !== ''){
+        this.props.lItem.addItem(
+          this.state.txtTask,
+          this.state.selectedDate
+          // this.state.selectedDate.toLocaleDateString()
+        );
+  
         this.setState({txtTask: '',selectedDate: null});
       }
     }
-    onChangeBtnExpiration(date){
+    onChangeBtnExpiration(date : Date | null){
       this.setState({
         selectedDate: date
       });
@@ -59,12 +75,14 @@ class LInput extends React.Component{
           bottom: '0',
           width: '100%'
         }}>
-        {/* <div class="LInput"> */}
-          {/* taskname */}
           <TextField variant="outlined" name="Task name"
                   id="txtTask" value={this.state.txtTask} 
                   onChange={this.onTxtTaskChange} 
-                  maxlength='30' />
+                  inputProps={{
+                    maxLength: 12
+                  }}
+                  label='Description'
+                  />
   
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
@@ -82,7 +100,7 @@ class LInput extends React.Component{
                   +
           </Button>
   
-    </Box>
+        </Box>
         ); 
     }
 }

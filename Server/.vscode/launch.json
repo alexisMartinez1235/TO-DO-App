@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // {
+    //   "name": "Attach to node ",
+    //   "port": 5000,
+    //   "request": "attach",
+    //   "program": "${workspaceFolder}/src/index.js",
+    //   "skipFiles": [
+    //     "<node_internals>/**"
+    //   ],
+    //   "type": "pwa-node",
+      
+    // },
+    {
+      "name": "Attach",
+      "port": 9229,
+      "request": "attach",
+      "program": "${workspaceFolder}/src/index.js",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      
+    } 
+  ]
+}
