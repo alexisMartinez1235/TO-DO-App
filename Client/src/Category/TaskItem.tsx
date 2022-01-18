@@ -3,43 +3,62 @@ import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-class TItem extends React.Component{
-  constructor(props){
+interface IProps {
+  key : number,
+  number : number,
+  txtTask : string,
+  expirationDate : Date | null
+};
+
+interface IState {
+  awake : Boolean,
+};
+
+class TItem extends React.Component<IProps, IState>{
+  constructor(props : IProps){
         super(props);
-        this.props=props
         this.state={
           awake:true
         }
         this.removeItem = this.removeItem.bind(this);
+        this.getDate = this.getDate.bind(this);
     }
     removeItem(){
       this.setState({
         awake:false
       });
     }
+    getDate(){
+      if (this.props.expirationDate !== null){
+        return this.props.expirationDate.toLocaleDateString();
+      }else{
+        return false;
+      }
+    }
     render(){
-      if(this.state.awake){
+      if (this.state.awake){
           return (
             <Box sx={{
                 display:'flex', 
                 justifyContent: 'left', 
               }} 
             >
-            {/* <div class="LItemAgregado"> */}
+            {/* <div className="LItemAgregado"> */}
               <Checkbox
                 checked={!this.state.awake}
                 onChange={this.removeItem} />
 
-              <Typography variant="h4"
-                component="h4" 
-                maxRows='30' >
-                {this.props.tarea}
-                
+              <Typography 
+                variant="h4"
+                component="h4"
+                // maxRows="3"
+              >
+                {this.props.txtTask}
               </Typography>
 
               <Typography 
                   variant="h4" component="h2" ml="auto">
-                {this.props.expirationDate}
+                {this.getDate()}
               </Typography>
             </Box >
           );    

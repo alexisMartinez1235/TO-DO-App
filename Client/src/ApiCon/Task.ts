@@ -1,17 +1,17 @@
-import React from 'react';
 
 
 class LTask{
-  constructor(props){ 
-    super(props);
-    this.props=props
+  constructor(){
+  // constructor(props : any){ 
+    // super(props);
+    // this.props=props
 
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
   }
-  addItem(nombre,expirationDate){
+  addItem(nombre : string,expirationDate : Date | null){
     // fetch()
-    return 1
+    return nombre == "" && (expirationDate);
   }
 
   // async function getTasks(){

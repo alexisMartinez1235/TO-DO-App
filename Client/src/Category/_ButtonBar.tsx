@@ -1,13 +1,15 @@
 import React from 'react';
+interface IProps {};
+interface IState {};
 
-class ButtonBar extends React.Component{
-    constructor(props){
+class ButtonBar extends React.Component <IProps , IState>{
+    constructor(props: IProps){
       super(props);
-      this.props=props
+
     }
     render(){
       return (
-        <div class="ButtonBar">
+        <div className="ButtonBar">
             {/* <input type="button" value="X"/> */}
             {/* <input type="button" value="Modificar" /> */}
         </div>

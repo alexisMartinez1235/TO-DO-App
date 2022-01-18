@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import React from 'react';
 import LInput from './LInput';
 import TaskItem from './TaskItem';
@@ -10,33 +10,49 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 // import LTaskModel from 'server/Model/LTaskModel';
+interface IParms{
+  [key : string ] : string
+}
+interface ITask {
+  txtTask : string,
+  expirationDate : Date | null
+};
+interface IProps {};
 
-class LTask extends React.Component{
-  constructor(props){ 
+interface IState {
+  error : boolean,
+  items : Array<ITask>,
+  // children : [],
+  isLoaded : boolean,
+  paramsGetTask : IParms,
+  orderBy : string
+};
+class LTask extends React.Component<IProps,IState>{
+  constructor(props : IProps){ 
     super(props);
-    this.props=props
     this.state={
-      error: null,  
-      items: [],
-      children: [],
+      error: false,  
+      items: new Array<ITask>(),
+      // children: [],
       isLoaded: false,
       paramsGetTask:{
         variable: "ID",
         order: "ASC"
-      }
+      },
+      orderBy:""
     }
     this.addItem = this.addItem.bind(this);
     this.onChangeSelect = this.onChangeSelect.bind(this);
     this.resultF = this.resultF.bind(this);
     this.errorF = this.errorF.bind(this);
   }
-  resultF(result) {
+  resultF(result: any) {
     this.setState({
       isLoaded: true,
       items: result
     });
   }
-  errorF(error){
+  errorF(error : any){
     this.setState({
       isLoaded: true,
       error
@@ -56,13 +72,19 @@ class LTask extends React.Component{
     //   })
   }
 
-  addItem(nombre,expirationDate){
+  addItem(txtTask : string ,expirationDate: Date | null){
+    const task : ITask = {
+       txtTask : txtTask, 
+       expirationDate : expirationDate
+    };
     this.setState({
-      items : this.state.items.concat([[nombre,expirationDate]])
+      items : this.state.items.concat(task) 
     });
     // this.state.lTaskModel.addTask(this);
   }
-  onChangeSelect(e){
+  // onChangeSelect(e: React.ChangeEvent<HTMLInputElement>){
+  onChangeSelect(e: any ){
+    // TODO see params
     this.setState({
       orderBy: e.target.value
     });
@@ -76,17 +98,17 @@ class LTask extends React.Component{
         
     // }
 
-    if(this.state.orderBy){
+    // if (this.state.orderBy){
 
 
-    }
+    // }
   }
   render(){
     const children = [];
-    for (var i = 0; i < this.state.items.length; i += 1) {
+    for (let i : number = 0; i < this.state.items.length; i += 1) {
       children.push(<TaskItem key={i} number={i} 
-        tarea={this.state.items[i][0]} 
-        expirationDate={this.state.items[i][1]}
+        txtTask={this.state.items[i].txtTask} 
+        expirationDate={this.state.items[i].expirationDate}
 
       />);
     }
@@ -94,7 +116,7 @@ class LTask extends React.Component{
       <Box sx={{
         width: '50vw'
       }}>
-        {/* <div class="mainToDo"> */}
+        {/* <div className="mainToDo"> */}
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Order By</InputLabel>
           <Select
@@ -115,7 +137,7 @@ class LTask extends React.Component{
         >
           {children}
         </Stack>
-        <LInput addItem={this.addItem}/>
+        <LInput lItem={this}/>
       </Box>
     ); 
   }
