@@ -4,14 +4,14 @@ ARG node_version
 # Development
 #
   FROM node:$node_version as dev
-  # ADD ./TodoApp/ /var/app/ 
-  VOLUME ./Server /var/app/server
-  # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
-
   WORKDIR /var/app/server
 
-  ADD ./Server/yarn.lock /var/app/server/
-  ADD ./Server/package.json /var/app/server
+  # ADD ./TodoApp/ /var/app/ 
+  VOLUME ./Server .
+  # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
+
+  # ADD ./Server/yarn.lock .
+  ADD ./Server/package.json .
   
   ### USER CONFIG ###
   RUN apk add --update sudo
@@ -31,12 +31,12 @@ ARG node_version
 #
 
   FROM node:$node_version as prod
-  VOLUME ./Server /var/app/server
-  
   WORKDIR /var/app/server
+  
+  VOLUME ./Server .
 
-  ADD ./Server/yarn.lock /var/app/server/
-  ADD ./Server/package.json /var/app/server
+  ADD ./Server/yarn.lock .
+  ADD ./Server/package.json .
 
   ### USER CONFIG ###
   RUN apk add --update sudo

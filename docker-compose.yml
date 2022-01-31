@@ -12,8 +12,8 @@ services:
     build:
       args:
         mysqlVersion: ${MYSQL_VERSION}
-      context: ./Dockerfiles
-      dockerfile: mysql.Dockerfile
+      context: .
+      dockerfile: Dockerfiles/mysql.Dockerfile
     command: --default-authentication-plugin=mysql_native_password
     container_name: mysql_server
     entrypoint:
@@ -46,8 +46,8 @@ services:
     build:
       args:
         node_version: ${NODE_VERSION}
-      context: ./Dockerfiles
-      dockerfile: api_server.Dockerfile
+      context: .
+      dockerfile: Dockerfiles/api_server.Dockerfile
       target: $MODE_NODE_SERVER
     container_name: api_server
     depends_on:
@@ -80,8 +80,8 @@ services:
     build:
       args:
         node_version: ${NODE_VERSION}
-      context: ./Dockerfiles
-      dockerfile: react.Dockerfile
+      context: .
+      dockerfile: Dockerfiles/react.Dockerfile
       target: $MODE_REACT_CLIENT
     container_name: reactappserver
     # command: npm start

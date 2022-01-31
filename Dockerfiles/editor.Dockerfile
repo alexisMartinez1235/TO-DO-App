@@ -3,8 +3,11 @@ ARG editorVersion
 
 FROM thinca/vim:$editorVersion 
 
-VOLUME /var/app
 WORKDIR /var/app
+
+VOLUME ./Client ./client
+VOLUME ./Server ./server
+VOLUME ./Mysql/Database ./db
 
 ### USER CONFIG ###
 RUN apk add --update sudo
