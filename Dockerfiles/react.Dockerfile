@@ -8,7 +8,7 @@ ARG node_version
   WORKDIR /var/app/client
 
   # ADD ./TodoApp/ /var/app/ 
-  VOLUME ./Client .
+  # VOLUME ./Client .
   # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
 
   ADD ./Client/yarn.lock .
@@ -23,9 +23,10 @@ ARG node_version
   RUN sudo chown node:root -R /var/app/
   RUN sudo chown node:root -R /home/node/
   ###################
-  RUN sudo yarn && sudo yarn build
 
-  CMD yarn run start | sleep 10000
+  RUN sudo yarn
+  CMD sudo yarn build && sudo yarn run start || sleep 1000
+  
 #
 # Production
 #
@@ -33,10 +34,10 @@ ARG node_version
   FROM node:$node_version AS prod
   WORKDIR /var/app/client
 
-  VOLUME ./Client .
+  # VOLUME ./Client .
 
-  ADD ./Client/yarn.lock .
-  ADD ./Client/package.json .
+  # ADD ./Client/yarn.lock .
+  # ADD ./Client/package.json .
 
   ### USER CONFIG ###
   RUN apk add --update sudo
@@ -48,5 +49,5 @@ ARG node_version
   RUN sudo chown node:root -R /home/node/
   ###################
 
-  RUN sudo yarn && sudo yarn install --production && sudo yarn build
-  CMD yarn run start
+  RUN sudo yarn && sudo yarn install --production 
+  CMD sudo yarn build && sudo yarn run start

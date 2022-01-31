@@ -25,7 +25,7 @@
     "ts-node-dev": "^1.1.8"
   },
   "scripts": {
-    "prebuild": "npx eslint ./src/index.ts",
+    "prebuild": "npx eslint ./src/*.ts",
     "build": "npx tsc",
     "prestart": "npm run build",
     "start": "ts-node ./src/index.ts",

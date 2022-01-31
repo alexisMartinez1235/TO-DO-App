@@ -62,6 +62,7 @@ init(){
   fi
   # docker exec -ti mysql_server sh /usr/src/TodoApp/Scripts/configMysql.sh
 }
+
 if [[ "$1" && "$2" ]]; then
   init $1 $2
 fi
