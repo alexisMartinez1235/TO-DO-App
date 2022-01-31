@@ -1,0 +1,56 @@
+ARG node_version
+
+#
+# Development
+#
+  FROM node:$node_version as dev
+  # ADD ./TodoApp/ /var/app/ 
+  VOLUME ./Server /var/app/server
+  # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
+
+  WORKDIR /var/app/server
+
+  ADD ./Server/yarn.lock /var/app/server/
+  ADD ./Server/package.json /var/app/server
+  
+  ### USER CONFIG ###
+  RUN apk add --update sudo
+
+  RUN echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node \
+          && chmod 0440 /etc/sudoers.d/node
+          
+  RUN sudo chown node:root -R /var/app/
+  RUN sudo chown node:root -R /home/node/
+  ###################
+
+  RUN sudo yarn && sudo yarn build
+  CMD yarn run dev | sleep 10000
+
+#
+# Production
+#
+
+  FROM node:$node_version as prod
+  VOLUME ./Server /var/app/server
+  
+  WORKDIR /var/app/server
+
+  ADD ./Server/yarn.lock /var/app/server/
+  ADD ./Server/package.json /var/app/server
+
+  ### USER CONFIG ###
+  RUN apk add --update sudo
+
+  RUN echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node \
+          && chmod 0440 /etc/sudoers.d/node
+          
+  RUN sudo chown node:root -R /var/app/
+  RUN sudo chown node:root -R /home/node/
+  ###################
+
+  # TODO: verify yarn = yarn install
+  RUN sudo yarn && sudo yarn install --production && sudo yarn build
+
+  CMD yarn run start
+
+  

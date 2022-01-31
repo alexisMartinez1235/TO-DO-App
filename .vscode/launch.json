@@ -4,28 +4,22 @@
   // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    // TODO 
+    {
+        "name": "Chrome",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000/",
+        "webRoot": "${workspaceFolder}/Client/",
+    },
     // {
-    //   "type": "node",
-    //   "request": "attach",
-    //   "name": "Docker: Attach to Node",
-    //   "remoteRoot": "/var/app/server/src",
-    //   "port": 9228,
-    //   "address": "localhost",
-    //   "localRoot": "${workspaceFolder}/Server/src/",
-    //   "protocol": "inspector",
-    //   "restart": true
-    // },
-    // {
-    //   "type": "node",
-    //   "request": "attach",
-    //   "name": "Docker: Attach to Node server",
-    //   "remoteRoot": "/var/app/server",
-    //   "port": 9228,
-    //   "address": "localhost",
-    //   "localRoot": "${workspaceFolder}",
-    //   "protocol": "inspector",
-    //   "restart": true
+    //     "name": "Attach to node",
+    //     "port": 9229,
+    //     "request": "attach",
+    //     "program": "${workspaceFolder}/Server/src/index.ts",
+    //     "skipFiles": [
+    //       "<node_internals>/**"
+    //     ],
+    //     "type": "pwa-node",
     // },
   ]
 }

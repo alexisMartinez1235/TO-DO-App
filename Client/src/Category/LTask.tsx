@@ -1,133 +1,121 @@
 // import axios from 'axios';
 import React from 'react';
-import LInput from './LInput';
-import TaskItem from './TaskItem';
+import { SelectChangeEvent } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import LInput from './LInput';
+import TaskItem from './TaskItem';
+import LTaskControl from '../ApiCon/LTaskControl';
 
-// import LTaskModel from 'server/Model/LTaskModel';
-interface IParms{
-  [key : string ] : string
-}
 interface ITask {
   txtTask : string,
   expirationDate : Date | null
-};
-interface IProps {};
+}
+interface IProps {}
 
 interface IState {
   error : boolean,
   items : Array<ITask>,
   // children : [],
   isLoaded : boolean,
-  paramsGetTask : IParms,
+  // paramsGetTask : IParms,
   orderBy : string
-};
-class LTask extends React.Component<IProps,IState>{
-  constructor(props : IProps){ 
+}
+class LTask extends React.PureComponent<IProps, IState> {
+  ltaskControl : LTaskControl;
+
+  constructor(props : IProps) {
     super(props);
-    this.state={
-      error: false,  
+    this.state = {
+      error: false,
       items: new Array<ITask>(),
       // children: [],
       isLoaded: false,
-      paramsGetTask:{
-        variable: "ID",
-        order: "ASC"
-      },
-      orderBy:""
-    }
+      orderBy: '',
+    };
+    this.ltaskControl = new LTaskControl();
     this.addItem = this.addItem.bind(this);
     this.onChangeSelect = this.onChangeSelect.bind(this);
     this.resultF = this.resultF.bind(this);
     this.errorF = this.errorF.bind(this);
   }
+
+  componentDidMount() {
+    this.ltaskControl.getTasks();
+    // console.log(this.state);
+    // this.setState({
+    //     items: this.ltaskControl.getTasks().data,
+    //     isLoaded: this.ltaskControl.getTasks().success,
+    // });
+  }
+
+  onChangeSelect(e: SelectChangeEvent<string>) {
+    // TODO see params
+    this.setState({
+      orderBy: e.target.value,
+    });
+  }
+
+  errorF(error : any) {
+    this.setState({
+      isLoaded: true,
+      error,
+    });
+    console.log(`Error: ${error}`);
+  }
+
   resultF(result: any) {
     this.setState({
       isLoaded: true,
-      items: result
+      items: result,
     });
-  }
-  errorF(error : any){
-    this.setState({
-      isLoaded: true,
-      error
-    });
-    console.log(":"+error);
-  }
-  componentDidMount(){
-    // axios.get("http://api_server:5000/getTasks",{
-    //   variable: "ID",
-    //   order: "ASC",
-    //   withCredentials: true
-    // })
-    //   .then(res => {
-    //     const items = res.data;
-    //     this.setState({ items });
-    //     console.log(items);
-    //   })
   }
 
-  addItem(txtTask : string ,expirationDate: Date | null){
+  addItem(txtTask : string, expirationDate: Date | null) {
     const task : ITask = {
-       txtTask : txtTask, 
-       expirationDate : expirationDate
+      txtTask,
+      expirationDate,
     };
-    this.setState({
-      items : this.state.items.concat(task) 
+    this.setState((prevState: IState) => {
+      prevState.items.concat(task);
     });
-    // this.state.lTaskModel.addTask(this);
+    console.log(this.state.items);
   }
-  // onChangeSelect(e: React.ChangeEvent<HTMLInputElement>){
-  onChangeSelect(e: any ){
-    // TODO see params
-    this.setState({
-      orderBy: e.target.value
-    });
-    // switch(param) {
-    //   case 'name':
-  
-    //   case 'expiration date':
 
-    //   default:
-    //     return ''
-        
-    // }
-
-    // if (this.state.orderBy){
-
-
-    // }
-  }
-  render(){
+  render() {
+    // const state = this.state;
     const children = [];
     for (let i : number = 0; i < this.state.items.length; i += 1) {
-      children.push(<TaskItem key={i} number={i} 
-        txtTask={this.state.items[i].txtTask} 
+      children.push(<TaskItem
+        key={i}
+        number={i}
+        txtTask={this.state.items[i].txtTask}
         expirationDate={this.state.items[i].expirationDate}
-
       />);
     }
     return (
       <Box sx={{
-        width: '50vw'
-      }}>
+        width: '50vw',
+      }}
+      >
         {/* <div className="mainToDo"> */}
+        <div>{ this.state.isLoaded }</div>
+        <div>{ this.state.error }</div>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Order By</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={this.state.orderBy}
+            value={this.ltaskControl.orderBy}
             label="Order By"
             onChange={this.onChangeSelect}
           >
-            <MenuItem value={'expiration date'}>Order by expiration date </MenuItem>
-            <MenuItem value={'name'}>Order by name</MenuItem>
+            <MenuItem value="expiration date">Order by expiration date </MenuItem>
+            <MenuItem value="name">Order by name</MenuItem>
             {/* <MenuItem value={2}>Thirty</MenuItem> */}
           </Select>
         </FormControl>
@@ -137,9 +125,10 @@ class LTask extends React.Component<IProps,IState>{
         >
           {children}
         </Stack>
-        <LInput lItem={this}/>
+        <LInput lItem={this} />
+        {this.state.orderBy}
       </Box>
-    ); 
+    );
   }
 }
 

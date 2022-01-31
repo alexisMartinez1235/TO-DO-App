@@ -48,7 +48,10 @@ init(){
   if [[ $forceReCreateInstallation == "true" && "$folderDeleted" == "0" ]]; then
     rm -rf ./Mysql/Installation
   fi
-
+  mkdir -p ./VsCodeConfigFolders/Mysql
+  mkdir -p ./VsCodeConfigFolders/Client
+  mkdir -p ./VsCodeConfigFolders/Server
+  
   docker-compose -f "docker-compose.yml" down
   docker-compose -f "docker-compose.yml" up -d --build 
 
@@ -58,7 +61,6 @@ init(){
     docker logs --tail 1000 -f "$idMysqlContainer"
   fi
   # docker exec -ti mysql_server sh /usr/src/TodoApp/Scripts/configMysql.sh
-  # docker exec -i mysql_server sh -c 'sh /usr/src/database/initDB.sh' 
 }
 if [[ "$1" && "$2" ]]; then
   init $1 $2

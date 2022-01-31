@@ -16,12 +16,8 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-    "burkeholland.simple-react-snippets-1.2.5",
-    "ms-ceintl.vscode-language-pack-es-1.63.3",
-    "thekalinga.bootstrap4-vscode",
-    "rangav.vscode-thunder-client"
-  ]
 
+    ]
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 

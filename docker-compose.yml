@@ -1,113 +1,120 @@
-version: "3.9"
-
+version: '3.9'
 services:
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - '8080:8080'
+  #   networks:
+  #     - test
   mysql_server:
+    build:
+      args:
+        mysqlVersion: ${MYSQL_VERSION}
+      context: ./Dockerfiles
+      dockerfile: mysql.Dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql_server
+    entrypoint:
+      - bash
+      - /usr/src/TodoApp/Scripts/initDB.sh
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_db_pw
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_pw
+      MYSQL_USER: ${MYSQL_USER}
     networks:
       test:
         aliases: 
           - mysqlDB
-
-    container_name: mysql_server
+    ports:
+      - '3306:3306'
+      # - '3306'
     secrets:
       - mysql_root_pw
       - mysql_db_pw
-    build:
-      context: .
-      dockerfile: mysql.Dockerfile
-      args:
-        mysqlVersion: ${MYSQL_VERSION}
-    working_dir: /usr/src/TodoApp
     volumes:
+      - ./VsCodeConfigFolders/Mysql:/home/node/.vscode-server/
       - ./Mysql/Installation:/var/lib/mysql
       - ./Mysql/Database:/docker-entrypoint-initdb.d/
       - ./Mysql/Scripts:/usr/src/TodoApp/Scripts
       # - ./Mysql/Database:/usr/src/TodoApp/DatabaÌse
-    ports:
-      - "3306:3306"
-      # - "3306"
+    working_dir: /usr/src/TodoApp
      
-    environment:
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_pw
-      MYSQL_PASSWORD_FILE: /run/secrets/mysql_db_pw
-    entrypoint:
-      - bash
-      - /usr/src/TodoApp/Scripts/initDB.sh
-    command: --default-authentication-plugin=mysql_native_password
-
-  reactapp_client:
-    networks:
-      test:
-        aliases:
-          - ReactApp
-
-    container_name: reactappserver
-    # restart: always
-
+  api_server:
     build:
-      target: $MODE_REACT_CLIENT
-      context: .
-      dockerfile: react.Dockerfile
       args:
         node_version: ${NODE_VERSION}
-    volumes:
-      - ./Client:/var/app/client
-      - node_modules_cli:/var/app/client/node_modules
-      - ./Server:/var/app/server
-      
-    working_dir: /var/app/client
+      context: ./Dockerfiles
+      dockerfile: api_server.Dockerfile
+      target: $MODE_NODE_SERVER
+    container_name: api_server
+    depends_on:
+      - mysql_server
     environment:
-      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_USEPOLLING: 'true'
+      MYSQL_DB: ${MYSQL_DATABASE}
+      MYSQL_PW: /run/secrets/mysql_db_pw
+      MYSQL_USER: ${MYSQL_USER}
       REACT_APP_FOR: dEVELOP
-
-    ports:
-      - 3000:3000
-      - 9229:9229
-    # command: npm start
- 
-  api_server:
     networks:
       test:
         aliases:
           - api_server
-    
-    container_name: api_server
+    ports:
+      - 8000:8000
+      - 9228:9228
     secrets:
         - mysql_db_pw
-    build:
-      target: $MODE_NODE_SERVER
-      context: .
-      dockerfile: api_server.Dockerfile
-      args:
-        node_version: ${NODE_VERSION}
+    user: node
     volumes:
+      - ./VsCodeConfigFolders/Server:/home/node/.vscode-server/
       - ./Server:/var/app/server
       - node_modules_api:/var/app/server/node_modules
-      - ./Mysql/Database:/var/app/db
 
     working_dir: /var/app/server
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
-      REACT_APP_FOR: dEVELOP
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_DB: ${MYSQL_DATABASE}
-      MYSQL_PW: /run/secrets/mysql_db_pw
-    ports:
-      - 5000:5000
-      - 9228:9229 
     # command: npm start
+
+  reactapp_client:
+    build:
+      args:
+        node_version: ${NODE_VERSION}
+      context: ./Dockerfiles
+      dockerfile: react.Dockerfile
+      target: $MODE_REACT_CLIENT
+    container_name: reactappserver
+    # command: npm start
+    environment:
+      CHOKIDAR_USEPOLLING: 'true'
+      REACT_APP_FOR: dEVELOP
+    links:
+      - api_server
+    networks:
+      test:
+        aliases:
+          - ReactApp
+    ports:
+      - 3000:3000
+      - 9229:9229
+    user: node
+    volumes:
+      - ./VsCodeConfigFolders/Client:/home/node/.vscode-server/
+      - ./Client:/var/app/client
+      - node_modules_cli:/var/app/client/node_modules
+    # restart: always
+    working_dir: /var/app/client
   
 secrets:
-  mysql_root_pw:
-    file: ./Mysql/Passwords/${MYSQL_PW_ROOT_FILE}
   mysql_db_pw:
     file: ./Mysql/Passwords/${MYSQL_PW_FILE}
+  mysql_root_pw:
+    file: ./Mysql/Passwords/${MYSQL_PW_ROOT_FILE}
 
 networks:
   test:
-    name: test
     driver: bridge
+    name: test
 
 volumes:
   node_modules_api:

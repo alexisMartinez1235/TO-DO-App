@@ -5,3 +5,5 @@ Mysql/Installation/*
 Server/node_modules
 Client/node_modules
 Mysql/Passwords/*
+Editor/
+.docker-compose-dev.yml
