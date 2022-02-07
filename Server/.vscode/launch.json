@@ -1,7 +1,6 @@
 {
   "version": "0.2.0",
-  "configurations": [
-      
+  "configurations": [      
     {
       "name": "Attach to node",
       "port": 9228,
@@ -11,7 +10,18 @@
         "<node_internals>/**"
       ],
       "type": "pwa-node",
+      "restart": true
     },
-    
+    {
+      "name": "Test attachs",
+      "port": 5858,
+      "request": "attach",
+      "program": "${workspaceFolder}/src/index.ts",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "restart": true
+    },    
   ]
 }

@@ -22,14 +22,17 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-webpack": "^0.13.2",
     "eslint-plugin-import": "^2.25.4",
+    "nodemon": "^2.0.15",
     "ts-node-dev": "^1.1.8"
   },
   "scripts": {
     "prebuild": "npx eslint ./src/*.ts",
     "build": "npx tsc",
+    "build:dev": "npx tsc -w",
+
     "prestart": "npm run build",
     "start": "ts-node ./src/index.ts",
-    "dev": "npx ts-node-dev --respawn --transpile-only --respawn --inspect=9228 --project tsconfig.json ./src/index.ts",
+    "dev": "npx nodemon",
     "test": "echo 'you don'n write test command'"
   },
   "author": "Alexis Martinez",

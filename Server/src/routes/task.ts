@@ -4,7 +4,6 @@ import LTaskM from '../Model/LTaskM';
 const api = express.Router();
 const ltaskM : LTaskM = new LTaskM();
 
-
 api.post('/create', (req : Request, res : Response) => {
 //   const descr : string = req.body.descr.toString(); // "Ejemplo"
 //   const date : Date = new Date(req.body.date); // "2020-03-07"

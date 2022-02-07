@@ -2,9 +2,9 @@ import { Response } from 'express';
 import MysqlCon from './MysqlCon';
 
 class LTaskM extends MysqlCon {
-  getTasks(variable : string, order : string, res: Response) {
+  public getTasks(variable : string, order : string, res: Response) {
     this.connect();
-    this.getConnection().query(
+    this.getPool().query(
       'SELECT * FROM TASK ORDER BY ? ?',
       [variable, order],
       // (err: any, result : any, fields : any) => {
@@ -20,7 +20,7 @@ class LTaskM extends MysqlCon {
 
   insertTask(taskName : string, expiration : Date, res: Response) {
     this.connect();
-    this.getConnection().query(
+    this.getPool().query(
       'CALL INSERT_TASK(?,?)',
       [taskName, expiration],
       // (err : any, results : any, fields : any) => {
@@ -41,7 +41,7 @@ class LTaskM extends MysqlCon {
 
   logicalDeleteTask(id : number, res: Response) {
     this.connect();
-    this.getConnection().query(
+    this.getPool().query(
       'CALL LOGICAL_DELETE_TASK(?)',
       [id],
       (err: any, results: any) => {
@@ -57,7 +57,7 @@ class LTaskM extends MysqlCon {
 
   physicalDeleteTask(id: number, res: Response) {
     this.connect();
-    this.getConnection().query(
+    this.getPool().query(
       'CALL PHYSICAL_DELETE_TASK(?)',
       [id],
       (err: any, results: any) => {

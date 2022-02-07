@@ -1,6 +1,8 @@
 {
   "recommendations": [
     "maptz.regionfolder",
-    "cweijan.vscode-mysql-client2"
+    "cweijan.vscode-mysql-client2",
+    "rogalmic.bash-debug",
+    "mads-hartmann.bash-ide-vscode"
   ]
 }

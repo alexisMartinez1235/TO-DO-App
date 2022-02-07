@@ -1,0 +1,15 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "npx ts-node-dev",
+  "args" : [
+    "--inspect=9228",
+    "--rs",
+    "--poll",
+    "--interval=1000",
+    "--debug", 
+    "--respawn",
+    "./src/index.ts"
+  ]
+}

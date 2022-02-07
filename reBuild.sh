@@ -30,6 +30,9 @@ init(){
   local idMysqlContainer=""
   local pwCreated=0
   local folderDeleted=0
+  
+  # docker-compose -f "docker-compose.yml" stop
+  docker-compose -f "docker-compose.yml" stop mysql_server
 
   # TODO : check if it is necessary to delete installation when creating the password
   # TODO : improve algorithm logic
@@ -48,11 +51,10 @@ init(){
   if [[ $forceReCreateInstallation == "true" && "$folderDeleted" == "0" ]]; then
     rm -rf ./Mysql/Installation
   fi
+
   mkdir -p ./VsCodeConfigFolders/Mysql
   mkdir -p ./VsCodeConfigFolders/Client
   mkdir -p ./VsCodeConfigFolders/Server
-  
-  docker-compose -f "docker-compose.yml" down
   docker-compose -f "docker-compose.yml" up -d --build 
 
   idMysqlContainer=$(docker ps | grep todoapp_react_mysql_server | cut -d" " -f1)

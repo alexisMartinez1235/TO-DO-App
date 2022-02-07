@@ -2,14 +2,14 @@ ARG mysqlVersion
 
 FROM mysql:${mysqlVersion}
 
-RUN apt-get update
-RUN echo 'y' | apt-get install procps  
+  RUN apt-get update
+  RUN echo 'y' | apt-get install procps  
 
-RUN mkdir /home/mysql
-RUN mkdir /usr/src/TodoApp
+  RUN mkdir /home/mysql
+  RUN mkdir /usr/src/TodoApp
 
-RUN chown mysql:mysql -R /home/mysql
-RUN chown mysql:mysql -R /usr/src/TodoApp
+  RUN chown mysql:mysql -R /home/mysql
+  RUN chown mysql:mysql -R /usr/src/TodoApp
 
 # USER mysql
 

@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import React from 'react';
 import { SelectChangeEvent } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -7,14 +6,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import LInput from './LInput';
 import TaskItem from './TaskItem';
 import LTaskControl from '../ApiCon/LTaskControl';
+// import LInput from './LInput';
 
 interface ITask {
   txtTask : string,
   expirationDate : Date | null
 }
+
 interface IProps {}
 
 interface IState {
@@ -25,6 +25,7 @@ interface IState {
   // paramsGetTask : IParms,
   orderBy : string
 }
+
 class LTask extends React.PureComponent<IProps, IState> {
   ltaskControl : LTaskControl;
 
@@ -38,19 +39,23 @@ class LTask extends React.PureComponent<IProps, IState> {
       orderBy: '',
     };
     this.ltaskControl = new LTaskControl();
-    this.addItem = this.addItem.bind(this);
-    this.onChangeSelect = this.onChangeSelect.bind(this);
-    this.resultF = this.resultF.bind(this);
-    this.errorF = this.errorF.bind(this);
+    // this.addItem = this.addItem.bind(this);
+    // this.onChangeSelect = this.onChangeSelect.bind(this);
+    // this.resultF = this.resultF.bind(this);
+    // this.errorF = this.errorF.bind(this);
   }
 
   componentDidMount() {
-    this.ltaskControl.getTasks();
+    // this.ltaskControl.getTasks();
     // console.log(this.state);
     // this.setState({
     //     items: this.ltaskControl.getTasks().data,
     //     isLoaded: this.ltaskControl.getTasks().success,
     // });
+    this.addItem = this.addItem.bind(this);
+    this.onChangeSelect = this.onChangeSelect.bind(this);
+    this.resultF = this.resultF.bind(this);
+    this.errorF = this.errorF.bind(this);
   }
 
   onChangeSelect(e: SelectChangeEvent<string>) {
@@ -83,7 +88,6 @@ class LTask extends React.PureComponent<IProps, IState> {
     this.setState((prevState: IState) => {
       prevState.items.concat(task);
     });
-    console.log(this.state.items);
   }
 
   render() {
@@ -125,11 +129,11 @@ class LTask extends React.PureComponent<IProps, IState> {
         >
           {children}
         </Stack>
-        <LInput lItem={this} />
         {this.state.orderBy}
       </Box>
     );
   }
 }
 
-export default LTask;
+export { LTask };
+export type PropLT = IProps;

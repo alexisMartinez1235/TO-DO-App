@@ -1,8 +1,8 @@
 // import axios, {AxiosInstance} from 'axios';
 // import { URLSearchParams } from "url"
 
-interface IParms<tOut>{
-  [key : string] : tOut
+interface IParms<TOut>{
+  [key : string] : TOut
 }
 
 // interface ITask {
@@ -16,6 +16,7 @@ interface IParms<tOut>{
 
 class LTaskControl {
   public paramsGetTask : IParms<string>;
+
   public orderBy: string;
 
   constructor() {
@@ -42,8 +43,6 @@ class LTaskControl {
     // let response : ILtask | void = {};
     let response : any;
 
-    console.log('fdsafa');
-
     await fetch(url.toString(), {
       method: 'get',
       mode: 'cors',
@@ -52,12 +51,12 @@ class LTaskControl {
       },
     })
       .then((res) => {
-        console.log(res);
+        console.log(res.body);
         res.json();
       })
       .then((data) => {
-        response = data;
         console.log(data);
+        response = data;
       })
       .catch((rejected) => {
         console.log(rejected);

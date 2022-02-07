@@ -1,11 +1,10 @@
 import React from 'react';
+
 import './App.css';
 // import logo from './logo.svg';
 // import LInput from './Category/LInput'
-// import ButtonBar from './Category/ButtonBar'
-import FormControl from '@mui/material/FormControl';
-import LTask from './Category/LTask';
-
+// import Bu  ttonBar from './Category/ButtonBar'
+import Form from './Category/Form';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 class App extends React.PureComponent {
@@ -18,13 +17,10 @@ class App extends React.PureComponent {
   //       }
   //     });
   // }
+
   render() {
     return (
-      <FormControl className="App">
-        {/* <ThemeProvider theme={this.theme}> */}
-        <LTask />
-        {/* </ThemeProvider> */}
-      </FormControl>
+      <Form />
     );
   }
 }

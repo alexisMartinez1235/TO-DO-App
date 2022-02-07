@@ -39,7 +39,8 @@ services:
       - ./Mysql/Installation:/var/lib/mysql
       - ./Mysql/Database:/docker-entrypoint-initdb.d/
       - ./Mysql/Scripts:/usr/src/TodoApp/Scripts
-      # - ./Mysql/Database:/usr/src/TodoApp/DatabaÌse
+      # - ./Mysql/Database:/usr/src/TodoApp/Database
+
     working_dir: /usr/src/TodoApp
      
   api_server:
@@ -57,7 +58,6 @@ services:
       MYSQL_DB: ${MYSQL_DATABASE}
       MYSQL_PW: /run/secrets/mysql_db_pw
       MYSQL_USER: ${MYSQL_USER}
-      REACT_APP_FOR: dEVELOP
     networks:
       test:
         aliases:
@@ -101,8 +101,10 @@ services:
     volumes:
       - ./VsCodeConfigFolders/Client:/home/node/.vscode-server/
       - ./Client:/var/app/client
+      # - ./Server:/var/app/server
       - node_modules_cli:/var/app/client/node_modules
     # restart: always
+    
     working_dir: /var/app/client
   
 secrets:

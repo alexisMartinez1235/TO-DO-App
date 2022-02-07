@@ -7,15 +7,13 @@ const app = express();
 const port: number = 8000;
 
 // app.use(express.json());
-
 // app.use(cors({
 //   origin: 'http://localhost:3000',
 // }));
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// mountRoutes(app);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -27,11 +25,8 @@ app.use('/task', taskRoute);
 app.get('/', (req : Request, res: Response) => {
   // res.setHeader("Access-Control-Allow-Origin", "http://reactapp:3000");
   res.send({
-    data: 'Successfully connected _',
+    data: 'Successfully connected _fsdfs',
   });
 });
 
 app.listen(port);
-// app.listen(port, () => {
-//   console.log(`Server open at http://localhost:${port}/`);
-// });

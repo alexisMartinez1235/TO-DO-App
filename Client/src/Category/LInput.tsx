@@ -1,5 +1,4 @@
 import React from 'react';
-// import LTask from './LTask';
 import {
   Button,
   TextField,
@@ -13,16 +12,19 @@ import {
 } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Box from '@mui/material/Box';
-import LTask from './LTask';
+import {
+  LTask,
+} from './LTask';
+// import { ThirteenMpSharp } from '@mui/icons-material';
 
 interface IProps {
-    lItem : LTask
+  lItem : LTask
 }
 
 interface IState {
-    txtTask : string,
-    disabledBtnAdd : boolean,
-    selectedDate : Date | null
+  txtTask : string,
+  disabledBtnAdd : boolean,
+  selectedDate : Date | null
 }
 
 class LInput extends React.PureComponent <IProps, IState> {
@@ -71,6 +73,7 @@ class LInput extends React.PureComponent <IProps, IState> {
         width: '100%',
       }}
       >
+        <LTask />
         <TextField
           variant="outlined"
           name="Task name"
@@ -101,9 +104,11 @@ class LInput extends React.PureComponent <IProps, IState> {
         >
           +
         </Button>
+        {/* {this.props.lItem.state.orderBy} */}
       </Box>
     );
   }
 }
 
-export default LInput;
+export { LInput };
+export type PropLI = IProps;
