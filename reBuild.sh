@@ -55,7 +55,8 @@ init(){
   mkdir -p ./VsCodeConfigFolders/Mysql
   mkdir -p ./VsCodeConfigFolders/Client
   mkdir -p ./VsCodeConfigFolders/Server
-  docker-compose -f "docker-compose.yml" up -d --build 
+
+  docker-compose -f "docker-compose.yml" -f "docker-compose-dev.yml" up -d --build 
 
   idMysqlContainer=$(docker ps | grep todoapp_react_mysql_server | cut -d" " -f1)
 

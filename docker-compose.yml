@@ -58,13 +58,15 @@ services:
       MYSQL_DB: ${MYSQL_DATABASE}
       MYSQL_PW: /run/secrets/mysql_db_pw
       MYSQL_USER: ${MYSQL_USER}
+    mem_limit: 2500m
     networks:
       test:
         aliases:
           - api_server
     ports:
-      - 8000:8000
-      - 9228:9228
+      - 8000:8000 # server port
+      - 9228:9228 # vscode port
+      - 9100:9100 # prometheus client port
     secrets:
         - mysql_db_pw
     user: node
@@ -85,6 +87,7 @@ services:
       target: $MODE_REACT_CLIENT
     container_name: reactappserver
     # command: npm start
+    mem_limit: 2000m
     environment:
       CHOKIDAR_USEPOLLING: 'true'
       REACT_APP_FOR: dEVELOP
@@ -95,8 +98,8 @@ services:
         aliases:
           - ReactApp
     ports:
-      - 3000:3000
-      - 9229:9229
+      - 3000:3000 # client port
+      - 9229:9229 # vscode port
     user: node
     volumes:
       - ./VsCodeConfigFolders/Client:/home/node/.vscode-server/

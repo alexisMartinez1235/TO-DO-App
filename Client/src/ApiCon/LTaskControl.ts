@@ -1,47 +1,52 @@
 // import axios, {AxiosInstance} from 'axios';
 // import { URLSearchParams } from "url"
 
-interface IParms<TOut>{
-  [key : string] : TOut
+export interface IParms<TOut>{
+  [key: string]: TOut
 }
 
-// interface ITask {
-//   txtTask : string,
-//   expirationDate : Date | null
-// }
+export interface ITask {
+  txtTask: string,
+  expirationDate: Date | null
+}
 
 // interface ILtask {
-//   [i : number ] : ITask
+//   [i: number ]: ITask
 // }
 
 class LTaskControl {
-  public paramsGetTask : IParms<string>;
+  // public paramsGetTask: IParms<string>;
+  public items: Array<ITask>;
 
-  public orderBy: string;
-
+  // public orderBy: string = '';
+  // private static ltaskSingleton: LTaskControl;
+  // this.paramsGetTask = {
+  //   variable: 'DESCRIPTION',
+  //   order: 'DESC',
+  // };
+  // this.orderBy = '';
   constructor() {
-    this.paramsGetTask = {
-      variable: 'DESCRIPTION',
-      order: 'DESC',
-    };
-
-    this.orderBy = '';
-    this.addItem = this.addItem.bind(this);
-    this.removeItem = this.removeItem.bind(this);
+    this.items = new Array<ITask>();
   }
 
-  addItem(nombre : string, expirationDate : Date | null) {
+  addTask(task: ITask) {
     // fetch()
-    return [this.orderBy, nombre, expirationDate];
+    // const task: ITask = {
+    //   txtTask,
+    //   expirationDate,
+    // };
+    this.items.push(task);
+    console.log(task);
+    // return [this.orderBy, nombre, expirationDate];
   }
 
-  async getTasks() : Promise<any> {
-    // async getTasks() : Promise<ILtask | void> {
-    // const url : URL = new URL('http://localhost:8000/task/get');
-    const url : URL = new URL('http://localhost:8000/task/get');
-    url.search = new URLSearchParams(this.paramsGetTask).toString();
-    // let response : ILtask | void = {};
-    let response : any;
+  async getTasks(paramsGetTask: IParms<string>): Promise<any> {
+    // async getTasks(): Promise<ILtask | void> {
+    // const url: URL = new URL('http://localhost:8000/task/get');
+    const url: URL = new URL('http://localhost:8000/task/get');
+    url.search = new URLSearchParams(paramsGetTask).toString();
+    // let response: ILtask | void = {};
+    let response: any;
 
     await fetch(url.toString(), {
       method: 'get',
@@ -61,12 +66,16 @@ class LTaskControl {
       .catch((rejected) => {
         console.log(rejected);
       });
-    return response;
+    if (response) {
+      // this.items= response
+      console.log(response);
+    }
+    return this.items;
   }
 
-  removeItem() {
-    return this.orderBy;
-  }
+  // removeTask(pos: number) {
+  //   return 1;
+  // }
 }
 
-export default LTaskControl;
+export { LTaskControl };

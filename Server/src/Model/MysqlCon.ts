@@ -27,17 +27,20 @@ class MysqlCon {
     this.connectionPool = pool;
   }
 
-  public connect() {
-    return 1;
-    // this.getPool().connect((err : any) => {
-    //   if (err) {
-    //     console.error(`error: ${err.message}`);
-    //   }
-    //   // console.log('Connected to MySQL server.');
-    // });
+  public tryConnect() : boolean {
+    let response=true;
+    // return 1;
+    this.getPool().connect((err : mysql.QueryError | null) => {
+      if (err) {
+        console.error(`error: ${err.message}`);
+        response=false;
+      }
+      console.log('Connected to MySQL server.');
+    });
+    return response
   }
 
-  public getPool() : Pool {
+  protected getPool() : Pool {
     return this.connectionPool;
   }
   // public getPromisePool() : mysql.Pool {

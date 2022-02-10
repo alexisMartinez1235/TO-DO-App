@@ -4,18 +4,18 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 interface IProps {
-  key : number,
-  number : number,
-  txtTask : string,
-  expirationDate : Date | null
+  key: number,
+  number: number,
+  txtTask: string,
+  expirationDate: Date | null
 }
 
 interface IState {
-  awake : Boolean,
+  awake: Boolean,
 }
 
-class TItem extends React.PureComponent<IProps, IState> {
-  constructor(props : IProps) {
+class TItem extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       awake: true,

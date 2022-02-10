@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  analitics:
+    image: bitnami/prometheus:$PROMETHEUS_VERSION
+    ports:
+      - '9090:9090'
+    networks:
+      test:
+        aliases:
+          - analitics

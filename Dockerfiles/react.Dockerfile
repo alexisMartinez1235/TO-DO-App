@@ -10,10 +10,15 @@ FROM node:$node_version AS dev
   # ADD ./TodoApp/ /var/app/ 
   # VOLUME ./Client .
   # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
-  RUN sudo apk add htop
+  
+  # See process
+  RUN apk add htop
+
+  # Needed by VsCode
+  RUN apk add libstdc++
+  
   ### USER CONFIG ###
   RUN apk add --update sudo
-
   RUN echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node \
           && chmod 0440 /etc/sudoers.d/node
           

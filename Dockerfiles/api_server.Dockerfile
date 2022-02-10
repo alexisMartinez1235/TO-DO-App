@@ -9,6 +9,11 @@ FROM node:$node_version as dev
   # ADD ./TodoApp/ /var/app/ 
   # VOLUME ./Server .
   # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
+  # See process
+  RUN apk add htop
+
+  # Needed by VsCode
+  RUN apk add libstdc++
 
   ### USER CONFIG ###
   RUN apk add --update sudo

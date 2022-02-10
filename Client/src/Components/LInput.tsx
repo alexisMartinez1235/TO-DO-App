@@ -12,19 +12,29 @@ import {
 } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Box from '@mui/material/Box';
-import {
-  LTask,
-} from './LTask';
+// import {
+//   LTask,
+// } from './LTask';
 // import { ThirteenMpSharp } from '@mui/icons-material';
 
+// interface ClassBaseControl {
+//   addItem(txtTask: string, selectedDate: Date | null): any,
+// }
+import {
+  ITask,
+} from '../ApiCon/LTaskControl';
+
 interface IProps {
-  lItem : LTask
+  // lItem: LTask,
+  // control?: LTaskControl,
+  addTask(task: ITask): any,
+  render(): any,
 }
 
 interface IState {
-  txtTask : string,
-  disabledBtnAdd : boolean,
-  selectedDate : Date | null
+  txtTask: string,
+  disabledBtnAdd: boolean,
+  selectedDate: Date | null
 }
 
 class LInput extends React.PureComponent <IProps, IState> {
@@ -35,31 +45,33 @@ class LInput extends React.PureComponent <IProps, IState> {
       disabledBtnAdd: false,
       selectedDate: null,
     };
-    this.onClickbtnAdd = this.onClickbtnAdd.bind(this);
+
     this.onTxtTaskChange = this.onTxtTaskChange.bind(this);
+    this.onClickbtnAdd = this.onClickbtnAdd.bind(this);
     this.onChangeBtnExpiration = this.onChangeBtnExpiration.bind(this);
   }
 
-  onTxtTaskChange(e : React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ txtTask: e.target.value });
-  }
-
-  // onClickbtnAdd(e : React.MouseEvent<HTMLElement>) {
-  onClickbtnAdd() {
-    if (this.state.txtTask !== '') {
-      this.props.lItem.addItem(
-        this.state.txtTask,
-        this.state.selectedDate,
-        // this.state.selectedDate.toLocaleDateString()
-      );
-      this.setState({ txtTask: '', selectedDate: null });
-    }
-  }
-
-  onChangeBtnExpiration(date : Date | null) {
+  onChangeBtnExpiration(date: Date | null) {
     this.setState({
       selectedDate: date,
     });
+  }
+
+  onTxtTaskChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({ txtTask: e.target.value });
+  }
+
+  // onClickbtnAdd(e: React.MouseEvent<HTMLElement>) {
+  onClickbtnAdd() {
+    const task: ITask = {
+      txtTask: this.state.txtTask,
+      expirationDate: this.state.selectedDate,
+    };
+    if (this.state.txtTask !== '') {
+      this.props.addTask(task);
+    }
+    // this.props.render();
+    this.setState({ txtTask: '', selectedDate: null });
   }
 
   render() {
@@ -73,7 +85,6 @@ class LInput extends React.PureComponent <IProps, IState> {
         width: '100%',
       }}
       >
-        <LTask />
         <TextField
           variant="outlined"
           name="Task name"
@@ -104,7 +115,6 @@ class LInput extends React.PureComponent <IProps, IState> {
         >
           +
         </Button>
-        {/* {this.props.lItem.state.orderBy} */}
       </Box>
     );
   }

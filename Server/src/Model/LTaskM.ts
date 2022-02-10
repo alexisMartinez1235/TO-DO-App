@@ -3,7 +3,7 @@ import MysqlCon from './MysqlCon';
 
 class LTaskM extends MysqlCon {
   public getTasks(variable : string, order : string, res: Response) {
-    this.connect();
+    this.tryConnect();
     this.getPool().query(
       'SELECT * FROM TASK ORDER BY ? ?',
       [variable, order],
@@ -19,7 +19,7 @@ class LTaskM extends MysqlCon {
   }
 
   insertTask(taskName : string, expiration : Date, res: Response) {
-    this.connect();
+    this.tryConnect();
     this.getPool().query(
       'CALL INSERT_TASK(?,?)',
       [taskName, expiration],
@@ -40,7 +40,7 @@ class LTaskM extends MysqlCon {
   }
 
   logicalDeleteTask(id : number, res: Response) {
-    this.connect();
+    this.tryConnect();
     this.getPool().query(
       'CALL LOGICAL_DELETE_TASK(?)',
       [id],
@@ -56,7 +56,7 @@ class LTaskM extends MysqlCon {
   }
 
   physicalDeleteTask(id: number, res: Response) {
-    this.connect();
+    this.tryConnect();
     this.getPool().query(
       'CALL PHYSICAL_DELETE_TASK(?)',
       [id],
