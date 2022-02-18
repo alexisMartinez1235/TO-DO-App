@@ -38,7 +38,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');//   // res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
-app.use('/task', taskRoute);
+app.use('/tasks', taskRoute);
 
 app.get('/', (req : Request, res: Response) => {
   // res.setHeader("Access-Control-Allow-Origin", "http://reactapp:3000");

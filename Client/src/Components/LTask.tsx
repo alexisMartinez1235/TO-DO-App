@@ -6,45 +6,44 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import TaskItem from './TaskItem';
 import {
-  // ITask,
-  IParms,
-  LTaskControl,
-} from '../ApiCon/LTaskControl';
+  Task,
+  ITask,
+} from './Task';
 
 interface IProps {
-  control: LTaskControl;
-  getTasks(param: IParms<string>): any
-  // items: Array<ITask>
+  readonly tasks: Array<ITask>;
+  RemoveTask(id: string): boolean;
+  GetTasks(paramsGetTask: any): Promise<any>;
 }
 
 interface IState {
-  // error: boolean,
-  // items: Array<ITask>,
-  // children: [],
-  // isLoaded: boolean,
-  // paramsGetTask: IParms,
-  orderBy: string
+  // error: boolean;
+  // tasks: Array<ITask>;
+  // children: [];
+  // isLoaded: boolean;
+  // paramsGetTask: IParms;
+  orderBy: string;
 }
 
-class LTask extends React.PureComponent<IProps, IState> {
+class LTask extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      // items: this.props.items,
       // children: [],
-      // isLoaded: false,
       orderBy: '',
     };
     this.onChangeSelect = this.onChangeSelect.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getTasks({
-      variable: 'DESCRIPTION',
-      order: 'DESC',
+  componentDidUpdate() {
+    // console.log(this.props.tasks);
+    const tasks = 1;
+    this.props.GetTasks({
+      variable: 'id',
+      order: 'ASC',
     });
+    console.log(tasks);
     // this.ltaskControl.getTasks();
     // console.log(this.state);
     // this.setState({
@@ -63,17 +62,17 @@ class LTask extends React.PureComponent<IProps, IState> {
 
   render() {
     // const state = this.state;
-    const children = [];
-    const { items } = this.props.control;
+    // let children = [];
+    const { tasks } = this.props;
+    // const { tasks } = this.state;
 
-    for (let i: number = 0; i < items.length; i += 1) {
-      children.push(<TaskItem
-        key={i}
-        number={i}
-        txtTask={items[i].txtTask}
-        expirationDate={items[i].expirationDate}
-      />);
-    }
+    const children = tasks.map((task: ITask): any => (
+      <Task
+        key={task.id}
+        task={task}
+        RemoveTask={this.props.RemoveTask}
+      />
+    ));
     return (
       <Box sx={{
         width: '50vw',
@@ -97,6 +96,7 @@ class LTask extends React.PureComponent<IProps, IState> {
           </Select>
         </FormControl>
         <Stack
+          data-testid="ltask"
           direction="column"
           spacing={2}
         >
@@ -108,5 +108,4 @@ class LTask extends React.PureComponent<IProps, IState> {
   }
 }
 
-export { LTask };
-export type PropLT = IProps;
+export default LTask;

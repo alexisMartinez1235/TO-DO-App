@@ -4,7 +4,7 @@ import './App.css';
 // import logo from './logo.svg';
 // import LInput from './Components/LInput'
 // import Bu  ttonBar from './Components/ButtonBar'
-import Form from './Components/Form';
+import DefaultFormTask from './Components/DefaultFormTask';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 class App extends React.PureComponent {
@@ -20,7 +20,7 @@ class App extends React.PureComponent {
 
   render() {
     return (
-      <Form />
+      <DefaultFormTask />
     );
   }
 }

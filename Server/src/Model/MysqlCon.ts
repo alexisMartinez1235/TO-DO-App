@@ -1,6 +1,7 @@
 import mysql, {
    PoolOptions,
-   Pool
+   Pool,
+   PoolConnection
 } from 'mysql2';
 import fs from 'fs';
 
@@ -30,7 +31,7 @@ class MysqlCon {
   public tryConnect() : boolean {
     let response=true;
     // return 1;
-    this.getPool().connect((err : mysql.QueryError | null) => {
+    this.getPool().getConnection((err : NodeJS.ErrnoException, con : PoolConnection): void => {
       if (err) {
         console.error(`error: ${err.message}`);
         response=false;

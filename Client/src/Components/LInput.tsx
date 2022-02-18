@@ -2,46 +2,34 @@ import React from 'react';
 import {
   Button,
   TextField,
+  TextFieldProps,
+  Box,
 } from '@mui/material';
-
-// hora
 import {
   LocalizationProvider,
   DatePicker,
-  // StaticDatePicker
+  // AdapterDateFns, // StaticDatePicker∟
 } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import Box from '@mui/material/Box';
-// import {
-//   LTask,
-// } from './LTask';
-// import { ThirteenMpSharp } from '@mui/icons-material';
-
-// interface ClassBaseControl {
-//   addItem(txtTask: string, selectedDate: Date | null): any,
-// }
-import {
-  ITask,
-} from '../ApiCon/LTaskControl';
+import shortid from 'shortid';
+import { ITask } from './Task';
 
 interface IProps {
   // lItem: LTask,
-  // control?: LTaskControl,
-  addTask(task: ITask): any,
-  render(): any,
+  AddTask(task: ITask): any;
 }
 
 interface IState {
-  txtTask: string,
-  disabledBtnAdd: boolean,
-  selectedDate: Date | null
+  description: string;
+  disabledBtnAdd: boolean;
+  selectedDate: Date | null;
 }
 
-class LInput extends React.PureComponent <IProps, IState> {
+class LInput extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      txtTask: '',
+      description: '',
       disabledBtnAdd: false,
       selectedDate: null,
     };
@@ -58,20 +46,20 @@ class LInput extends React.PureComponent <IProps, IState> {
   }
 
   onTxtTaskChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ txtTask: e.target.value });
+    this.setState({ description: e.target.value });
   }
 
   // onClickbtnAdd(e: React.MouseEvent<HTMLElement>) {
   onClickbtnAdd() {
     const task: ITask = {
-      txtTask: this.state.txtTask,
+      id: shortid.generate(),
+      description: this.state.description,
       expirationDate: this.state.selectedDate,
     };
-    if (this.state.txtTask !== '') {
-      this.props.addTask(task);
+    if (this.state.description !== '') {
+      this.props.AddTask(task);
     }
-    // this.props.render();
-    this.setState({ txtTask: '', selectedDate: null });
+    this.setState({ description: '', selectedDate: null });
   }
 
   render() {
@@ -89,26 +77,30 @@ class LInput extends React.PureComponent <IProps, IState> {
           variant="outlined"
           name="Task name"
           id="txtTask"
-          value={this.state.txtTask}
+          value={this.state.description}
           onChange={this.onTxtTaskChange}
           inputProps={{
             maxLength: 12,
+            'data-testid': 'Description',
           }}
           label="Description"
         />
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+        >
           <DatePicker
             label="Expiration"
             value={this.state.selectedDate}
             onChange={this.onChangeBtnExpiration}
             mask="__/__/____"
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params: TextFieldProps) => <TextField {... params} data-testid="Expiration" />}
           />
         </LocalizationProvider>
         <Button
           variant="contained"
           id="btnAdd"
+          data-testid="btnAddTest"
           color="success"
           onClick={this.onClickbtnAdd}
           disabled={this.state.disabledBtnAdd}
@@ -120,5 +112,4 @@ class LInput extends React.PureComponent <IProps, IState> {
   }
 }
 
-export { LInput };
-export type PropLI = IProps;
+export default LInput;
