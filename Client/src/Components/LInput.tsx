@@ -55,6 +55,7 @@ class LInput extends React.Component <IProps, IState> {
       id: shortid.generate(),
       description: this.state.description,
       expirationDate: this.state.selectedDate,
+      activated: true,
     };
     if (this.state.description !== '') {
       this.props.AddTask(task);

@@ -8,14 +8,14 @@ services:
   #     - '8080:8080'
   #   networks:
   #     - test
-  mysql_server:
+  mysql:
     build:
       args:
         mysqlVersion: ${MYSQL_VERSION}
       context: .
       dockerfile: Dockerfiles/mysql.Dockerfile
     command: --default-authentication-plugin=mysql_native_password
-    container_name: mysql_server
+    container_name: mysql
     entrypoint:
       - bash
       - /usr/src/TodoApp/Scripts/initDB.sh
@@ -43,16 +43,16 @@ services:
 
     working_dir: /usr/src/TodoApp
      
-  api_server:
+  api:
     build:
       args:
         node_version: ${NODE_VERSION}
       context: .
-      dockerfile: Dockerfiles/api_server.Dockerfile
+      dockerfile: Dockerfiles/api.Dockerfile
       target: $MODE_NODE_SERVER
-    container_name: api_server
+    container_name: api
     depends_on:
-      - mysql_server
+      - mysql
     environment:
       CHOKIDAR_USEPOLLING: 'true'
       MYSQL_DB: ${MYSQL_DATABASE}
@@ -62,7 +62,7 @@ services:
     networks:
       test:
         aliases:
-          - api_server
+          - api
     ports:
       - 8000:8000 # server port
       - 9228:9228 # vscode port
@@ -78,21 +78,21 @@ services:
     working_dir: /var/app/server
     # command: npm start
 
-  reactapp_client:
+  react:
     build:
       args:
         node_version: ${NODE_VERSION}
       context: .
       dockerfile: Dockerfiles/react.Dockerfile
       target: $MODE_REACT_CLIENT
-    container_name: reactappserver
+    container_name: react
     # command: npm start
     # mem_limit: 2400m
     environment:
       CHOKIDAR_USEPOLLING: 'true'
       REACT_APP_FOR: dEVELOP
     links:
-      - api_server
+      - api
     networks:
       test:
         aliases:

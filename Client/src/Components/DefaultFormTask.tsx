@@ -33,12 +33,9 @@ class DefaultFormTask extends React.Component<IProps, IState> {
   }
 
   async getTasks(paramsGetTask: IParms<string>): Promise< Array<ITask> > {
-    // async getTasks(): Promise<ILtask | void> {
-    // const url: URL = new URL('http://localhost:8000/task');
     const url: URL = new URL(`${this.url}/tasks/`);
     url.search = new URLSearchParams(paramsGetTask).toString();
-    // let response: ILtask | void = {};
-    const response: any = await fetch(url.toString(), {
+    const response = await fetch(url.toString(), {
       method: 'get',
       mode: 'cors',
       headers: {
@@ -47,13 +44,13 @@ class DefaultFormTask extends React.Component<IProps, IState> {
     });
     const body = await response.json();
     const { data } = body;
+
+    console.log(data);
+    console.log(this.state.tasks);
+
     this.setState({
       tasks: data,
     });
-    // const newTasks = body.map((taks: any, i:number) => {
-    // });
-    // console.log(newTasks);
-    // return response;
     return this.state.tasks;
   }
 
@@ -85,6 +82,20 @@ class DefaultFormTask extends React.Component<IProps, IState> {
     // this.state.selectedDate.toLocaleDateString()
   }
 
+  // SetActivated(task: ITask, value: boolean): boolean {
+  //   this.setState((prevS) => {
+  //     prevS.tasks.map((wantedTask: ITask): ITask => {
+  //       if (wantedTask === task) {
+  //         const taskModified: ITask = wantedTask;
+  //         taskModified.activated = value;
+  //         return taskModified;
+  //       }
+  //       return task;
+  //     });
+  //   });
+  //   return true;
+  // }
+
   render() {
     return (
       <div
@@ -96,6 +107,7 @@ class DefaultFormTask extends React.Component<IProps, IState> {
           tasks={this.state.tasks}
           GetTasks={this.getTasks}
           RemoveTask={this.removeTask}
+          // SetActivated={this.SetActivated}
         />
         <LInput
           AddTask={this.addTask}

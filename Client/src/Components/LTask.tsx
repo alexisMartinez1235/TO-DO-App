@@ -12,9 +12,10 @@ import {
 } from './Task';
 
 interface IProps {
-  readonly tasks: Array<ITask>;
+  tasks: Array<ITask>;
   RemoveTask(id: string): boolean;
   GetTasks(paramsGetTask: any): Promise<any>;
+  // SetActivated(task: ITask, value: boolean): boolean
 }
 
 interface IState {
@@ -43,6 +44,7 @@ class LTask extends React.Component<IProps, IState> {
       variable: 'id',
       order: 'ASC',
     });
+    // TODO : update
     console.log(tasks);
     // this.ltaskControl.getTasks();
     // console.log(this.state);
@@ -71,6 +73,7 @@ class LTask extends React.Component<IProps, IState> {
         key={task.id}
         task={task}
         RemoveTask={this.props.RemoveTask}
+        // SetActivated={this.props.SetActivated}
       />
     ));
     return (

@@ -7,71 +7,59 @@
 DOCKER_BUILDKIT=1
 source ./.env
 
-reCreatePassword(){
-  if [[ $pwCreated == 0 ]]; then
-    local folderRoot="./Mysql/Passwords/$MYSQL_PW_ROOT_FILE"
-    local folderUser="./Mysql/Passwords/$MYSQL_PW_FILE"
-    
-    openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderRoot"
-    openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderUser"
-    
-    printf "Recreating password..."
-
-    pwCreated=1
-  fi
+reCreatePassword() {
+  local folderRoot="./Mysql/Passwords/$MYSQL_PW_ROOT_FILE"
+  local folderUser="./Mysql/Passwords/$MYSQL_PW_FILE"
+  
+  openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderRoot"
+  openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderUser"
+  
+  printf "Recreating password..."
 }
-init(){
+init() {
   # ---------------Parameters------------------
   # $1 : re-create password
   # $2 : force delete mysql installation folder 
 
   local ReCreatePw=$1
   local ReCreateInstallation=$1
-  local idMysqlContainer=""
-  local pwCreated=0
-  local folderDeleted=0
-  
-  # docker-compose -f "docker-compose.yml" stop
+  local existPasswordFile=$([[ -f "./Mysql/Passwords/$MYSQL_PW_ROOT_FILE" &&
+                          -f "./Mysql/Passwords/$MYSQL_PW_FILE"
+                      ]] && echo t )
+
   docker-compose -f "docker-compose.yml" stop mysql_server
 
   # TODO : check if it is necessary to delete installation when creating the password
-  # TODO : improve algorithm logic
+  
+  if [[ ! $existPasswordFile || "$ReCreatePw" == "true" ]]
+  then
+    reCreatePassword
+    rm -rf ./Mysql/Installation
+    echo "Deleted Mysql installation and reseted password"
 
-  if [[ ! ( -f "./Mysql/Passwords/$MYSQL_PW_ROOT_FILE" && -f "./Mysql/Passwords/$MYSQL_PW_FILE" ) || "$ReCreatePw" == "true" ]]
+  elif [[ "$ReCreateInstallation" == "true" ]]
   then
     rm -rf ./Mysql/Installation
-    reCreatePassword
-    pwCreated=1
-    folderDeleted=1
-  fi
-  if [[ $forceReCreatePw == "true" && "$pwCreated" == "0" ]]; then
-    reCreatePassword
-    rm -rf ./Mysql/Installation
-  fi
-  if [[ $forceReCreateInstallation == "true" && "$folderDeleted" == "0" ]]; then
-    rm -rf ./Mysql/Installation
+    echo "Deleted Mysql installation"
+
   fi
 
   mkdir -p ./VsCodeConfigFolders/Mysql
   mkdir -p ./VsCodeConfigFolders/Client
   mkdir -p ./VsCodeConfigFolders/Server
 
-  docker-compose -f "docker-compose.yml" -f "docker-compose-dev.yml" up -d --build 
-
-  idMysqlContainer=$(docker ps | grep todoapp_react_mysql_server | cut -d" " -f1)
-
-  if [ "$idMysqlContainer" ]; then
-    docker logs --tail 1000 -f "$idMysqlContainer"
-  fi
-  # docker exec -ti mysql_server sh /usr/src/TodoApp/Scripts/configMysql.sh
+  docker-compose -f "docker-compose.yml" up -d --build
+  cd Monitor 
+  docker-compose -f "docker-compose.yml" up -d --build 
 }
 
-if [[ "$1" && "$2" ]]; then
+if [[ "$1" && "$2" ]]
+then
   init $1 $2
 fi
 
-# recommended for debug mysql
+# recommended in mysql dev
 # sh reBuild.sh false true
 
-# for daily use in development
+# recommended in nodejs and reactjs dev
 # sh reBuild.sh false false

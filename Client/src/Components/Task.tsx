@@ -7,16 +7,18 @@ export interface ITask {
   id: string;
   description: string;
   expirationDate: Date | null;
+  activated: boolean;
 }
 
 interface IProps {
   key: string;
   task: ITask;
   RemoveTask(id: string): boolean;
+  // SetActivated(task: ITask, value: boolean): boolean;
 }
 
 interface IState {
-  awake: Boolean;
+  awake: boolean;
 }
 
 class Task extends React.Component<IProps, IState> {
