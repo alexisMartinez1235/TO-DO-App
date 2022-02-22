@@ -47,10 +47,11 @@ class DefaultFormTask extends React.Component<IProps, IState> {
 
     console.log(data);
     console.log(this.state.tasks);
-
-    this.setState({
-      tasks: data,
-    });
+    if (data) {
+      this.setState({
+        tasks: data,
+      });
+    }
     return this.state.tasks;
   }
 

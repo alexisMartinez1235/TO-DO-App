@@ -22,7 +22,7 @@ init() {
   # $2 : force delete mysql installation folder 
 
   local ReCreatePw=$1
-  local ReCreateInstallation=$1
+  local ReCreateInstallation=$2
   local existPasswordFile=$([[ -f "./Mysql/Passwords/$MYSQL_PW_ROOT_FILE" &&
                           -f "./Mysql/Passwords/$MYSQL_PW_FILE"
                       ]] && echo t )
@@ -50,7 +50,7 @@ init() {
 
   docker-compose -f "docker-compose.yml" up -d --build
   cd Monitor 
-  docker-compose -f "docker-compose.yml" up -d --build 
+  docker-compose -f "docker-compose.yml" up -d --build
 }
 
 if [[ "$1" && "$2" ]]

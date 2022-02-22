@@ -46,7 +46,7 @@ services:
   api:
     build:
       args:
-        node_version: ${NODE_VERSION}
+        node_version: ${API_VERSION_PROM}
       context: .
       dockerfile: Dockerfiles/api.Dockerfile
       target: $MODE_NODE_SERVER
@@ -81,7 +81,7 @@ services:
   react:
     build:
       args:
-        node_version: ${NODE_VERSION}
+        node_version: ${REACT_VERSION}
       context: .
       dockerfile: Dockerfiles/react.Dockerfile
       target: $MODE_REACT_CLIENT

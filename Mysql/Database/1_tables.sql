@@ -1,7 +1,7 @@
 USE db_todo;
 
 CREATE TABLE TASK(
-  id INT(7) NOT NULL AUTO_INCREMENT,
+  id CHAR(9) NOT NULL,
   `description` CHAR(20) NOT NULL,
   expirationDate DATE,
   activated BOOLEAN DEFAULT TRUE NOT NULL,

@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "rangav.vscode-thunder-client",
-    "tabnine.tabnine-vscode",
+    // "tabnine.tabnine-vscode",
     "burkeholland.simple-react-snippets-1.2.5",
     "ms-ceintl.vscode-language-pack-es-1.63.3",
     "thekalinga.bootstrap4-vscode",

@@ -1,0 +1,1 @@
+* I disable tabnine for high memory use
