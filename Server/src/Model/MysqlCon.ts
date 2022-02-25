@@ -6,7 +6,7 @@ import mysql, {
 import fs from 'fs';
 
 const dbOptions: PoolOptions = {
-  host: 'mysqlDB',
+  host: 'mysql',
   port: 3306,
   user: process.env.MYSQL_USER,
   database: process.env.MYSQL_DB,
@@ -35,8 +35,9 @@ class MysqlCon {
       if (err) {
         console.error(`error: ${err.message}`);
         response=false;
+      } else {
+        console.log('Connected to MySQL server.');
       }
-      console.log('Connected to MySQL server.');
     });
     return response
   }

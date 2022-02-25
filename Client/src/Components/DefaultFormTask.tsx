@@ -5,6 +5,7 @@ import React from 'react';
 import LTask from './LTask';
 import LInput from './LInput';
 import { ITask } from './Task';
+import Order from './Order';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 interface IParms<TOut>{
@@ -14,7 +15,7 @@ interface IParms<TOut>{
 interface IProps {}
 
 interface IState {
-  tasks: Array<ITask>;
+  tasks: Array<ITask<Date>>;
 }
 
 class DefaultFormTask extends React.Component<IProps, IState> {
@@ -23,8 +24,9 @@ class DefaultFormTask extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.url = 'http://localhost:8000';
+
     this.state = {
-      tasks: new Array<ITask>(),
+      tasks: new Array<ITask<Date>>(),
     };
 
     this.addTask = this.addTask.bind(this);
@@ -32,62 +34,84 @@ class DefaultFormTask extends React.Component<IProps, IState> {
     this.removeTask = this.removeTask.bind(this);
   }
 
-  async getTasks(paramsGetTask: IParms<string>): Promise< Array<ITask> > {
+  async getTasks(paramsGetTask?: IParms<string>): Promise<boolean> {
+  // async getTasks(paramsGetTask?: IParms<string>): Promise< Array< ITask<Date> > > {
     const url: URL = new URL(`${this.url}/tasks/`);
     url.search = new URLSearchParams(paramsGetTask).toString();
     const response = await fetch(url.toString(), {
-      method: 'get',
+      method: 'GET',
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },
     });
     const body = await response.json();
-    const { data } = body;
-
-    console.log(data);
-    console.log(this.state.tasks);
-    if (data) {
-      this.setState({
-        tasks: data,
-      });
+    if (body !== null) {
+      const { data } = body;
+      if (body.success) {
+        const taskList: Array<ITask<Date>> = data.map((task: any): ITask<Date> => task);
+        taskList.map((task: ITask<Date>): ITask<Date> => {
+          const taskModified: ITask<Date> = task;
+          if (taskModified.expirationDate !== undefined && taskModified.expirationDate !== null
+          ) {
+            taskModified.expirationDate = new Date(taskModified.expirationDate?.toString());
+          }
+          return taskModified;
+        });
+        this.setState({
+          tasks: taskList,
+        });
+        return body.success;
+      }
     }
-    return this.state.tasks;
+    return false;
   }
 
-  removeTask(id: string) : boolean {
-    this.setState((prevS: IState) => {
-      prevS.tasks.map((task: ITask, i: number, tasks: ITask[]): boolean => {
-        if (task.id === id) {
-          tasks.splice(i, 1);
-          return true;
-        }
-        return false;
-      });
+  async removeTask(id: string) : Promise<boolean> {
+    const url: URL = new URL(`${this.url}/tasks/logical`);
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id,
+      }),
     });
-
+    const body = await response.json();
+    console.log(body);
+    if (body !== null) {
+      // const { data } = body;
+      if (body.success) {
+        this.getTasks();
+      }
+    }
     return true;
   }
 
-  addTask(task: ITask) {
-    // fetch()
-    // this.setState((prevS) => {
-    //   prevS.tasks.concat(task);
-    // });
-    const { tasks } = this.state;
-    tasks.push(task);
-    this.setState({
-      tasks,
+  async addTask(taskDateString: ITask<string>) {
+    const url: URL = new URL(`${this.url}/tasks/`);
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(taskDateString),
     });
-    // this.state.tasks.push(task);
-    // this.state.selectedDate.toLocaleDateString()
+    const body = await response.json();
+    if (body !== null) {
+      if (body.success) {
+        this.getTasks();
+      }
+    }
   }
-
-  // SetActivated(task: ITask, value: boolean): boolean {
+  // SetActivated(task: ITask<Date>, value: boolean): boolean {
   //   this.setState((prevS) => {
-  //     prevS.tasks.map((wantedTask: ITask): ITask => {
+  //     prevS.tasks.map((wantedTask: ITask<Date>): ITask<Date> => {
   //       if (wantedTask === task) {
-  //         const taskModified: ITask = wantedTask;
+  //         const taskModified: ITask<Date> = wantedTask;
   //         taskModified.activated = value;
   //         return taskModified;
   //       }
@@ -104,6 +128,20 @@ class DefaultFormTask extends React.Component<IProps, IState> {
       >
         {/* <FormControl className="DefaultFormTask"> */}
         {/* <ThemeProvider theme={this.theme}> */}
+        <Order
+          GetTasks={this.getTasks}
+          optionDescription={[
+            {
+              value: 'description',
+              display: 'Order by description',
+            },
+            {
+              value: 'expiration date',
+              display: 'Order by expiration date',
+            },
+          ]}
+          defaultValue="description"
+        />
         <LTask
           tasks={this.state.tasks}
           GetTasks={this.getTasks}

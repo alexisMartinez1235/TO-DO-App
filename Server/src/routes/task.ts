@@ -7,15 +7,26 @@ const ltaskM : LTaskM = new LTaskM();
 api.post('/', (req : Request, res : Response) => {
 //   const descr : string = req.body.descr.toString(); // "Ejemplo"
 //   const date : Date = new Date(req.body.date); // "2020-03-07"
-  const { descr, date } = req.body;
-  
-  ltaskM.insertTask(descr, date, res);
+  const { id, description, expirationDate } = req.body;
+  try {
+    ltaskM.insertTask(id, description, expirationDate, res);
+  }catch (err) {
+    res.send({
+      'Error': "Cannot connect to DB"
+    });
+  }
 });
 
-api.delete('/logical', (req : Request, res : Response) => {
-  const { id } = req.body.id;
+api.put('/logical', (req : Request, res : Response) => {
+  const { id } = req.body;
 
-  ltaskM.logicalDeleteTask(id, res);
+  try {
+    ltaskM.logicalDeleteTask(id, res);
+  }catch (err) {
+    res.send({
+      'Error': 'Cannot connect to DB'
+    });
+  }
 });
 
 api.delete('/physical', (req : Request, res : Response) => {
@@ -33,7 +44,7 @@ api.get('/', (req : Request, res : Response) => {
   //}else {
   }catch (err) {
     res.send({
-      'Error': "Cannot conect to DB"
+      'Error': "Cannot connect to DB"
     });
   }
 });

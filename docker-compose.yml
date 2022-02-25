@@ -26,8 +26,6 @@ services:
       MYSQL_USER: ${MYSQL_USER}
     networks:
       test:
-        aliases: 
-          - mysqlDB
     ports:
       - '3306:3306'
       # - '3306'
@@ -61,8 +59,6 @@ services:
     # mem_limit: 2500m
     networks:
       test:
-        aliases:
-          - api
     ports:
       - 8000:8000 # server port
       - 9228:9228 # vscode port
@@ -95,11 +91,9 @@ services:
       - api
     networks:
       test:
-        aliases:
-          - ReactApp
     ports:
-      - 3001:3000 # client port
-      - 9227:9229 # vscode port
+      - 3000:3000 # client port
+      - 9229:9229 # vscode port
     user: node
     volumes:
       - ./VsCodeConfigFolders/Client:/home/node/.vscode-server/

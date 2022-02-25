@@ -15,6 +15,13 @@
         "type": "pwa-node"
       },
       {
+        "name": "Edge",
+        "type": "pwa-msedge",
+        "request": "launch",
+        "url": "http://localhost:3000/",
+        "webRoot": "${workspaceRoot}",
+      },
+      {
         "name": "Chrome",
         "type": "pwa-chrome",
         "request": "launch",

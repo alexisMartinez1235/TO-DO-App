@@ -3,18 +3,18 @@ import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-export interface ITask {
+export interface ITask<TExpiration> {
   id: string;
   description: string;
-  expirationDate: Date | null;
+  expirationDate: TExpiration | null;
   activated: boolean;
 }
 
 interface IProps {
   key: string;
-  task: ITask;
-  RemoveTask(id: string): boolean;
-  // SetActivated(task: ITask, value: boolean): boolean;
+  task: ITask<Date>;
+  RemoveTask(id: string): Promise<boolean>;
+  // SetActivated(task: ITask<Date>, value: boolean): boolean;
 }
 
 interface IState {

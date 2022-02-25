@@ -16,7 +16,7 @@ import { ITask } from './Task';
 
 interface IProps {
   // lItem: LTask,
-  AddTask(task: ITask): any;
+  AddTask(task: ITask<string>): any;
 }
 
 interface IState {
@@ -51,14 +51,15 @@ class LInput extends React.Component <IProps, IState> {
 
   // onClickbtnAdd(e: React.MouseEvent<HTMLElement>) {
   onClickbtnAdd() {
-    const task: ITask = {
-      id: shortid.generate(),
-      description: this.state.description,
-      expirationDate: this.state.selectedDate,
-      activated: true,
-    };
-    if (this.state.description !== '') {
-      this.props.AddTask(task);
+    if (this.state.description !== '' && this.state.selectedDate !== null) {
+      const date: string = this.state.selectedDate?.toISOString().substring(0, 19);
+      const sendTaskS: ITask<string> = {
+        id: shortid.generate(),
+        description: this.state.description,
+        expirationDate: date,
+        activated: true,
+      };
+      this.props.AddTask(sendTaskS);
     }
     this.setState({ description: '', selectedDate: null });
   }

@@ -1,72 +1,83 @@
 import { Response } from 'express';
 import MysqlCon from './MysqlCon';
 
+const tasks = {
+  get: 'SELECT * FROM vtask ORDER BY ? ?',
+  post: 'CALL INSERT_TASK(?,?,?)',
+  deleteLogical: 'CALL LOGICAL_DELETE_TASK(?)',
+  deletePhysical: 'CALL PHYSICAL_DELETE_TASK(?)',
+};
+
 class LTaskM extends MysqlCon {
   public getTasks(variable : string, order : string, res: Response) {
     this.tryConnect();
     this.getPool().query(
-      'SELECT * FROM TASK ORDER BY ? ?',
+      tasks.get, 
       [variable, order],
       // (err: any, result : any, fields : any) => {
       (err: any, result : any) => {
         if (err) {
-          res.json({ error: err, success: false });
-          throw err;
+          res.json({ data: err, success: false });
+          console.log(err);
+        } else {
+          res.json({ data: result, success: true });
         }
-        res.json({ data: result, success: true });
       },
     );
   }
 
-  insertTask(taskName : string, expiration : Date, res: Response) {
+  public insertTask(id: string, taskName : string, expiration : Date, res: Response) {
     this.tryConnect();
     this.getPool().query(
-      'CALL INSERT_TASK(?,?)',
-      [taskName, expiration],
+      tasks.post,
+      [id, taskName, expiration],
       // (err : any, results : any, fields : any) => {
       (err : any, results : any) => {
         if (err) {
-          res.json({ error: err, success: false });
-          throw err;
+          res.json({ data: err, success: false });
+          console.log(err);
+        } else {
+          res.json({ data: results.affectedRows, success: true });
         }
-        res.json({ data: results.affectedRows, success: true });
       },
     );
   }
 
   // eslint-disable-next-line class-methods-use-this
-  modifyTask() {
+  public modifyTask() {
     return 1;
   }
 
-  logicalDeleteTask(id : number, res: Response) {
+  public logicalDeleteTask(id : string, res: Response) {
     this.tryConnect();
     this.getPool().query(
-      'CALL LOGICAL_DELETE_TASK(?)',
+      tasks.deleteLogical,
       [id],
       (err: any, results: any) => {
         // (err: any, results: any, fields: any) => {
         if (err) {
-          res.json({ error: err, success: false });
-          throw err;
+          res.json({ data: err, success: false });
+          console.log(err);
+        } else {
+          res.json({ data: results.affectedRows, success: true });
         }
-        res.json({ data: results.affectedRows, success: true });
       },
     );
   }
 
-  physicalDeleteTask(id: number, res: Response) {
+  public physicalDeleteTask(id: string, res: Response) {
     this.tryConnect();
     this.getPool().query(
-      'CALL PHYSICAL_DELETE_TASK(?)',
+      tasks.deletePhysical,
       [id],
       (err: any, results: any) => {
         // (err: any, results: any, fields: any) => {
         if (err) {
-          res.json({ error: err, success: false });
-          throw err;
+          res.json({ data: err, success: false });
+          console.log(err);
+        } else {
+          res.json({ data: results.affectedRows, success: true });
         }
-        res.json({ data: results.affectedRows, success: true });
       },
     );
   }

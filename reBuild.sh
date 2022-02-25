@@ -14,7 +14,7 @@ reCreatePassword() {
   openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderRoot"
   openssl rand -base64 14 | awk '{print tolower($0)}' > "$folderUser"
   
-  printf "Recreating password..."
+  echo "Recreating password..."
 }
 init() {
   # ---------------Parameters------------------
@@ -27,18 +27,20 @@ init() {
                           -f "./Mysql/Passwords/$MYSQL_PW_FILE"
                       ]] && echo t )
 
-  docker-compose -f "docker-compose.yml" stop mysql_server
+  docker-compose -f "docker-compose.yml" stop mysql
 
   # TODO : check if it is necessary to delete installation when creating the password
   
   if [[ ! $existPasswordFile || "$ReCreatePw" == "true" ]]
   then
     reCreatePassword
+    docker-compose rm mysql
     rm -rf ./Mysql/Installation
     echo "Deleted Mysql installation and reseted password"
 
   elif [[ "$ReCreateInstallation" == "true" ]]
   then
+    docker-compose rm mysql
     rm -rf ./Mysql/Installation
     echo "Deleted Mysql installation"
 
@@ -63,3 +65,6 @@ fi
 
 # recommended in nodejs and reactjs dev
 # sh reBuild.sh false false
+
+# for first time
+# sh reBuild.sh true true

@@ -1,30 +1,26 @@
 import React from 'react';
-import { SelectChangeEvent } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import {
   Task,
   ITask,
 } from './Task';
 
 interface IProps {
-  tasks: Array<ITask>;
-  RemoveTask(id: string): boolean;
-  GetTasks(paramsGetTask: any): Promise<any>;
-  // SetActivated(task: ITask, value: boolean): boolean
+  tasks: Array<ITask<Date>>;
+  RemoveTask(id: string): Promise<boolean>;
+  GetTasks(paramsGetTask: any): Promise<boolean>;
+  // SetActivated(task: ITask<Date>, value: boolean): boolean
 }
 
 interface IState {
   // error: boolean;
-  // tasks: Array<ITask>;
+  // tasks: Array<ITask<Date>>;
   // children: [];
   // isLoaded: boolean;
   // paramsGetTask: IParms;
-  orderBy: string;
+  // orderBy: string;
+  // asc: boolean;
 }
 
 class LTask extends React.Component<IProps, IState> {
@@ -32,22 +28,18 @@ class LTask extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // children: [],
-      orderBy: '',
     };
-    this.onChangeSelect = this.onChangeSelect.bind(this);
+    // this.onChangeSelect = this.onChangeSelect.bind(this);
   }
 
   componentDidUpdate() {
-    // console.log(this.props.tasks);
-    const tasks = 1;
-    this.props.GetTasks({
-      variable: 'id',
-      order: 'ASC',
-    });
+    // this.props.GetTasks({
+    //   variable: 'id',
+    //   order: 'ASC',
+    // });
+    console.log('');
     // TODO : update
-    console.log(tasks);
     // this.ltaskControl.getTasks();
-    // console.log(this.state);
     // this.setState({
     //     items: this.ltaskControl.getTasks().data,
     //     isLoaded: this.ltaskControl.getTasks().success,
@@ -55,12 +47,12 @@ class LTask extends React.Component<IProps, IState> {
     // this.addItem = this.addItem.bind(this);
   }
 
-  onChangeSelect(e: SelectChangeEvent<string>) {
-    // TODO see params
-    this.setState({
-      orderBy: e.target.value,
-    });
-  }
+  // onChangeSelect(e: SelectChangeEvent<string>) {
+  //   // TODO see params
+  //   this.setState({
+  //     order: e.target.value,
+  //   });
+  // }
 
   render() {
     // const state = this.state;
@@ -68,7 +60,7 @@ class LTask extends React.Component<IProps, IState> {
     const { tasks } = this.props;
     // const { tasks } = this.state;
 
-    const children = tasks.map((task: ITask): any => (
+    const children = tasks.map((task: ITask<Date>): any => (
       <Task
         key={task.id}
         task={task}
@@ -84,20 +76,6 @@ class LTask extends React.Component<IProps, IState> {
         {/* <div className="mainToDo"> */}
         {/* <div>{ this.state.isLoaded }</div> */}
         {/* <div>{ this.state.error }</div> */}
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Order By</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={this.state.orderBy}
-            label="Order By"
-            onChange={this.onChangeSelect}
-          >
-            <MenuItem value="expiration date">Order by expiration date </MenuItem>
-            <MenuItem value="name">Order by name</MenuItem>
-            {/* <MenuItem value={2}>Thirty</MenuItem> */}
-          </Select>
-        </FormControl>
         <Stack
           data-testid="ltask"
           direction="column"
@@ -105,7 +83,6 @@ class LTask extends React.Component<IProps, IState> {
         >
           {children}
         </Stack>
-        {this.state.orderBy}
       </Box>
     );
   }
