@@ -1,4 +1,5 @@
 USE db_todo;
+
 CREATE VIEW vTask
 AS(
   SELECT id, `description`,

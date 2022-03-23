@@ -1,0 +1,19 @@
+<% layout('layouts/main.ejs') %>
+<form action="/signup" method="POST">
+  <input
+    type="email"
+    name="email"
+    placeHolder="Insert email"
+  >
+  <input
+    type="password"
+    name="password"
+    placeHolder="Insert password"
+  >
+  <button
+    type="submit"
+  >
+    Sign Up
+  </button>
+  <a href="/">index</a> 
+</form>

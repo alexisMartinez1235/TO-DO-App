@@ -7,11 +7,11 @@ CREATE PROCEDURE INSERT_TASK(
 ) INSERT INTO 
     TASK (id, `description`, expirationDate)
   VALUES
-    (_id, _description, str_to_date(_expirationDate, '%Y-%m-%dT%H:%i:%s.%fZ'));
+    (_id, _description, _expirationDate);
 
 CREATE PROCEDURE LOGICAL_DELETE_TASK(
   IN _id CHAR(9)
-) UPDATE TASK SET activated=0 WHERE id = _id;
+) UPDATE TASK SET activated=FALSE WHERE id = _id;
 
 
 CREATE PROCEDURE PHYSICAL_DELETE_TASK(
