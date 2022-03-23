@@ -2,7 +2,6 @@
   "recommendations": [
     "rangav.vscode-thunder-client",
     "ms-azuretools.vscode-docker",
-    "tabnine.tabnine-vscode",
-    "dbaeumer.vscode-eslint"
+    "tabnine.tabnine-vscode"
   ]
 }

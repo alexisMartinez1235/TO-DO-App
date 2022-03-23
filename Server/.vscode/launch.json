@@ -1,27 +1,35 @@
 {
   "version": "0.2.0",
-  "configurations": [      
+  "configurations": [
+    // {
+    //   "name": "Attach to node ",
+    //   "port": 5000,
+    //   "request": "attach",
+    //   "program": "${workspaceFolder}/src/index.js",
+    //   "skipFiles": [
+    //     "<node_internals>/**"
+    //   ],
+    //   "type": "pwa-node",
+      
+    // },
+    {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}"
+    },
+    
     {
       "name": "Attach to node",
       "port": 9228,
       "request": "attach",
-      "program": "${workspaceFolder}/src/index.ts",
+      "program": "${workspaceFolder}/src/index.js",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "type": "pwa-node",
-      "restart": true
-    },
-    {
-      "name": "Test attachs",
-      "port": 5858,
-      "request": "attach",
-      "program": "${workspaceFolder}/src/index.ts",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "pwa-node",
-      "restart": true
-    },    
+      
+    } 
   ]
 }

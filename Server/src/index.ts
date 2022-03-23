@@ -1,63 +1,125 @@
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import express, { Request, Response } from 'express';
-import taskRoute from './routes/task';
+import responseTime from 'response-time';
+// import rateLimit from 'express-rate-limit';
+import morgan from 'morgan';
+import path from 'path';
+import session from 'express-session';
+import flash from 'connect-flash';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 import {
   startMetricsServer,
   restResponseTimeHistorgram,
   // databaseResponseTimeHistorgram
 } from './utils/metrics';
+import routes from './routes/routes';
+import { sequelize } from './utils/database';
+import { sessionKey, sessionName } from './utils/keys';
 
-import responseTime from 'response-time';
-import rateLimit from 'express-rate-limit';
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const engine = require('ejs-mate');
 
 const app = express();
 const port: number = 8000;
+
+const sessionStore = new SequelizeStore({
+  db: sequelize,
+  // The interval at which to cleanup expired sessions in milliseconds. 30 minutes
+  checkExpirationInterval: 1 * 30 * 60 * 1000,
+  // The maximum age (in milliseconds) of a valid session. 4
+  expiration: 4 * 60 * 60 * 1000,
+});
+
+require('./utils/local-auth');
+
 // app.use(express.json());
 // app.use(cors({
 //   origin: 'http://localhost:3000',
 // }));
 
-app.use(rateLimit({
-  windowMs: 1 * 7 * 1000, // 1 second
-  max: 5, // Limit each IP to x requests per `window`
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  message: {
-    data: [],
-    success: false,
-  },
+// middlewares ------------------------
+app.use(cors({
+  credentials: true,
 }));
+app.use(morgan('dev')); // see debug in terminal
+app.use(cookieParser());
 
-app.use(cors());
+// -- config session
+app.use(
+  session({
+    secret: sessionKey,
+    store: sessionStore,
+    name: sessionName,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 24 hours
+      secure: false,
+    },
+  }),
+);
+sessionStore.sync(); // for create Sessions DB
+//------------------------------------
+
+app.use(flash()); // is after because use session as passport
+
+// initialize passport ------------------
+app.use(passport.initialize());
+app.use(passport.session()); // config session for allow user identification
+
+app.use(bodyParser.json()); // bodyParser manage request bodies
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(responseTime((req: Request, res: Response, time: number) => {
-  if(req?.route?.path){
-    restResponseTimeHistorgram.observe({
-      method: req.method,
-      route: req.route.path,
-      status_code: req.statusCode
-    }, time * 1000);
-  }
+// EJS config -----------------------
+// -- assign views folder to express
+app.set('views', path.join(__dirname, 'views'));
 
-}));
+// -- settings engine template ejs
+app.engine('ejs', engine);
+app.set('view engine', 'ejs');
+// -----------------------------------
+
+// app.use(rateLimit({
+//   windowMs: 1 * 3 * 1000, // 3 seconds
+//   max: 10, // Limit each IP to x requests per `window`
+//   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+//   message: {
+//     data: ['wait 3 seconds'],
+//     success: false,
+//   },
+// }));
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');//   // res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
-app.use('/tasks', taskRoute);
+app.use(responseTime((req: Request, res: Response, time: number) => {
+  if (req?.route?.path) {
+    restResponseTimeHistorgram.observe({
+      method: req.method,
+      route: req.route.path,
+      status_code: req.statusCode,
+    }, time * 1000);
+  }
+}));
 
-app.get('/', (req : Request, res: Response) => {
-  // res.setHeader("Access-Control-Allow-Origin", "http://reactapp:3000");
-  res.send({
-    data: 'Successfully connected',
-  });
+app.use((req, res, next) => {
+  app.locals.signupMessage = req.flash('signupMessage');
+  app.locals.signinMessage = req.flash('signinMessage');
+  console.log(req.flash());
+  next();
 });
+
+// routes
+app.use('/', routes);
 
 app.listen(port, () => {
   console.log(`Listening on localhost:${port}`);
