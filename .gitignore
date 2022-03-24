@@ -1,7 +1,7 @@
 commands.sh
 # .gitignore
 Mysql/Installation/*
-!Mysql/Installation/db_todo
+#!Mysql/Installation/db_todo
 Server/node_modules
 Client/node_modules
 Mysql/Passwords/*

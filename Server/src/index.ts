@@ -88,6 +88,25 @@ app.use(rateLimit({
     success: false,
   },
 }));
+app.use(morgan('dev')); // see debug in terminal
+app.use(cookieParser());
+
+// -- config session
+app.use(
+  session({
+    secret: sessionKey,
+    store: sessionStore,
+    name: sessionName,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 24 hours
+      secure: false,
+    },
+  }),
+);
+sessionStore.sync(); // for create Sessions DB
+//------------------------------------
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
