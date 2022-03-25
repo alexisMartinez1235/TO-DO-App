@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcrypt';
-import User from '../model/User';
+import Person from '../model/Person';
 import { sessionKey } from './keys';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -19,7 +19,7 @@ passport.serializeUser((user: any, done: any) => {
 
 passport.deserializeUser((id: string, done: any) => {
   console.log('desserialize User');
-  User.findOne({
+  Person.findOne({
     where: { id },
   }).then((userRes: any) => {
     // if (userRes instanceof User) {
@@ -42,8 +42,8 @@ passport.use(
       passReqToCallback: true,
     },
     (req: any, email: string, password: string, done: any) => {
-      User.hashPassword(password).then((pwHashed: string) => {
-        User.create(
+      Person.hashPassword(password).then((pwHashed: string) => {
+        Person.create(
           { email, password: pwHashed },
         // ).then((userRes: User | null) => {
         ).then((userRes: any) => {
@@ -70,7 +70,7 @@ passport.use(
       passReqToCallback: true,
     },
     (req: any, email: string, password: string, done: any) => {
-      User.findOne({
+      Person.findOne({
         where: { email },
       }).then((userRes: any) => {
         if (userRes !== null) {
@@ -94,7 +94,7 @@ passport.use(
     secretOrKey: sessionKey,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   }, (jwtPayload: any, done: any) => {
-    User.findOne({ where: { email: jwtPayload.user.email } })
+    Person.findOne({ where: { email: jwtPayload.person.email } })
       .then((user: any) => done(null, user))
       .catch((err: any) => done(err, false));
   }),

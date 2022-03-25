@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { userReg } from '../utils/local-auth';
 import task from './task';
 import { sessionKey } from '../utils/keys';
+import Person from '../model/Person';
 
 function loggin(user: any, req: any, res: any, next: any) {
   req.login(user, { session: false }, async (errLogin: any) => {
@@ -12,7 +13,7 @@ function loggin(user: any, req: any, res: any, next: any) {
     // generate a signed son web token with the contents of
     //  user object and return it in the response
     const body = { _id: user.id, email: user.email };
-    const token = jwt.sign({ user: body }, sessionKey, {
+    const token = jwt.sign({ person: body }, sessionKey, {
       expiresIn: 1 * 60 * 60 * 1000, // 1 hour
     });
     return res.json({
@@ -38,7 +39,13 @@ api.post(
     passport.authenticate(userReg.localSignin, {
       session: false,
     }, async (err, user) => {
-      if (err || !user) return next(err);
+      if (err || !user) {
+        res.json({
+          data: 'Signin failture',
+          success: false,
+        });
+        return next(err);
+      }
       return loggin(user, req, res, next);
     })(req, res, next);
   },
@@ -50,7 +57,13 @@ api.post(
     passport.authenticate(userReg.localSignup, {
       session: false,
     }, async (err, user) => {
-      if (err || !user) return next(err);
+      if (err || !user) {
+        res.json({
+          data: 'Signup failture',
+          success: false,
+        });
+        return next(err);
+      }
       return loggin(user, req, res, next);
     })(req, res, next);
   },
@@ -65,7 +78,7 @@ api.use(passport.authenticate(userReg.tokenJWT, { session: false }));
 api.get('/logout', (req, res) => {
   req.logOut();
   res.json({
-    data: 'you have Log out',
+    data: 'You have Log out',
     success: true,
   });
 });
@@ -73,12 +86,17 @@ api.get('/logout', (req, res) => {
 api.post(
   '/profile',
   (req, res) => {
-    res.json({
-      data: 'You already have to access to profile!',
-      success: true,
-      user: req.user,
-      token: req.query.secret_token,
-    });
+    if (req.user instanceof Person) {
+      res.json({
+        data: 'You already have to access to profile!',
+        success: true,
+        person: {
+          id: req.user.getDataValue('id'),
+          email: req.user.getDataValue('email'),
+        },
+        token: req.query.secret_token,
+      });
+    }
   },
 );
 

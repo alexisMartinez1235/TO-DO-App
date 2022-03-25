@@ -4,7 +4,7 @@ CREATE VIEW vTask
 AS(
   SELECT id, `description`,
         DATE_FORMAT(expirationDate, '%a %b %c %Y %H:%i:%s') as expirationDate,
-    activated
+    activated, email
   FROM TASK
   WHERE activated=1
 );

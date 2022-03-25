@@ -27,8 +27,8 @@ const port: number = 8000;
 
 const sessionStore = new SequelizeStore({
   db: sequelize,
-  // The interval at which to cleanup expired sessions in milliseconds. 30 minutes
-  checkExpirationInterval: 1 * 30 * 60 * 1000,
+  // The interval at which to cleanup expired sessions in milliseconds. 60 minutes
+  checkExpirationInterval: 6 * 60 * 60 * 1000,
   // The maximum age (in milliseconds) of a valid session. 4
   expiration: 4 * 60 * 60 * 1000,
 });

@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import User from '../model/User';
+import Person from '../model/Person';
 import { isAuthenticated, isUnauthenticated } from '../utils/authenticated';
 import { userReg } from '../utils/local-auth';
 import task from './task';
@@ -63,7 +63,7 @@ router.use(isAuthenticated); // authentificate before go to profile, logout, etc
 
 router.get('/profile', (req, res) => {
   let email = '';
-  if (req.user instanceof User) {
+  if (req.user instanceof Person) {
     email = req.user.getDataValue('email');
   }
   res.render('profile', { email });

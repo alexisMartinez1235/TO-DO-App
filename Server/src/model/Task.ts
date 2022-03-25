@@ -2,11 +2,12 @@ import { DataTypes, Model } from '@sequelize/core';
 import { sequelize } from '../utils/database';
 
 class Task extends Model {
-  public static getTasks(variable : string, orderBy : string, res: any) {
+  public static get(variable : string, orderBy : string, email: string, res: any) {
     Task.findAll({
       order: [
         [variable, orderBy],
       ],
+      where: { email },
     }).then((tasks: Task[]) => {
       res.json({ data: tasks, success: true });
     }).catch((err: any) => {
@@ -15,8 +16,16 @@ class Task extends Model {
     });
   }
 
-  public static insertTask(id: string, description : string, expirationDate : Date, res: any) {
-    Task.create({ id, description, expirationDate })
+  public static insert(
+    id: string,
+    description : string,
+    expirationDate : Date,
+    email: string,
+    res: any,
+  ) {
+    Task.create({
+      id, description, expirationDate, email,
+    })
       .then((results: any) => {
         res.json({ data: results.affectedRows, success: true });
       }).catch((err: any) => {
@@ -29,10 +38,10 @@ class Task extends Model {
   // public modifyTask() {
   //   return 1;
   // }
-  public static logicalDeleteTask(id : string, res: any) {
+  public static logicalDelete(id : string, email: string, res: any) {
     Task.update(
       { activated: false },
-      { where: { id } },
+      { where: { id, email } },
     ).then((results: any) => {
       res.json({ data: results.affectedRows, success: true });
     }).catch((err: any) => {
@@ -41,8 +50,8 @@ class Task extends Model {
     });
   }
 
-  public static physicalDeleteTask(id: string, res: any) {
-    Task.destroy({ where: { id } })
+  public static physicalDelete(id: string, email: string, res: any) {
+    Task.destroy({ where: { id, email } })
       .then((results: any) => {
         res.json({ data: results.affectedRows, success: true });
       }).catch((err: any) => {
@@ -70,6 +79,10 @@ Task.init({
   activated: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,
+  },
+  email: {
+    type: DataTypes.STRING(30),
+    allowNull: false,
   },
 }, {
   // Other model options go here
