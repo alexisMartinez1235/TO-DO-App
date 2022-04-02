@@ -11,7 +11,7 @@ import bodyParser from 'body-parser';
 import rateLimit from 'express-rate-limit';
 import {
   startMetricsServer,
-  restResponseTimeHistorgram,
+  restResponseTimeHistogram,
   // databaseResponseTimeHistorgram
 } from './utils/metrics';
 import routes from './routes/routes';
@@ -76,8 +76,8 @@ app.set('views', path.join(__dirname, 'views'));
 // -- settings engine template ejs
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
-// -----------------------------------
 
+// -- sleep server
 app.use(rateLimit({
   windowMs: 1 * 3 * 1000, // 3 seconds
   max: 10, // Limit each IP to x requests per `window`
@@ -116,22 +116,25 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(responseTime((req: Request, res: Response, time: number) => {
-  if (req?.route?.path) {
-    restResponseTimeHistorgram.observe({
-      method: req.method,
-      route: req.route.path,
-      status_code: req.statusCode,
-    }, time * 1000);
-  }
-}));
-
 app.use((req, res, next) => {
   app.locals.signupMessage = req.flash('signupMessage');
   app.locals.signinMessage = req.flash('signinMessage');
   console.log(req.flash());
   next();
 });
+
+// save metrics
+app.use(responseTime((req: Request, res: Response, time: number) => {
+  if (req?.route?.path) {
+    restResponseTimeHistogram.observe({
+      method: req.method,
+      // route: req.route.path,
+      route: req.originalUrl,
+      status_code: res.statusCode,
+    }, time);
+    // }, time * 1000);
+  }
+}));
 
 // routes
 app.use('/api', api);

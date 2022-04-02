@@ -2,9 +2,10 @@ import express from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { userReg } from '../utils/local-auth';
-import task from './task';
 import { sessionKey } from '../utils/keys';
 import Person from '../model/Person';
+import list from './list';
+// import { startTimer } from '../utils/metrics';
 
 function loggin(user: any, req: any, res: any, next: any) {
   req.login(user, { session: false }, async (errLogin: any) => {
@@ -100,7 +101,11 @@ api.post(
   },
 );
 
+// start prometheus metric timer for db queries
+// api.use(startTimer);
+
 // routes of /api
-api.use('/task', task);
+api.use('/list', list);
+// api.use('/user', personHasList);
 
 export default api;

@@ -30,4 +30,6 @@ Person.init({
   timestamps: false, // disable creation date
 });
 
+Person.sync();
+
 export default Person;

@@ -28,6 +28,7 @@ passport.deserializeUser((id: string, done: any) => {
     }
     return done(null, false);
   }).catch((err: any) => {
+    console.log('Serialize error');
     console.log(err);
     return done(err, false);
   });

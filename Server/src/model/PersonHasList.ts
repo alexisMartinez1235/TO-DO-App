@@ -3,34 +3,15 @@ import { sequelize } from '../utils/database';
 import Person from './Person';
 import List from './List';
 
-class Task extends Model {
-  // public modifyTask() {
-  //   return 1;
-  // }
+class PersonHasList extends Model {
 }
 
-Task.init({
+PersonHasList.init({
   // Model attributes are defined here
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
-  },
-  description: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-  },
-  expirationDate: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  activated: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
-  },
-  email: {
+  emailPerson: {
     type: DataTypes.STRING(30),
     allowNull: false,
+    primaryKey: true,
     references: {
       model: Person,
       key: 'email',
@@ -39,19 +20,32 @@ Task.init({
   idList: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
     references: {
       model: List,
       key: 'id',
     },
   },
-
+  isOwner: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+  canRead: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+  canWrite: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   // Other model options go here
   sequelize, // We need to pass the connection instance
-  modelName: 'TASK', // We need to choose the model name
+  modelName: 'PERSON_HAS_LIST', // We need to choose the model name
   timestamps: false, // disable creation date
 });
 
-Task.sync();
+// PersonHasList.sync({ force: true });
+PersonHasList.sync();
 
-export default Task;
+export default PersonHasList;

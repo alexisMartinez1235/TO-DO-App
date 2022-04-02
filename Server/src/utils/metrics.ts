@@ -5,13 +5,13 @@ import client from 'prom-client';
 // Prometheus methods
 //
 
-const restResponseTimeHistorgram = new client.Histogram({
+const restResponseTimeHistogram = new client.Histogram({
   name: 'rest_response_time_duration_seconds',
   help: 'Rest api response in seconds',
   labelNames: ['method', 'route', 'status_code'],
 });
 
-const databaseResponseTimeHistorgram = new client.Histogram({
+const databaseResponseTimeHistogram = new client.Histogram({
   name: 'db_response_time_duration_seconds',
   help: 'Database response in seconds',
   labelNames: ['operation', 'success'],
@@ -35,8 +35,33 @@ function startMetricsServer() {
   });
 }
 
+function startTimer(
+  req: any,
+  _res: any,
+  next: any,
+) {
+  req.app.locals.Timer = databaseResponseTimeHistogram.startTimer();
+  req.app.locals.metricsLabels = {
+    operation: `${req.method} = ${req.baseUrl}`,
+  };
+  req.app.locals.success = false; // default false
+  next();
+}
+
+function stopTimer(
+  req: any,
+  // res: any,
+  // next: any,
+) {
+  const { success, metricsLabels } = req.app.locals;
+  // const time = req.app.locals.timer({ ...metricsLabels, success });
+  req.app.locals.Timer({ ...metricsLabels, success });
+}
+
 export {
+  stopTimer,
+  startTimer,
   startMetricsServer,
-  restResponseTimeHistorgram,
-  databaseResponseTimeHistorgram,
+  restResponseTimeHistogram,
+  databaseResponseTimeHistogram,
 };

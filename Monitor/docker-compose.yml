@@ -2,7 +2,7 @@ version: '3.7'
 
 volumes:
   prometheus-data:
-  grafana-data:
+  # grafana-data:
 
 services:
   grafana:
@@ -10,7 +10,8 @@ services:
     container_name: grafanaM
     # restart: unless-stopped
     volumes:
-      - grafana-data:/var/lib/grafana
+      # - grafana-data:/var/lib/grafana
+      - ./Grafana:/var/lib/grafana:rw
     ports:
       - 3003:3000
     networks:

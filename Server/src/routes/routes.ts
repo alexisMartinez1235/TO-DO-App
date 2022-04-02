@@ -3,7 +3,7 @@ import passport from 'passport';
 import Person from '../model/Person';
 import { isAuthenticated, isUnauthenticated } from '../utils/authenticated';
 import { userReg } from '../utils/local-auth';
-import task from './task';
+import list from './list';
 
 const router = express.Router();
 
@@ -75,6 +75,6 @@ router.get('/logout', (req, _res, next) => {
 }, isAuthenticated);
 
 // routes of /
-router.use('/task', task);
+router.use('/list', list);
 
 export default router;
