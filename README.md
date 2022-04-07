@@ -8,7 +8,7 @@ he has installed TypeScript, ExpressJS and Passport packages, in addition of oth
 # Database
 As database i use MySQL and i've installed MySQL Workbench in local for connect to database. Its link: http://localhost:3306/
 # Prometheus
-I use prometheus for resource consumption analysis and see its data with grafana. 
+I use prometheus for resource consumption analysis and see its data with grafana.
 Links
 - http://localhost:3003/ grafana
 - http://localhost:8088/ cadvisor
@@ -16,13 +16,15 @@ Links
  
 ## Installation
 ## Usage
+```
 For start container at first time, your should run (create Instalation Folder and create password for root and db_user):
+
 sh reBuild true true
 Meaning for parameters
   $1 : force re-create password - recommended false
   $2 : force delete mysql installation folder - recommended false
-
 After run this command, you can stop, pause, start containers as you like
+```
 
 ## Screenshots
 ## License
