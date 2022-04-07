@@ -1,13 +1,13 @@
 # Todo App
 
 Todo App is a React Project for manage your tasks. This app is made with the next structure:
-# Client
+### Client
 this conatiner use an official node image of DockerHub as well as in server conatiner. he has installed TypeScript, ReactJS amoung others packages. And the main link of the app is: http://localhost:3000/
-# Server
+### Server
 he has installed TypeScript, ExpressJS and Passport packages, in addition of others. Its link is: http://localhost:8000/
-# Database
+### Database
 As database i use MySQL and i've installed MySQL Workbench in local for connect to database. Its link: http://localhost:3306/
-# Prometheus
+### Prometheus
 ```
 I use prometheus for resource consumption analysis and see its data with grafana.
 Links
@@ -17,7 +17,7 @@ Links
 ```
 
 ## Installation
-## Usage
+<!--- ## Usage -->
 ```
 For start container at first time, your should run (create Instalation Folder and create password for root and db_user):
 
