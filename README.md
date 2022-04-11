@@ -15,7 +15,12 @@ Links
 - http://localhost:3003/ grafana
 - http://localhost:8088/ cadvisor
 - http://localhost:9090/ prometheus
- 
+```js
+const grafana = {
+  user: 'admin',
+  password: 'JxfZ@l!lP81',
+}
+```
 ## Installation
 ## Usage
 For start container at first time, your should run (create Instalation Folder and create password for root and db_user):
