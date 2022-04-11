@@ -27,5 +27,10 @@ Meaning for parameters
 After run this command, you can stop, pause, start containers as you like
 
 ## Screenshots
+### Local dashboard that graph backend time response
+![Grafana](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/Api%20time%20response.png)
+### External dashboard [#8321](https://grafana.com/grafana/dashboards/8321)
+![Grafana](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/Hardware%20metrics%20id%208321.png)
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
