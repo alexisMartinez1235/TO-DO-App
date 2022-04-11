@@ -13,14 +13,15 @@ As database i use MySQL and i've installed MySQL Workbench in local for connect 
 I use prometheus for resource consumption analysis and see its data with grafana. 
 Links
 - http://localhost:3003/ grafana
+  ```js
+  const grafanaAuth = {
+    user: 'admin',
+    password: 'JxfZ@l!lP81',
+  }
+  ```
 - http://localhost:8088/ cadvisor
 - http://localhost:9090/ prometheus
-```js
-const grafana = {
-  user: 'admin',
-  password: 'JxfZ@l!lP81',
-}
-```
+
 ## Installation
 ## Usage
 For start container at first time, your should run (create Instalation Folder and create password for root and db_user):
