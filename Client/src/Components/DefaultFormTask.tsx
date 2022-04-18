@@ -36,7 +36,7 @@ class DefaultFormTask extends React.Component<IProps, IState> {
 
   async getTasks(paramsGetTask?: IParms<string>): Promise<boolean> {
   // async getTasks(paramsGetTask?: IParms<string>): Promise< Array< ITask<Date> > > {
-    const url: URL = new URL(`${this.url}/tasks/`);
+    const url: URL = new URL(`${this.url}/api/list/tasks/`);
     url.search = new URLSearchParams(paramsGetTask).toString();
     const response = await fetch(url.toString(), {
       method: 'GET',
@@ -68,7 +68,7 @@ class DefaultFormTask extends React.Component<IProps, IState> {
   }
 
   async removeTask(id: string) : Promise<boolean> {
-    const url: URL = new URL(`${this.url}/tasks/logical`);
+    const url: URL = new URL(`${this.url}/api/list/tasks/logical`);
     const response = await fetch(url.toString(), {
       method: 'POST',
       mode: 'cors',
@@ -91,7 +91,7 @@ class DefaultFormTask extends React.Component<IProps, IState> {
   }
 
   async addTask(taskDateString: ITask<string>) {
-    const url: URL = new URL(`${this.url}/tasks/`);
+    const url: URL = new URL(`${this.url}/api/list/tasks/`);
     const response = await fetch(url.toString(), {
       method: 'POST',
       mode: 'cors',

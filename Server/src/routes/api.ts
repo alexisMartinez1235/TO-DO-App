@@ -13,13 +13,15 @@ function loggin(user: any, req: any, res: any, next: any) {
 
     // generate a signed son web token with the contents of
     //  user object and return it in the response
-    const body = { _id: user.id, email: user.email };
-    const token = jwt.sign({ person: body }, sessionKey, {
+    const userRes = { _id: user.id, email: user.email };
+    const token = jwt.sign({ person: userRes }, sessionKey, {
       expiresIn: 1 * 60 * 60 * 1000, // 1 hour
     });
     return res.json({
-      body,
-      token,
+      data: {
+        user: userRes,
+        token,
+      },
       success: true,
     });
   });
@@ -89,13 +91,15 @@ api.post(
   (req, res) => {
     if (req.user instanceof Person) {
       res.json({
-        data: 'You already have to access to profile!',
-        success: true,
-        person: {
-          id: req.user.getDataValue('id'),
-          email: req.user.getDataValue('email'),
+        data: {
+          message: 'You already have to access to profile!',
+          user: {
+            id: req.user.getDataValue('id'),
+            email: req.user.getDataValue('email'),
+          },
+          token: req.query.secret_token,
         },
-        token: req.query.secret_token,
+        success: true,
       });
     }
   },
