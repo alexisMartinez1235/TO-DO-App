@@ -32,11 +32,27 @@ Meaning for parameters
 
 After run this command, you can stop, pause, start containers as you like
 
-## Screenshots
+## Screenshots backend
 ### Local dashboard that graph backend time response
 ![Grafana](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/Api%20time%20response.png)
 ### External dashboard [8321](https://grafana.com/grafana/dashboards/8321)
 ![Grafana](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/Hardware%20metrics%20id%208321.png)
+
+## Screenshots frontend
+### Home page
+![home page](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-22_00h19_02.png)
+
+### Sign in
+![sign in  page](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-22_00h20_28.png)
+
+### Sign up
+![sign up page](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-22_00h20_33.png)
+
+### Tasklists
+![tasklist_1](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-24_00h32_20.png)
+![tasklist_2](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-24_00h33_14.png)
+![tasklist_3](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-24_01h14_43.png)
+![tasklist_4](https://github.com/alexisMartinez1235/TO-DO-App/blob/experimental/Screenshots/2022-04-24_00h33_04.png)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
