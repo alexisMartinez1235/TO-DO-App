@@ -2,110 +2,171 @@
 // import { URLSearchParams } from "url";
 import React from 'react';
 // import FormControl from '@mui/material/FormControl';
+import { Box } from '@mui/material';
 import LTask from './LTask';
 import LInput from './LInput';
 import { ITask } from './Task';
 import Order from './Order';
+import APIResponse from '../utils/responseType';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
+import withRouter from '../utils/withRouter';
 
 interface IParms<TOut>{
   [key: string]: TOut;
 }
 
-interface IProps {}
+// interface IProps {
+//   match?: any;
+// }
 
 interface IState {
   tasks: Array<ITask<Date>>;
 }
 
-class DefaultFormTask extends React.Component<IProps, IState> {
+class DefaultFormTask extends React.Component<any, IState> {
   public url: string;
 
-  constructor(props: IProps) {
+  constructor(props: any) {
     super(props);
     this.url = 'http://localhost:8000';
 
     this.state = {
       tasks: new Array<ITask<Date>>(),
     };
-
     this.addTask = this.addTask.bind(this);
     this.getTasks = this.getTasks.bind(this);
     this.removeTask = this.removeTask.bind(this);
+    this.getListId = this.getListId.bind(this);
   }
 
-  async getTasks(paramsGetTask?: IParms<string>): Promise<boolean> {
-  // async getTasks(paramsGetTask?: IParms<string>): Promise< Array< ITask<Date> > > {
-    const url: URL = new URL(`${this.url}/api/list/tasks/`);
-    url.search = new URLSearchParams(paramsGetTask).toString();
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const body = await response.json();
-    if (body !== null) {
-      const { data } = body;
-      if (body.success) {
-        const taskList: Array<ITask<Date>> = data.map((task: any): ITask<Date> => task);
-        taskList.map((task: ITask<Date>): ITask<Date> => {
-          const taskModified: ITask<Date> = task;
-          if (taskModified.expirationDate !== undefined && taskModified.expirationDate !== null
-          ) {
-            taskModified.expirationDate = new Date(taskModified.expirationDate?.toString());
-          }
-          return taskModified;
-        });
-        this.setState({
-          tasks: taskList,
-        });
-        return body.success;
-      }
+  componentDidMount() {
+    this.getTasks();
+  }
+
+  componentDidUpdate(props: any) {
+    if (this.getListId() !== props.router.params.idList.toString()) {
+      this.getTasks();
     }
+  }
+
+  componentWillUnmount() {
+    this.setState({ tasks: [] });
+  }
+
+  getListId(): string {
+    return this.props.router.params.idList.toString();
+  }
+
+  // async getTasks(paramsGetTask?: IParms<string>): Promise< Array< ITask<Date> > > {
+  getTasks(paramsGetTask?: IParms<string>): boolean {
+    const url: URL = new URL(`${this.url}/api/list/task`);
+    url.search = new URLSearchParams({ ...paramsGetTask, idList: this.getListId() }).toString();
+
+    const token = localStorage.getItem('token') || '';
+    const requestOptions = {
+      method: 'GET',
+      // mode: 'cors',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+        Accept: '*/*',
+        'Cache-control': 'no-cache',
+      },
+      // redirect: 'follow',
+    };
+
+    fetch(url.toString(), requestOptions)
+      .then((response: any) => response.json())
+      .then((result: APIResponse) => {
+        // console.log(result);
+        if (result.success) {
+          // this.setState({ tasks: result.data });
+          const { data } = result;
+          const taskList: Array<ITask<Date>> = data.map((task: any): ITask<Date> => task);
+          taskList.map((task: ITask<Date>): ITask<Date> => {
+            const taskModified: ITask<Date> = task;
+            if (taskModified.expirationDate !== undefined && taskModified.expirationDate !== null
+            ) {
+              taskModified.expirationDate = new Date(taskModified.expirationDate?.toString());
+            }
+            return taskModified;
+          });
+          this.setState({
+            tasks: taskList,
+          });
+        }
+        return result.success;
+      })
+      .catch((error: any) => {
+        console.log('error', error);
+      });
     return false;
   }
 
-  async removeTask(id: string) : Promise<boolean> {
-    const url: URL = new URL(`${this.url}/api/list/tasks/logical`);
-    const response = await fetch(url.toString(), {
+  removeTask(id: string): boolean {
+    const url: URL = new URL(`${this.url}/api/list/task/logical`);
+    url.search = new URLSearchParams({ idList: this.getListId() }).toString();
+
+    const token = localStorage.getItem('token') || '';
+    const requestOptions = {
       method: 'POST',
-      mode: 'cors',
+      // mode: 'cors',
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+        Accept: '*/*',
+        'Cache-control': 'no-cache',
       },
-      body: JSON.stringify({
-        id,
-      }),
-    });
-    const body = await response.json();
-    console.log(body);
-    if (body !== null) {
-      // const { data } = body;
-      if (body.success) {
-        this.getTasks();
-      }
-    }
-    return true;
+      body: JSON.stringify({ id }),
+      // redirect: 'follow',
+    };
+
+    fetch(url.toString(), requestOptions)
+      .then((response: any) => response.json())
+      .then((result: APIResponse) => {
+        console.log(result);
+        if (result.success) {
+          this.getTasks();
+        }
+        return result.success;
+      })
+      .catch((error: any) => {
+        console.log('error', error);
+      });
+    return false;
   }
 
-  async addTask(taskDateString: ITask<string>) {
-    const url: URL = new URL(`${this.url}/api/list/tasks/`);
-    const response = await fetch(url.toString(), {
+  addTask(taskDateString: ITask<string>) {
+    const url: URL = new URL(`${this.url}/api/list/task`);
+    url.search = new URLSearchParams({ idList: this.getListId() }).toString();
+    console.log('add');
+    const token = localStorage.getItem('token') || '';
+    const requestOptions = {
       method: 'POST',
-      mode: 'cors',
+      // mode: 'cors',
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+        Accept: '*/*',
+        'Cache-control': 'no-cache',
       },
       body: JSON.stringify(taskDateString),
-    });
-    const body = await response.json();
-    if (body !== null) {
-      if (body.success) {
-        this.getTasks();
-      }
-    }
+      // redirect: 'follow',
+    };
+
+    fetch(url.toString(), requestOptions)
+      .then((response: any) => response.json())
+      .then((result: APIResponse) => {
+        console.log(result);
+        if (result.success) {
+          this.getTasks();
+        }
+        return result.success;
+      })
+      .catch((error: any) => {
+        console.log('error', error);
+      });
+    return false;
   }
   // SetActivated(task: ITask<Date>, value: boolean): boolean {
   //   this.setState((prevS) => {
@@ -123,8 +184,11 @@ class DefaultFormTask extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div
+      <Box
         className="DefaultFormTask"
+        sx={{
+          height: '100%',
+        }}
       >
         {/* <FormControl className="DefaultFormTask"> */}
         {/* <ThemeProvider theme={this.theme}> */}
@@ -136,7 +200,7 @@ class DefaultFormTask extends React.Component<IProps, IState> {
               display: 'Order by description',
             },
             {
-              value: 'expiration date',
+              value: 'expirationDate',
               display: 'Order by expiration date',
             },
           ]}
@@ -148,13 +212,14 @@ class DefaultFormTask extends React.Component<IProps, IState> {
           RemoveTask={this.removeTask}
           // SetActivated={this.SetActivated}
         />
+        {/* // idList={this.props.match.params.idList} */}
         <LInput
           AddTask={this.addTask}
         />
         {/* </ThemeProvider> */}
         {/* </FormControl> */}
-      </div>
+      </Box>
     );
   }
 }
-export default DefaultFormTask;
+export default withRouter(DefaultFormTask);

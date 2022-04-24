@@ -11,20 +11,19 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import APIResponse from '../../utils/responseType';
 import Copyright from '../Copyright';
+import defaultTheme from '../../utils/theme';
 
 interface IProps {
-  // changeToSignin(e: boolean): any;
+  history: any;
   onSign(token: string, email: string): any;
 }
 // interface IState {
 //   email: string,
 //   password: string,
 // }
-
-const theme = createTheme();
 
 export default function SignIn(props: IProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,13 +50,16 @@ export default function SignIn(props: IProps) {
           // console.log(result);
           if (result.success) {
             props.onSign(result.data.token, result.data.user.email);
+            props.history.push('/dashboard');
           }
         })
-        .catch((error: any) => console.log('error', error));
+        .catch((error: any) => {
+          console.log('error', error);
+        });
     }
   };
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -74,7 +76,7 @@ export default function SignIn(props: IProps) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required

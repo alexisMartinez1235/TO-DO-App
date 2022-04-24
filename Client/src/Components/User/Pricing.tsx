@@ -81,7 +81,13 @@ const footers = [
   },
   {
     title: 'Resources',
-    description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
+    description: [
+      'Resource',
+      'Resource name',
+      'Another resource',
+      'Final resource',
+      // 'https://www.flaticon.com/free-icons/plan',
+    ],
   },
   {
     title: 'Legal',

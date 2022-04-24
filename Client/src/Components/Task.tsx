@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 export interface ITask<TExpiration> {
-  id: string;
+  id?: string | undefined;
   description: string;
   expirationDate: TExpiration | null;
   activated: boolean;
@@ -13,7 +13,7 @@ export interface ITask<TExpiration> {
 interface IProps {
   key: string;
   task: ITask<Date>;
-  RemoveTask(id: string): Promise<boolean>;
+  RemoveTask(id: string): boolean;
   // SetActivated(task: ITask<Date>, value: boolean): boolean;
 }
 
@@ -44,7 +44,8 @@ class Task extends React.Component<IProps, IState> {
     this.setState({
       awake: false,
     });
-    this.props.RemoveTask(this.props.task.id);
+    const id = this.props.task.id?.toString();
+    if (id !== undefined) this.props.RemoveTask(id);
   }
 
   render() {
@@ -74,6 +75,9 @@ class Task extends React.Component<IProps, IState> {
             variant="h4"
             component="h2"
             ml="auto"
+            sx={{
+              float: 'right',
+            }}
           >
             {this.getDate()}
           </Typography>

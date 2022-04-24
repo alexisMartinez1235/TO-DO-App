@@ -20,16 +20,20 @@ list.use((req, _res, next) => {
 });
 
 function searchList(req : Request, res : Response, next: any) {
-  const { idList } = req.body;
-  PersonHasList.findOne({
-    where: { idList, emailPerson: req.app.locals.email },
-  }).then((resList: List | null) => {
-    req.app.locals.list = resList;
-    next();
-  })
-    .catch((err: any) => {
-      res.status(500).json({ data: err, success: false });
-    });
+  const idList: string | undefined = req.query.idList?.toString();
+  
+  if (idList !== undefined) {
+    PersonHasList.findOne({
+      where: { idList, emailPerson: req.app.locals.email },
+    }).then((resList: List | null) => {
+      req.app.locals.list = resList;
+      // console.log(resList);
+      next();
+    })
+      .catch((err: any) => {
+        res.status(500).json({ data: err, success: false });
+      });
+  }
 }
 
 // routes
@@ -64,6 +68,7 @@ list.get('/', (req : Request, res : Response, next) => {
 
 list.post('/', (req : Request, res : Response, next) => {
   const { listName } = req.body;
+  
   List.create({
     listName, email: req.app.locals.email,
   }).then((listCreated: List) => {

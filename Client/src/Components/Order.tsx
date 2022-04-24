@@ -12,7 +12,7 @@ import shortid from 'shortid';
 // import Box from '@mui/material/Box';
 
 interface IProps {
-  GetTasks(paramsGetTask: any): Promise<boolean>;
+  GetTasks(paramsGetTask: any): boolean;
   optionDescription: {
     [key: string]: string
   }[];
@@ -20,8 +20,8 @@ interface IProps {
 }
 
 interface IState {
-  order: string,
-  asc: boolean
+  variable: string,
+  order: boolean
 }
 
 class Order extends React.Component<IProps, IState> {
@@ -29,33 +29,31 @@ class Order extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       // children: [],
-      order: this.props.defaultValue,
-      asc: true,
+      variable: this.props.defaultValue,
+      order: true,
     };
     this.onChangeSelect = this.onChangeSelect.bind(this);
     this.onClickButton = this.onClickButton.bind(this);
   }
 
-  onClickButton(e: any) {
-    this.setState({
-      asc: e.target.value,
-    });
+  onClickButton() {
+    this.setState((prevState: IState) => ({
+      order: !prevState.order,
+    }));
     this.props.GetTasks({
-      variable: this.state.order,
-      order: this.state.asc ? 'ASC' : 'DESC',
+      variable: this.state.variable,
+      order: this.state.order ? 'ASC' : 'DESC',
     });
   }
 
   onChangeSelect(e: SelectChangeEvent<string>) {
-    // TODO see params
     this.setState({
-      order: e.target.value,
+      variable: e.target.value,
     });
     this.props.GetTasks({
-      variable: this.state.order,
-      order: this.state.asc ? 'ASC' : 'DESC',
+      variable: this.state.variable,
+      order: this.state.order ? 'ASC' : 'DESC',
     });
-    // this.props.GetTasks(this.state);
   }
 
   render() {
@@ -75,11 +73,13 @@ class Order extends React.Component<IProps, IState> {
           height: '100%',
           width: '100%',
           padding: '0',
+          alignItems: 'stretch',
+          display: 'flex',
         }}
       >
         <FormControl
           sx={{
-            width: '80%',
+            width: '90%',
           }}
         >
 
@@ -91,7 +91,7 @@ class Order extends React.Component<IProps, IState> {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={this.state.order}
+            value={this.state.variable}
             label="Order By"
             onChange={this.onChangeSelect}
             sx={{
@@ -106,12 +106,13 @@ class Order extends React.Component<IProps, IState> {
           variant="outlined"
           sx={{
             borderRadius: '0',
-            height: '60px',
+            // height: '60px',
+            width: '10%',
           }}
           onClick={this.onClickButton}
 
         >
-          {this.state.asc ? 'ASC' : 'DESC'}
+          {this.state.order ? 'ASC' : 'DESC'}
         </Button>
       </Container>
     );

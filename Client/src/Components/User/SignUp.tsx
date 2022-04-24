@@ -11,16 +11,14 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import APIResponse from '../../utils/responseType';
 import Copyright from '../Copyright';
+import defaultTheme from '../../utils/theme';
 
 interface IProps {
-  // changeToSignin?: (e: boolean) => any;
   onSign(token: string, email: string): any;
 }
-
-const theme = createTheme();
 
 export default function SignUp(props: IProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -49,11 +47,13 @@ export default function SignUp(props: IProps) {
             props.onSign(result.data.token, result.data.email);
           }
         })
-        .catch((error: any) => console.log('error', error));
+        .catch((error: any) => {
+          console.log('error', error);
+        });
     }
   };
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

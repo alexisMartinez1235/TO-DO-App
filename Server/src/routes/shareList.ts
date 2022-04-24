@@ -25,8 +25,8 @@ shareList.use(startTimer);
 shareList.get('/', (req : Request, res : Response, next) => {
   const variable : string = req.query.variable?.toString() || 'emailPerson';
   const order : string = req.query.order?.toString() || 'ASC';
-  const { idList } = req.body;
-
+  const { idList } = req.app.locals.list;
+  
   PersonHasList.findAll({
     // attributes: ['emailPerson'],
     order: [

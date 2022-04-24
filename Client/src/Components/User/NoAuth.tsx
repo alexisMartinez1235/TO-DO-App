@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom';
 import APIResponse from '../../utils/responseType';
 
 interface IProps {
-  // isLogged: boolean;
   loginRedirectPath: string;
 }
 

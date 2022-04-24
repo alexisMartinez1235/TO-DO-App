@@ -4,12 +4,14 @@ import { Navigate } from 'react-router-dom';
 import APIResponse from '../../utils/responseType';
 
 interface IProps {
-  // isLogged: boolean;
   noLoginRedirectPath: string;
+  match?: any;
 }
 
 interface IState {
   authorized: number;
+  email: string;
+  token: string;
 }
 
 class Auth extends React.Component<IProps, IState> {
@@ -19,14 +21,17 @@ class Auth extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       authorized: 0,
+      email: localStorage.getItem('email') || '',
+      token: localStorage.getItem('token') || '',
     };
-    const email = localStorage.getItem('email') || '';
-    const token = localStorage.getItem('token') || '';
+    console.log(props);
+  }
 
+  componentDidMount(): void {
     const requestOptions = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.state.token}`,
         'Content-type': 'application/json',
         Accept: '*/*',
         'Cache-control': 'no-cache',
@@ -38,7 +43,7 @@ class Auth extends React.Component<IProps, IState> {
       .then((result: APIResponse) => {
         // console.log(result);
         if (result.success) {
-          if (result.data.user.email === email) {
+          if (result.data.user.email === this.state.email) {
             this.setState({ authorized: 1 });
             // this.authenticated = true;
           }
@@ -50,8 +55,8 @@ class Auth extends React.Component<IProps, IState> {
       });
   }
 
-  // componentDidMount(): void {
-
+  // componentWillUnmount() {
+  //
   // }
 
   render() {

@@ -5,64 +5,29 @@ import {
   Task,
   ITask,
 } from './Task';
+// import APIResponse from '../utils/responseType';
 
 interface IProps {
   tasks: Array<ITask<Date>>;
-  RemoveTask(id: string): Promise<boolean>;
-  GetTasks(paramsGetTask: any): Promise<boolean>;
+  RemoveTask(id: string): boolean;
+  GetTasks(paramsGetTask: any): boolean;
   // SetActivated(task: ITask<Date>, value: boolean): boolean
 }
 
-interface IState {
-  // error: boolean;
-  // tasks: Array<ITask<Date>>;
-  // children: [];
-  // isLoaded: boolean;
-  // paramsGetTask: IParms;
-  // orderBy: string;
-  // asc: boolean;
-}
+interface IState {}
 
 class LTask extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = {
-      // children: [],
-    };
-    // this.onChangeSelect = this.onChangeSelect.bind(this);
+    this.state = {};
   }
-
-  componentDidUpdate() {
-    // this.props.GetTasks({
-    //   variable: 'id',
-    //   order: 'ASC',
-    // });
-    console.log('');
-    // TODO : update
-    // this.ltaskControl.getTasks();
-    // this.setState({
-    //     items: this.ltaskControl.getTasks().data,
-    //     isLoaded: this.ltaskControl.getTasks().success,
-    // });
-    // this.addItem = this.addItem.bind(this);
-  }
-
-  // onChangeSelect(e: SelectChangeEvent<string>) {
-  //   // TODO see params
-  //   this.setState({
-  //     order: e.target.value,
-  //   });
-  // }
 
   render() {
-    // const state = this.state;
-    // let children = [];
     const { tasks } = this.props;
-    // const { tasks } = this.state;
 
     const children = tasks.map((task: ITask<Date>): any => (
       <Task
-        key={task.id}
+        key={task.id?.toString() || ''}
         task={task}
         RemoveTask={this.props.RemoveTask}
         // SetActivated={this.props.SetActivated}
@@ -70,12 +35,12 @@ class LTask extends React.Component<IProps, IState> {
     ));
     return (
       <Box sx={{
-        width: '50vw',
+        width: 'auto',
+        height: '500px',
+        py: '10px',
+        px: '24px',
       }}
       >
-        {/* <div className="mainToDo"> */}
-        {/* <div>{ this.state.isLoaded }</div> */}
-        {/* <div>{ this.state.error }</div> */}
         <Stack
           data-testid="ltask"
           direction="column"

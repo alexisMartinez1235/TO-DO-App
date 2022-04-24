@@ -27,7 +27,13 @@
         "request": "launch",
         "url": "http://localhost:3000/",
         "webRoot": "${workspaceRoot}",
+        "skipFiles": [
+          "${workspaceFolder}/<node_internals>/**",
+          "${workspaceFolder}/node_modules/**",
+          "http://localhost:3000/var/app/client/webpack/bootstrap",
+          "http://localhost:3000/static/js/main.chunk.js",
+          "<node_internals>/**"
+        ],  
       },
-
     ]
 }

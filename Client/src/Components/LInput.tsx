@@ -3,7 +3,7 @@ import {
   Button,
   TextField,
   TextFieldProps,
-  Box,
+  Container,
 } from '@mui/material';
 import {
   LocalizationProvider,
@@ -11,7 +11,6 @@ import {
   // AdapterDateFns, // StaticDatePicker∟
 } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import shortid from 'shortid';
 import { ITask } from './Task';
 
 interface IProps {
@@ -54,7 +53,6 @@ class LInput extends React.Component <IProps, IState> {
     if (this.state.description !== '' && this.state.selectedDate !== null) {
       const date: string = this.state.selectedDate?.toISOString().substring(0, 19);
       const sendTaskS: ITask<string> = {
-        id: shortid.generate(),
         description: this.state.description,
         expirationDate: date,
         activated: true,
@@ -66,13 +64,16 @@ class LInput extends React.Component <IProps, IState> {
 
   render() {
     return (
-      <Box sx={{
+      <Container sx={{
         display: 'flex',
-        alignContent: 'center',
-        justifyContent: 'center',
-        position: 'fixed',
+        // alignContent: 'center',
+        // justifyContent: 'center',
+        position: 'relative',
         bottom: '0',
         width: '100%',
+        height: '100%',
+        padding: '0',
+        alignItems: 'stretch',
       }}
       >
         <TextField
@@ -85,6 +86,9 @@ class LInput extends React.Component <IProps, IState> {
             maxLength: 12,
             'data-testid': 'Description',
           }}
+          style={{
+            width: '45%',
+          }}
           label="Description"
         />
 
@@ -96,7 +100,15 @@ class LInput extends React.Component <IProps, IState> {
             value={this.state.selectedDate}
             onChange={this.onChangeBtnExpiration}
             mask="__/__/____"
-            renderInput={(params: TextFieldProps) => <TextField {... params} data-testid="Expiration" />}
+            renderInput={(params: TextFieldProps) => (
+              <TextField
+                {... params}
+                data-testid="Expiration"
+                style={{
+                  width: '45%',
+                }}
+              />
+            )}
           />
         </LocalizationProvider>
         <Button
@@ -106,10 +118,13 @@ class LInput extends React.Component <IProps, IState> {
           color="success"
           onClick={this.onClickbtnAdd}
           disabled={this.state.disabledBtnAdd}
+          style={{
+            width: '10%',
+          }}
         >
           +
         </Button>
-      </Box>
+      </Container>
     );
   }
 }

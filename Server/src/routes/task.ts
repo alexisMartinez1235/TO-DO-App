@@ -8,7 +8,7 @@ task.use(startTimer);
 
 task.get('/', (req : Request, res : Response, next) => {
   const variable : string = req.query.variable?.toString() || 'ID'; // ID
-  const order : string = req.query.order?.toString() || 'ASC'; // ASC | DESC
+  const order : string = req.query.order?.toString() || 'ASC'; // ASC | DESC  
   const { email, list } = req.app.locals;
 
   Task.findAll({
@@ -28,10 +28,11 @@ task.get('/', (req : Request, res : Response, next) => {
 task.post('/', (req : Request, res : Response, next) => {
 //   const description // "Ejemplo"
 //   const expirationDate // "2020-03-07"
-  const { id, description, expirationDate } = req.body;
+  const { description, expirationDate } = req.body;
   const { email, list } = req.app.locals;
+  
   Task.create({
-    id, description, expirationDate, email, idList: list.getDataValue('idList'),
+    description, expirationDate, email, idList: list.getDataValue('idList'),
   })
     .then((taskCreated: Task) => {
       req.app.locals.success = true;
