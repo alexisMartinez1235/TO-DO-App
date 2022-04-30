@@ -1,7 +1,7 @@
 import { Box, LinearProgress } from '@mui/material';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import APIResponse from '../../utils/responseType';
+import APIResponse from '../utils/responseType';
 
 interface IProps {
   loginRedirectPath: string;
@@ -22,7 +22,9 @@ class NoAuth extends React.Component<IProps, IState> {
 
     const requestOptions = {
       method: 'POST',
-      headers: {
+      /* #region   */
+      headers:
+      /* #endregion */ {
         Authorization: `Bearer ${token}`,
         'Content-type': 'application/json',
         Accept: '*/*',

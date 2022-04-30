@@ -45,16 +45,18 @@ list.use(startTimer);
 list.get('/', (req : Request, res : Response, next) => {
   const variable : string = req.query.variable?.toString() || 'id'; // ID, etc
   const order : string = req.query.order?.toString() || 'ASC'; // ASC | DESC
+  const inTrash: string = req.query.inTrash?.toString() || 'false';
   const { email: myEmail } = req.app.locals;
 
   // startTimer(req);
 
-  sequelize.query('SELECT * FROM `list` FULL JOIN `PERSON_HAS_LIST` ON id = `PERSON_HAS_LIST`.idList WHERE emailPerson=:myEmail ORDER BY :variable :order', {
+  sequelize.query('SELECT * FROM `list` FULL JOIN `PERSON_HAS_LIST` ON id = `PERSON_HAS_LIST`.idList WHERE emailPerson=:myEmail AND inTrash=:inTrash ORDER BY :variable :order', {
     type: QueryTypes.SELECT,
     replacements: {
       myEmail,
       variable,
       order,
+      inTrash,
     },
   }).then((personHasList: any[]) => {
     req.app.locals.success = true;
@@ -100,7 +102,8 @@ list.post('/', (req : Request, res : Response, next) => {
 });
 
 list.put('/logical', (req : Request, res : Response, next) => {
-  const { idList: id } = req.body;
+  const id: string | undefined = req.query.idList?.toString();
+
   List.update(
     { inTrash: true },
     { where: { id } },
@@ -114,8 +117,8 @@ list.put('/logical', (req : Request, res : Response, next) => {
 });
 
 list.delete('/', (req : Request, res : Response, next) => {
-  const { idList } = req.body;
-
+  const idList: string | undefined = req.query.idList?.toString();
+  
   PersonHasList.destroy({
     where: { idList, emailPerson: req.app.locals.email },
   }).then(() => {

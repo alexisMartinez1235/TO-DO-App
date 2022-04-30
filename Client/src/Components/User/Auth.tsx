@@ -1,7 +1,7 @@
 import { Box, LinearProgress } from '@mui/material';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import APIResponse from '../../utils/responseType';
+import APIResponse from '../utils/responseType';
 
 interface IProps {
   noLoginRedirectPath: string;
@@ -24,7 +24,7 @@ class Auth extends React.Component<IProps, IState> {
       email: localStorage.getItem('email') || '',
       token: localStorage.getItem('token') || '',
     };
-    console.log(props);
+    // console.log(props);
   }
 
   componentDidMount(): void {

@@ -4,7 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import 'bootstrap';
-// import 'bootstrap/dist/css/bootstrap.css';
+/* #region   */
+import 'bootstrap/dist/css/bootstrap.css';
+/* #endregion */
 
 function functionInit() {
   ReactDOM.render(

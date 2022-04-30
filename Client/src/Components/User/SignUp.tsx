@@ -12,9 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-import APIResponse from '../../utils/responseType';
-import Copyright from '../Copyright';
-import defaultTheme from '../../utils/theme';
+import APIResponse from '../utils/responseType';
+import Copyright from '../utils/Copyright';
+import defaultTheme from '../utils/theme';
 
 interface IProps {
   onSign(token: string, email: string): any;
@@ -42,9 +42,9 @@ export default function SignUp(props: IProps) {
       fetch('http://localhost:8000/api/signup', requestOptions)
         .then((response: any) => response.json())
         .then((result: APIResponse) => {
-          // console.table(result);
+          console.table(result);
           if (result.success) {
-            props.onSign(result.data.token, result.data.email);
+            props.onSign(result.data.token, result.data.user.email);
           }
         })
         .catch((error: any) => {

@@ -15,31 +15,33 @@ import SignUp from './SignUp';
 import { Dashboard, DashboardCore } from './Dashboard';
 import Pricing from './Pricing';
 import Auth from './Auth';
-import NotFound from './NotFound';
+import NotFound from '../utils/NotFound';
 import NoAuth from './NoAuth';
-import DefaultFormTask from '../DefaultFormTask';
+import DefaultFormTask from '../Tasklist/DefaultFormTask';
+import withRouter from '../utils/withRouter';
 
 interface IProps {
-  history: any;
+  router: any;
 }
 
 interface IState {}
 
-class ControlSign extends React.Component<IProps, IState> {
+class ControlSign extends React.PureComponent<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {};
-    // this.props.history.push('/signin', { state: 'simple data' });
-    // this.props.history.push('/signin');
+    // this.props.router.navigate('/signin', { state: 'simple data' });
+    // this.props.router.navigate('/signin');
     this.onSignChange = this.onSignChange.bind(this);
     this.onSign = this.onSign.bind(this);
+    // this.logout = this.logout.bind(this);
   }
 
   onSignChange(value: boolean) {
     if (value) {
-      this.props.history.push('/signin');
+      this.props.router.navigate('/signin');
     } else {
-      this.props.history.push('/signup');
+      this.props.router.navigate('/signup');
     }
   }
 
@@ -47,7 +49,7 @@ class ControlSign extends React.Component<IProps, IState> {
     localStorage.setItem('token', token);
     localStorage.setItem('email', email);
 
-    this.props.history.push({
+    this.props.router.navigate({
       pathname: '/dashboard',
       state: { email, token },
     });
@@ -60,9 +62,9 @@ class ControlSign extends React.Component<IProps, IState> {
           path="/"
           element={(
             <Pricing
-              activateSignIn={(route: string) => this.props.history.push(route)}
-              actionsButtonCards={(route: string) => this.props.history.push(route)}
-              navButton={(route: string) => this.props.history.push(route)}
+              activateSignIn={(route: string) => this.props.router.navigate(route)}
+              actionsButtonCards={(route: string) => this.props.router.navigate(route)}
+              navButton={(route: string) => this.props.router.navigate(route)}
             />
           )}
         />
@@ -113,7 +115,7 @@ class ControlSign extends React.Component<IProps, IState> {
             <NoAuth
               loginRedirectPath="/dashboard"
             >
-              <SignIn onSign={this.onSign} history={this.props.history} />
+              <SignIn onSign={this.onSign} history={this.props.router.history} />
             </NoAuth>
           )}
         />
@@ -140,4 +142,4 @@ class ControlSign extends React.Component<IProps, IState> {
   }
 }
 
-export default ControlSign;
+export default withRouter(ControlSign);

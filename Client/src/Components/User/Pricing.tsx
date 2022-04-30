@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
-import Copyright from '../Copyright';
+import Copyright from '../utils/Copyright';
 
 interface IProps {
   activateSignIn(e: any): void,

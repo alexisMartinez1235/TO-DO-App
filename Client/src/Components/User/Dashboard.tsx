@@ -20,17 +20,17 @@ import Avatar from '@mui/material/Avatar';
 import {
   Outlet,
 } from 'react-router-dom';
-import { mainListItems, ListOfListTask } from './listItems';
+import { mainListItems, ListOfListTask } from '../Tasklist/listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
-import Copyright from '../Copyright';
+// import Copyright from '../utils/Copyright';
 // import Auth from './Auth';
-import defaultTheme from '../../utils/theme';
+import defaultTheme from '../utils/theme';
 
 const mdTheme = defaultTheme;
 
-const drawerWidth: number = 240;
+const drawerWidth: number = 290;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -151,7 +151,7 @@ function DashboardContent() {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            <ListOfListTask />
+            <ListOfListTask open={open} />
           </List>
         </Drawer>
         <Box
@@ -177,7 +177,7 @@ function DashboardContent() {
           >
             {/* </Aut▬h> */}
             <Outlet />
-            <Copyright sx={{ pt: 4 }} />
+            {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
         </Box>
       </Box>

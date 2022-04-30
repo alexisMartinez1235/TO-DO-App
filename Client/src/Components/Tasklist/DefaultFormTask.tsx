@@ -6,10 +6,12 @@ import { Box } from '@mui/material';
 import LTask from './LTask';
 import LInput from './LInput';
 import { ITask } from './Task';
-import Order from './Order';
+import Order from '../Order';
 import APIResponse from '../utils/responseType';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 import withRouter from '../utils/withRouter';
+// import SpeedDialTask from './SpeedDialTask';
+import BottomAppBar from './BottomAppBar';
 
 interface IParms<TOut>{
   [key: string]: TOut;
@@ -60,7 +62,11 @@ class DefaultFormTask extends React.Component<any, IState> {
   // async getTasks(paramsGetTask?: IParms<string>): Promise< Array< ITask<Date> > > {
   getTasks(paramsGetTask?: IParms<string>): boolean {
     const url: URL = new URL(`${this.url}/api/list/task`);
-    url.search = new URLSearchParams({ ...paramsGetTask, idList: this.getListId() }).toString();
+    url.search = new URLSearchParams({
+      ...paramsGetTask,
+      idList: this.getListId(),
+      isActivated: 'true',
+    }).toString();
 
     const token = localStorage.getItem('token') || '';
     const requestOptions = {
@@ -109,7 +115,7 @@ class DefaultFormTask extends React.Component<any, IState> {
 
     const token = localStorage.getItem('token') || '';
     const requestOptions = {
-      method: 'POST',
+      method: 'PUT',
       // mode: 'cors',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -139,7 +145,6 @@ class DefaultFormTask extends React.Component<any, IState> {
   addTask(taskDateString: ITask<string>) {
     const url: URL = new URL(`${this.url}/api/list/task`);
     url.search = new URLSearchParams({ idList: this.getListId() }).toString();
-    console.log('add');
     const token = localStorage.getItem('token') || '';
     const requestOptions = {
       method: 'POST',
@@ -157,7 +162,7 @@ class DefaultFormTask extends React.Component<any, IState> {
     fetch(url.toString(), requestOptions)
       .then((response: any) => response.json())
       .then((result: APIResponse) => {
-        console.log(result);
+        // console.log(result);
         if (result.success) {
           this.getTasks();
         }
@@ -213,9 +218,15 @@ class DefaultFormTask extends React.Component<any, IState> {
           // SetActivated={this.SetActivated}
         />
         {/* // idList={this.props.match.params.idList} */}
-        <LInput
+        {/* <SpeedDialTask /> */}
+        <BottomAppBar moreInfo>
+          <LInput
+            AddTask={this.addTask}
+          />
+        </BottomAppBar>
+        {/* <LInput
           AddTask={this.addTask}
-        />
+        /> */}
         {/* </ThemeProvider> */}
         {/* </FormControl> */}
       </Box>

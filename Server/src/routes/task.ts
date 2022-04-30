@@ -9,13 +9,14 @@ task.use(startTimer);
 task.get('/', (req : Request, res : Response, next) => {
   const variable : string = req.query.variable?.toString() || 'ID'; // ID
   const order : string = req.query.order?.toString() || 'ASC'; // ASC | DESC  
+  const isActivated: boolean = ( req.query.isActivated?.toString() === 'true' ) ? true : false;
   const { email, list } = req.app.locals;
-
+  
   Task.findAll({
     order: [
       [variable, order],
     ],
-    where: { email, idList: list.getDataValue('idList') },
+    where: { email, idList: list.getDataValue('idList'), activated: isActivated },
   }).then((tasks: Task[]) => {
     req.app.locals.success = true;
     res.status(200).json({ data: tasks, success: true });

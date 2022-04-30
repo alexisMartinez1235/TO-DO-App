@@ -1,6 +1,9 @@
 import React from 'react';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
+import {
+  Stack,
+  // Paper,
+  Box,
+} from '@mui/material';
 import {
   Task,
   ITask,
@@ -30,13 +33,14 @@ class LTask extends React.Component<IProps, IState> {
         key={task.id?.toString() || ''}
         task={task}
         RemoveTask={this.props.RemoveTask}
+        GetTasks={this.props.GetTasks}
         // SetActivated={this.props.SetActivated}
       />
     ));
     return (
       <Box sx={{
         width: 'auto',
-        height: '500px',
+        height: '448px',
         py: '10px',
         px: '24px',
       }}

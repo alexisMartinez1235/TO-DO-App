@@ -73,7 +73,7 @@ class LInput extends React.Component <IProps, IState> {
         width: '100%',
         height: '100%',
         padding: '0',
-        alignItems: 'stretch',
+        // alignItems: 'stretch',
       }}
       >
         <TextField
@@ -83,7 +83,7 @@ class LInput extends React.Component <IProps, IState> {
           value={this.state.description}
           onChange={this.onTxtTaskChange}
           inputProps={{
-            maxLength: 12,
+            maxLength: 64,
             'data-testid': 'Description',
           }}
           style={{
@@ -122,7 +122,7 @@ class LInput extends React.Component <IProps, IState> {
             width: '10%',
           }}
         >
-          +
+          Add
         </Button>
       </Container>
     );

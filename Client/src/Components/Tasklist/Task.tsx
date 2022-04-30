@@ -14,6 +14,7 @@ interface IProps {
   key: string;
   task: ITask<Date>;
   RemoveTask(id: string): boolean;
+  GetTasks(paramsGetTask: any): boolean;
   // SetActivated(task: ITask<Date>, value: boolean): boolean;
 }
 
@@ -41,11 +42,10 @@ class Task extends React.Component<IProps, IState> {
   }
 
   removeTask() {
-    this.setState({
-      awake: false,
-    });
-    const id = this.props.task.id?.toString();
-    if (id !== undefined) this.props.RemoveTask(id);
+    if (this.state.awake) {
+      const id = this.props.task.id?.toString();
+      if (id !== undefined) this.props.RemoveTask(id);
+    }
   }
 
   render() {
