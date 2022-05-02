@@ -28,6 +28,7 @@ FROM node:$node_version as dev
   ADD --chown=node:root ./Server/package.json .
 
   RUN yarn
+  
   # CMD yarn run build ; yarn run dev
   CMD yarn run dev
 

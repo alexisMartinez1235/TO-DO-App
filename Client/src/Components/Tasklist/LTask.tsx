@@ -13,7 +13,6 @@ import {
 interface IProps {
   tasks: Array<ITask<Date>>;
   RemoveTask(id: string): boolean;
-  GetTasks(paramsGetTask: any): boolean;
   // SetActivated(task: ITask<Date>, value: boolean): boolean
 }
 
@@ -28,15 +27,15 @@ class LTask extends React.Component<IProps, IState> {
   render() {
     const { tasks } = this.props;
 
+    // SetActivated={this.props.SetActivated}
     const children = tasks.map((task: ITask<Date>): any => (
       <Task
         key={task.id?.toString() || ''}
         task={task}
         RemoveTask={this.props.RemoveTask}
-        GetTasks={this.props.GetTasks}
-        // SetActivated={this.props.SetActivated}
       />
     ));
+
     return (
       <Box sx={{
         width: 'auto',

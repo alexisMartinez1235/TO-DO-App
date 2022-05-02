@@ -13,7 +13,7 @@ import withRouter from '../utils/withRouter';
 // import SpeedDialTask from './SpeedDialTask';
 import BottomAppBar from './BottomAppBar';
 
-interface IParms<TOut>{
+interface IParms<TOut> {
   [key: string]: TOut;
 }
 
