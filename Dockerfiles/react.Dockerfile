@@ -22,14 +22,18 @@ FROM node:$node_version AS dev
   RUN echo "node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/node \
           && chmod 0440 /etc/sudoers.d/node
           
-  RUN sudo chown node:root -R /home/node/
-  ###################
+  RUN chown node:root -R /home/node/
+  ###################i
 
-  ADD --chown=node:root ./Server/yarn.lock .
-  ADD --chown=node:root ./Server/package.json .
+  # ADD --chown=node:root ./Client/yarn.lock .
+  ADD --chown=node:root ./Client/package.json .
   
   RUN yarn
+  RUN mkdir -p node_modules/.cache && chown -R node:root node_modules/.cache
+
+  RUN yarn global add react-scripts
   # CMD yarn run build ; yarn run start
+  
   CMD yarn run start
   
 #
@@ -49,9 +53,11 @@ FROM node:$node_version AS prod
   RUN sudo chown node:root -R /home/node/
   ###################
 
-  ADD --chown=node:root ./Server/yarn.lock .
-  ADD --chown=node:root ./Server/package.json .
+  # ADD --chown=node:root ./Client/yarn.lock .
+  ADD --chown=node:root ./Client/package.json .
 
   RUN yarn install --production  
+  RUN yarn global add react-scripts
+  
   CMD yarn run build && yarn run start
  

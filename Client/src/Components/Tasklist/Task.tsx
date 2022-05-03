@@ -1,7 +1,10 @@
 import React from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import {
+  Box,
+  Checkbox,
+  Typography,
+} from '@mui/material';
+// sudo yarn upgrade @mui/base
 
 export interface ITask<TExpiration> {
   id?: string | undefined;
@@ -14,7 +17,6 @@ interface IProps {
   key: string;
   task: ITask<Date>;
   RemoveTask(id: string): boolean;
-  GetTasks(paramsGetTask: any): boolean;
   // SetActivated(task: ITask<Date>, value: boolean): boolean;
 }
 
@@ -42,6 +44,8 @@ class Task extends React.Component<IProps, IState> {
   }
 
   removeTask() {
+    const id2 = this.props.key;
+    console.log(id2);
     if (this.state.awake) {
       const id = this.props.task.id?.toString();
       if (id !== undefined) this.props.RemoveTask(id);

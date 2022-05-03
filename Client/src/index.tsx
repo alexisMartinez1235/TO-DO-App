@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-// import 'bootstrap';
-/* #region   */
-import 'bootstrap/dist/css/bootstrap.css';
-/* #endregion */
 
 function functionInit() {
   ReactDOM.render(
