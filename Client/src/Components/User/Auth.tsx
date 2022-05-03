@@ -5,7 +5,8 @@ import APIResponse from '../utils/responseType';
 
 interface IProps {
   noLoginRedirectPath: string;
-  match?: any;
+  // match?: any;
+  children: any;
 }
 
 interface IState {

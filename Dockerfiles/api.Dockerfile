@@ -24,10 +24,13 @@ FROM node:$node_version as dev
   RUN sudo chown node:root -R /home/node/
   ###################
 
-  ADD --chown=node:root ./Server/yarn.lock .
+  # ADD --chown=node:root ./Server/yarn.lock .
   ADD --chown=node:root ./Server/package.json .
 
-  RUN yarn
+  RUN yarn 
+  RUN mkdir -p node_modules/.cache && chown -R node:root node_modules/.cache
+
+  RUN yarn global add react-scripts
   
   # CMD yarn run build ; yarn run dev
   CMD yarn run dev
@@ -50,10 +53,11 @@ FROM node:$node_version as prod
   RUN sudo chown node:root -R /home/node/
   ###################
 
-  ADD --chown=node:root ./Server/yarn.lock .
+  # ADD --chown=node:root ./Server/yarn.lock .
   ADD --chown=node:root ./Server/package.json .
 
   RUN yarn install --production
+  RUN yarn global add react-scripts
   # RUN sudo chown node:root -R /var/app/
 
   CMD yarn run build && yarn run start
