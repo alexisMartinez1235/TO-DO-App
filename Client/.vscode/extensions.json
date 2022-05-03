@@ -1,9 +1,8 @@
 {
   "recommendations": [
-    "rangav.vscode-thunder-client",
-    "burkeholland.simple-react-snippets-1.2.5",
-    "ms-ceintl.vscode-language-pack-es-1.63.3",
-    "thekalinga.bootstrap4-vscode",
-    "orta.vscode-jest"
+    "maptz.regionfolder",
+    "cweijan.vscode-mysql-client2",
+    "rogalmic.bash-debug",
+    "mads-hartmann.bash-ide-vscode"
   ]
 }

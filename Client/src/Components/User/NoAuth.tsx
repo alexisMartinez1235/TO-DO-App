@@ -5,6 +5,7 @@ import APIResponse from '../utils/responseType';
 
 interface IProps {
   loginRedirectPath: string;
+  children: any;
 }
 
 interface IState {

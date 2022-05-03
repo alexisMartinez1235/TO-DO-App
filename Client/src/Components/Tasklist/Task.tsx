@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  Box, 
+  Box,
   Checkbox,
-  Typography
+  Typography,
 } from '@mui/material';
 // sudo yarn upgrade @mui/base
 

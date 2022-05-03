@@ -1,39 +1,25 @@
 {
-    // Use IntelliSense para saber los atributos posibles.
-    // Mantenga el puntero para ver las descripciones de los existentes atributos.
-    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [ 
-      
-      {
-        "name": "Attach",
-        "port": 9229,
-        "request": "attach",
-        "skipFiles": [
-          "<node_internals>/**"
-        ],
-        "type": "pwa-node"
-      },
-      {
-        "name": "Edge",
-        "type": "pwa-msedge",
-        "request": "launch",
-        "url": "http://localhost:3000/",
-        "webRoot": "${workspaceRoot}",
-      },
-      {
+  // Use IntelliSense para saber los atributos posibles.
+  // Mantenga el puntero para ver las descripciones de los existentes atributos.
+  // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
         "name": "Chrome",
-        "type": "pwa-chrome",
+        "type": "chrome",
         "request": "launch",
         "url": "http://localhost:3000/",
-        "webRoot": "${workspaceRoot}",
-        "skipFiles": [
-          "${workspaceFolder}/<node_internals>/**",
-          "${workspaceFolder}/node_modules/**",
-          "http://localhost:3000/var/app/client/webpack/bootstrap",
-          "http://localhost:3000/static/js/main.chunk.js",
-          "<node_internals>/**"
-        ],  
-      },
-    ]
+        "webRoot": "${workspaceFolder}/Client/",
+    },
+    // {
+    //     "name": "Attach to node",
+    //     "port": 9229,
+    //     "request": "attach",
+    //     "program": "${workspaceFolder}/Server/src/index.ts",
+    //     "skipFiles": [
+    //       "<node_internals>/**"
+    //     ],
+    //     "type": "pwa-node",
+    // },
+  ]
 }

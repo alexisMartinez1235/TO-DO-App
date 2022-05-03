@@ -211,9 +211,9 @@ class DefaultFormTask extends React.Component<any, IState> {
           ]}
           defaultValue="description"
         />
+        {/* GetTasks={this.getTasks} */}
         <LTask
           tasks={this.state.tasks}
-          GetTasks={this.getTasks}
           RemoveTask={this.removeTask}
           // SetActivated={this.SetActivated}
         />
