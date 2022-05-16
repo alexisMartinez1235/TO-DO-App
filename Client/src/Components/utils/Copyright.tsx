@@ -1,6 +1,9 @@
+//
+// import React from 'react';
 import { Link, Typography } from '@mui/material';
 
-export default function Copyright(props: any) {
+// eslint-disable-next-line
+export default function Copyright(props: any): any {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}

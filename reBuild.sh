@@ -51,6 +51,7 @@ init() {
   mkdir -p ./VsCodeConfigFolders/Server
 
   docker-compose -f "docker-compose.yml" up -d --build
+  sh backupDev.sh
   cd Monitor 
   docker-compose -f "docker-compose.yml" up -d --build
 }

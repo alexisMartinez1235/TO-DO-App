@@ -83,8 +83,9 @@ services:
       target: $MODE_REACT_CLIENT
     container_name: react
     # command: npm start
-    mem_limit: 2400m
+    mem_limit: 2000m
     environment:
+      # FAST_REFRESH: 'false'
       CHOKIDAR_USEPOLLING: 'true'
       REACT_APP_FOR: dEVELOP
     links:

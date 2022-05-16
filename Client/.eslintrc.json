@@ -1,21 +1,25 @@
 {
   "env": {
     "browser": true,
-    "es6": true,
+    "es2015": true,
     "jest": true
   },
   "extends": [
-    "airbnb",
-    "airbnb-typescript",
-    "airbnb-typescript/base",
-    "plugin:react/recommended"
+    "react-app",
+    "react-app/jest",
+    // "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:testing-library/react"
+    // "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "tsconfigRootDir": "/var/app/client",
     "project": ["tsconfig.json"], 
     "ecmaFeatures": {
-      "jsx": true 
+      "jsx": true
     },
     "ecmaVersion": "latest",
     "sourceType": "module"
@@ -24,8 +28,17 @@
     "react",
     "@typescript-eslint"
   ],
+  "globals": {
+    "React": true,
+    "jsx": true
+  },
   "rules": {
-    "react/react-in-jsx-scope": "off",
+    "indent": [ "error", 2 ],
+    "linebreak-style": "off",
+    "quotes": [ "error", "single" ],
+    "semi": [ "error", "always" ],
+    // "react/react-in-jsx-scope": "off",
+    // "react/jsx-uses-react": "off",
     "react/jsx-filename-extension": [
       1,
       {
@@ -35,13 +48,13 @@
         ]
       }
     ],
-    "import/no-unresolved": 0,
-    "import/extensions": 0,
     "react/destructuring-assignment": [
       0,
       "always"
     ],
     "react/jsx-props-no-spreading": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
     "lines-between-class-members": [
       "error",
       "always",
@@ -49,14 +62,19 @@
         "exceptAfterSingleLine": true
       }
     ],
-    "no-array-constructor": 0
+    "no-array-constructor": 0,
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "settings": {
     "import/resolver": {
       "typescript": {}
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "ignorePatterns": [
-    "node_modules"
+    "node_modules/"
   ]
 }

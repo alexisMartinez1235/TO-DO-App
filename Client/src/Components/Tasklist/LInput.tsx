@@ -38,18 +38,18 @@ class LInput extends React.Component <IProps, IState> {
     this.onChangeBtnExpiration = this.onChangeBtnExpiration.bind(this);
   }
 
-  onChangeBtnExpiration(date: Date | null) {
+  onChangeBtnExpiration(date: Date | null): void {
     this.setState({
       selectedDate: date,
     });
   }
 
-  onTxtTaskChange(e: React.ChangeEvent<HTMLInputElement>) {
+  onTxtTaskChange(e: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({ description: e.target.value });
   }
 
-  // onClickbtnAdd(e: React.MouseEvent<HTMLElement>) {
-  onClickbtnAdd() {
+  // onClickbtnAdd(e: React.MouseEvent<HTMLElement>): any {
+  onClickbtnAdd(): void {
     if (this.state.description !== '' && this.state.selectedDate !== null) {
       const date: string = this.state.selectedDate?.toISOString().substring(0, 19);
       const sendTaskS: ITask<string> = {
@@ -62,7 +62,7 @@ class LInput extends React.Component <IProps, IState> {
     this.setState({ description: '', selectedDate: null });
   }
 
-  render() {
+  render(): any {
     return (
       <Container sx={{
         display: 'flex',

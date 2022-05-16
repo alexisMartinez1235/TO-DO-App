@@ -1,3 +1,5 @@
+//
+// import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -71,7 +73,7 @@ interface IProps {
   // AddTask(task: ITask<string>): any;
 }
 
-export default function BottomAppBar(props: IProps) {
+export default function BottomAppBar(props: IProps): any {
   /* #region deprecated */
   /*
     AppBar - Tollbar

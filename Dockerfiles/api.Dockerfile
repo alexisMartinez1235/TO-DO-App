@@ -6,8 +6,8 @@ ARG node_version
 FROM node:$node_version as dev
   WORKDIR /var/app/server
 
-  # ADD ./TodoApp/ /var/app/ 
-  # VOLUME ./Server .
+  # ADD ./TodoApp/ /var/app/   
+  VOLUME ./Server /var/app/server
   # ADD ./Mysql/Installation/client-cert.pem /certs/client-cert.pem 
   # See process
   RUN apk add htop
@@ -30,8 +30,6 @@ FROM node:$node_version as dev
   RUN yarn 
   RUN mkdir -p node_modules/.cache && chown -R node:root node_modules/.cache
 
-  RUN yarn global add react-scripts
-  
   # CMD yarn run build ; yarn run dev
   CMD yarn run dev
 
@@ -42,8 +40,8 @@ FROM node:$node_version as dev
 FROM node:$node_version as prod
   WORKDIR /var/app/server
   
-  # VOLUME ./Server .
-  
+  VOLUME ./Server /var/app/server
+
   ### USER CONFIG ###
   RUN apk add --update sudo
 
@@ -57,7 +55,7 @@ FROM node:$node_version as prod
   ADD --chown=node:root ./Server/package.json .
 
   RUN yarn install --production
-  RUN yarn global add react-scripts
+  # RUN yarn global add react-scripts
   # RUN sudo chown node:root -R /var/app/
 
   CMD yarn run build && yarn run start

@@ -34,7 +34,7 @@ class Task extends React.Component<IProps, IState> {
     this.getDate = this.getDate.bind(this);
   }
 
-  getDate() {
+  getDate(): any {
     const date = this.props.task.expirationDate;
 
     if (date !== null) {
@@ -43,7 +43,7 @@ class Task extends React.Component<IProps, IState> {
     return false;
   }
 
-  removeTask() {
+  removeTask(): void {
     const id2 = this.props.key;
     console.log(id2);
     if (this.state.awake) {
@@ -52,7 +52,7 @@ class Task extends React.Component<IProps, IState> {
     }
   }
 
-  render() {
+  render(): any {
     if (this.state.awake) {
       return (
         <Box

@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es2015",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
     "module": "esnext",
+    "incremental": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
