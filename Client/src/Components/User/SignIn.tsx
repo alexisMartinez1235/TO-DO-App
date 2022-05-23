@@ -1,4 +1,5 @@
-import * as React from 'react';
+//
+// import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,12 +13,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-import APIResponse from '../utils/responseType';
+import { APIResponse, host, port } from '../utils/database';
 import Copyright from '../utils/Copyright';
 import defaultTheme from '../utils/theme';
+import history from '../utils/history';
 
 interface IProps {
-  history: any;
   onSign(token: string, email: string): any;
 }
 // interface IState {
@@ -25,7 +26,7 @@ interface IProps {
 //   password: string,
 // }
 
-export default function SignIn(props: IProps) {
+export default function SignIn(props: IProps): any {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -44,17 +45,18 @@ export default function SignIn(props: IProps) {
         // redirect: 'follow',
       };
 
-      fetch('http://localhost:8000/api/signin', requestOptions)
+      fetch(`http://${host}:${port}/api/signin`, requestOptions)
         .then((response: any) => response.json())
         .then((result: APIResponse) => {
           // console.log(result);
           if (result.success) {
             props.onSign(result.data.token, result.data.user.email);
-            props.history.push('/dashboard');
+            history.push('/dashboard');
           }
         })
         .catch((error: any) => {
-          console.log('error', error);
+          console.error('error', error);
+          // alert(error);
         });
     }
   };

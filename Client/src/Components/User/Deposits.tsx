@@ -3,11 +3,11 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Title from './Title';
 
-function preventDefault(event: React.MouseEvent) {
+function preventDefault(event: React.MouseEvent): void {
   event.preventDefault();
 }
 
-export default function Deposits() {
+export default function Deposits(): any {
   return (
     <>
       <Title>Recent Deposits</Title>

@@ -62,11 +62,11 @@ const rows = [
   ),
 ];
 
-function preventDefault(event: React.MouseEvent) {
+function preventDefault(event: React.MouseEvent): void {
   event.preventDefault();
 }
 
-export default function Orders() {
+export default function Orders(): any {
   return (
     <>
       <Title>Recent Orders</Title>

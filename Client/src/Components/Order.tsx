@@ -37,7 +37,7 @@ class Order extends React.Component<IProps, IState> {
     this.onClickButton = this.onClickButton.bind(this);
   }
 
-  onClickButton() {
+  onClickButton(): void {
     this.setState((prevState: IState) => ({
       order: !prevState.order,
     }));
@@ -47,7 +47,7 @@ class Order extends React.Component<IProps, IState> {
     });
   }
 
-  onChangeSelect(e: SelectChangeEvent<string>) {
+  onChangeSelect(e: SelectChangeEvent<string>): void{
     this.setState({
       variable: e.target.value,
     });
@@ -57,7 +57,7 @@ class Order extends React.Component<IProps, IState> {
     });
   }
 
-  render() {
+  render(): any {
     const menuItems = this.props.optionDescription
       .map((data: { [k: string]: string }) => (
         // key={nanoid()}

@@ -1,4 +1,5 @@
-// import * as React from 'react';
+//
+// import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer,
@@ -22,7 +23,7 @@ const data = [
   createData('24:00', undefined),
 ];
 
-export default function Chart() {
+export default function Chart(): any {
   const theme = useTheme();
 
   return (

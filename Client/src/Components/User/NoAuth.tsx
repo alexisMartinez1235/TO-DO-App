@@ -1,7 +1,7 @@
-import { Box, LinearProgress } from '@mui/material';
 import React from 'react';
+import { Box, LinearProgress } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import APIResponse from '../utils/responseType';
+import { APIResponse, host, port } from '../utils/database';
 
 interface IProps {
   loginRedirectPath: string;
@@ -32,8 +32,8 @@ class NoAuth extends React.Component<IProps, IState> {
         'Cache-control': 'no-cache',
       },
     };
-
-    fetch('http://localhost:8000/api/profile', requestOptions)
+  
+    fetch(`http://${host}:${port}/api/profile`, requestOptions)
       .then((response: any) => response.json())
       .then((result: APIResponse) => {
         // console.log(result);
@@ -45,12 +45,13 @@ class NoAuth extends React.Component<IProps, IState> {
         }
       })
       .catch((error: any) => {
-        console.log('error', error);
+        console.error('error', error);
+        // alert(error);
         this.setState({ authorized: 2 });
       });
   }
 
-  render() {
+  render(): any {
     if (this.state.authorized === 1) {
       return (
         <Navigate

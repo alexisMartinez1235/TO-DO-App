@@ -7,7 +7,7 @@ import LTask from './LTask';
 import LInput from './LInput';
 import { ITask } from './Task';
 import Order from '../Order';
-import APIResponse from '../utils/responseType';
+import { APIResponse, host, port } from '../utils/database';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 import withRouter from '../utils/withRouter';
 // import SpeedDialTask from './SpeedDialTask';
@@ -26,12 +26,8 @@ interface IState {
 }
 
 class DefaultFormTask extends React.Component<any, IState> {
-  public url: string;
-
   constructor(props: any) {
     super(props);
-    this.url = 'http://localhost:8000';
-
     this.state = {
       tasks: new Array<ITask<Date>>(),
     };
@@ -41,17 +37,17 @@ class DefaultFormTask extends React.Component<any, IState> {
     this.getListId = this.getListId.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.getTasks();
   }
 
-  componentDidUpdate(props: any) {
+  componentDidUpdate(props: any): void {
     if (this.getListId() !== props.router.params.idList.toString()) {
       this.getTasks();
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.setState({ tasks: [] });
   }
 
@@ -61,7 +57,7 @@ class DefaultFormTask extends React.Component<any, IState> {
 
   // async getTasks(paramsGetTask?: IParms<string>): Promise< Array< ITask<Date> > > {
   getTasks(paramsGetTask?: IParms<string>): boolean {
-    const url: URL = new URL(`${this.url}/api/list/task`);
+    const url: URL = new URL(`http://${host}:${port}/api/list/task`);
     url.search = new URLSearchParams({
       ...paramsGetTask,
       idList: this.getListId(),
@@ -104,13 +100,14 @@ class DefaultFormTask extends React.Component<any, IState> {
         return result.success;
       })
       .catch((error: any) => {
-        console.log('error', error);
+        console.error('error', error);
+        // alert(error);
       });
     return false;
   }
 
   removeTask(id: string): boolean {
-    const url: URL = new URL(`${this.url}/api/list/task/logical`);
+    const url: URL = new URL(`http://${host}:${port}/api/list/task/logical`);
     url.search = new URLSearchParams({ idList: this.getListId() }).toString();
 
     const token = localStorage.getItem('token') || '';
@@ -130,20 +127,21 @@ class DefaultFormTask extends React.Component<any, IState> {
     fetch(url.toString(), requestOptions)
       .then((response: any) => response.json())
       .then((result: APIResponse) => {
-        console.log(result);
+        // console.log(result);
         if (result.success) {
           this.getTasks();
         }
         return result.success;
       })
       .catch((error: any) => {
-        console.log('error', error);
+        console.error('error', error);
+        // alert(error);
       });
     return false;
   }
 
-  addTask(taskDateString: ITask<string>) {
-    const url: URL = new URL(`${this.url}/api/list/task`);
+  addTask(taskDateString: ITask<string>): boolean {
+    const url: URL = new URL(`http://${host}:${port}/api/list/task`);
     url.search = new URLSearchParams({ idList: this.getListId() }).toString();
     const token = localStorage.getItem('token') || '';
     const requestOptions = {
@@ -169,7 +167,8 @@ class DefaultFormTask extends React.Component<any, IState> {
         return result.success;
       })
       .catch((error: any) => {
-        console.log('error', error);
+        console.error('error', error);
+        // alert(error);
       });
     return false;
   }
@@ -187,7 +186,7 @@ class DefaultFormTask extends React.Component<any, IState> {
   //   return true;
   // }
 
-  render() {
+  render(): any {
     return (
       <Box
         className="DefaultFormTask"

@@ -16,15 +16,15 @@ interface IProps {
   // SetActivated(task: ITask<Date>, value: boolean): boolean
 }
 
-interface IState {}
+// interface IState {}
 
-class LTask extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {};
-  }
+class LTask extends React.Component<IProps, any> {
+  // constructor(props: IProps): any {
+  //   super(props);
+  //   // this.state = {};
+  // }
 
-  render() {
+  render(): any {
     const { tasks } = this.props;
 
     // SetActivated={this.props.SetActivated}

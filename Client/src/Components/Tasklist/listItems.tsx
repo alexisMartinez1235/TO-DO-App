@@ -11,17 +11,17 @@ import {
 
 // icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
+// import BarChartIcon from '@mui/icons-material/BarChart';
+// import LayersIcon from '@mui/icons-material/Layers';
 import ListIcon from '@mui/icons-material/List';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { Link } from 'react-router-dom';
 
 // import DefaultFormTask from '../DefaultFormTask';
-import APIResponse from '../utils/responseType';
+import { APIResponse, host, port } from '../utils/database';
 import BottomAppBar from './BottomAppBar';
 import CreateList from './CreateList';
 
@@ -36,17 +36,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Orders" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -59,6 +53,12 @@ export const mainListItems = (
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Integrations" />
+    </ListItemButton> */}
+    <ListItemButton>
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="About" />
     </ListItemButton>
   </>
 );
@@ -74,11 +74,8 @@ interface IState {
 }
 
 export class ListOfListTask extends React.Component<IProps, IState> {
-  public url: string;
-
   constructor(props: IProps) {
     super(props);
-    this.url = 'http://localhost:8000';
     this.state = {
       variable: 'ID',
       order: 'ASC',
@@ -91,12 +88,12 @@ export class ListOfListTask extends React.Component<IProps, IState> {
     this.removeTasklist = this.removeTasklist.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.getTasklists();
   }
 
   getTasklists(): boolean {
-    const url: URL = new URL(`${this.url}/api/list`);
+    const url: URL = new URL(`http://${host}:${port}/api/list`);
     url.search = new URLSearchParams({
       variable: this.state.variable.toString(),
       order: this.state.order.toString(),
@@ -129,7 +126,7 @@ export class ListOfListTask extends React.Component<IProps, IState> {
   }
 
   addTaskList(listName: string): boolean {
-    const url: URL = new URL(`${this.url}/api/list`);
+    const url: URL = new URL(`http://${host}:${port}/api/list`);
     const token = localStorage.getItem('token') || '';
     const requestOptions = {
       method: 'POST',
@@ -154,13 +151,14 @@ export class ListOfListTask extends React.Component<IProps, IState> {
         return result.success;
       })
       .catch((error: any) => {
-        console.log('error', error);
+        console.error('error', error);
+        // alert(error);
       });
     return false;
   }
 
   removeTasklist(idList: string): boolean {
-    const url: URL = new URL(`${this.url}/api/list/logical`);
+    const url: URL = new URL(`http://${host}:${port}/api/list/logical`);
     url.search = new URLSearchParams({ idList }).toString();
     const token = localStorage.getItem('token') || '';
     const requestOptions = {
@@ -186,12 +184,13 @@ export class ListOfListTask extends React.Component<IProps, IState> {
         return result.success;
       })
       .catch((error: any) => {
-        console.log('error', error);
+        console.error('error', error);
+        // alert(error);
       });
     return false;
   }
 
-  render() {
+  render(): any {
     // console.log(this.state);
     const { lists } = this.state;
     const listRender = lists.map((list: any): any => (
@@ -232,7 +231,7 @@ export class ListOfListTask extends React.Component<IProps, IState> {
         </ListSubheader>
         <Paper
           sx={{
-            height: '250px',
+            height: '395px',
           }}
           style={{
             maxHeight: 400,

@@ -19,25 +19,26 @@ import NotFound from '../utils/NotFound';
 import NoAuth from './NoAuth';
 import DefaultFormTask from '../Tasklist/DefaultFormTask';
 import withRouter from '../utils/withRouter';
+import Profile from './Profile';
+import Account from './Account';
 
 interface IProps {
   router: any;
 }
 
-interface IState {}
+// interface IState {}
 
-class ControlSign extends React.PureComponent<IProps, IState> {
-  constructor(props: any) {
+class ControlSign extends React.PureComponent<IProps, any> {
+  constructor(props: IProps) {
     super(props);
-    this.state = {};
+    // this.state = {};
     // this.props.router.navigate('/signin', { state: 'simple data' });
     // this.props.router.navigate('/signin');
     this.onSignChange = this.onSignChange.bind(this);
     this.onSign = this.onSign.bind(this);
-    // this.logout = this.logout.bind(this);
   }
 
-  onSignChange(value: boolean) {
+  onSignChange(value: boolean): void {
     if (value) {
       this.props.router.navigate('/signin');
     } else {
@@ -45,7 +46,7 @@ class ControlSign extends React.PureComponent<IProps, IState> {
     }
   }
 
-  onSign(token: string, email: string) {
+  onSign(token: string, email: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('email', email);
 
@@ -55,7 +56,7 @@ class ControlSign extends React.PureComponent<IProps, IState> {
     });
   }
 
-  render() {
+  render(): any {
     return (
       <Routes>
         <Route
@@ -95,6 +96,26 @@ class ControlSign extends React.PureComponent<IProps, IState> {
             )}
           />
           <Route
+            path="profile"
+            element={(
+              <Auth
+                noLoginRedirectPath="/dashboard"
+              >
+                <Profile />
+              </Auth>
+            )}
+          />
+          <Route
+            path="account"
+            element={(
+              <Auth
+                noLoginRedirectPath="/dashboard"
+              >
+                <Account />
+              </Auth>
+            )}
+          />
+          <Route
             path="*"
             element={(
               <>
@@ -115,7 +136,7 @@ class ControlSign extends React.PureComponent<IProps, IState> {
             <NoAuth
               loginRedirectPath="/dashboard"
             >
-              <SignIn onSign={this.onSign} history={this.props.router.history} />
+              <SignIn onSign={this.onSign} />
             </NoAuth>
           )}
         />

@@ -1,4 +1,5 @@
-// import * as React from 'react';
+//
+// import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -95,7 +96,7 @@ const footers = [
   },
 ];
 
-function PricingContent(props: IProps) {
+function PricingContent(props: IProps): any {
   return (
     <>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -274,6 +275,6 @@ function PricingContent(props: IProps) {
   );
 }
 
-export default function Pricing(props: IProps) {
+export default function Pricing(props: IProps): any {
   return <PricingContent {...props} />;
 }

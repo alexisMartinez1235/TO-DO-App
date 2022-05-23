@@ -28,19 +28,19 @@ class CreateList extends React.Component<IProps, IState> {
     this.onClickbtnAdd = this.onClickbtnAdd.bind(this);
   }
 
-  onTxtTaskChange(e: React.ChangeEvent<HTMLInputElement>) {
+  onTxtTaskChange(e: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({ tasklistname: e.target.value });
   }
 
-  // onClickbtnAdd(e: React.MouseEvent<HTMLElement>) {
-  onClickbtnAdd() {
+  // onClickbtnAdd(e: React.MouseEvent<HTMLElement>): any {
+  onClickbtnAdd(): void {
     if (this.state.tasklistname !== '') {
       this.props.AddTaskList(this.state.tasklistname.toString());
     }
     this.setState({ tasklistname: '' });
   }
 
-  render() {
+  render(): any {
     return (
       <Container
         sx={{
